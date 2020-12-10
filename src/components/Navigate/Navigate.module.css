@@ -1,0 +1,9 @@
+.nav {
+    grid-area: n;
+    background-color: yellow;
+  }
+
+  .item
+  {
+    text-decoration: line-through;
+  }
