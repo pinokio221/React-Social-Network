@@ -4,7 +4,7 @@ import s from './Header.module.css';
 const Header = () => {
     return (
         <header className = {s.header}>
-            <img src='https://i.pinimg.com/originals/66/41/c9/6641c94e15a0be37af49a4250386c03e.png'></img>
+            <img src='https://www.freeiconspng.com/uploads/facebook-simple-text-22.png'></img>
         </header>
     );
 }

@@ -1,9 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Signika:wght@300&display=swap');
 .nav {
     grid-area: n;
-    background-color: yellow;
+    background-color: rgba(0, 98, 171 , 0.70);
+    padding: 20px;
+    font-family: 'Signika', sans-serif;
+    font-size: 20px;
   }
 
-  .item
+.item
+{
+    padding: 5px;
+}
+.item a
   {
-    text-decoration: line-through;
+      color: white;
+      text-decoration: none;
+  }
+
+  .item a.activeLink
+  {
+      color: rgb(0, 6, 7 );
+      font-weight: bold;
+
+  }
+
+  .icon
+  {
+      padding-right: 10px;
+      color: rgb(83, 104, 119);
+  }
+
+  .item a.activeLink span
+  {
+      color: rgb(2, 136, 152);
+      text-decoration: underline;
   }
