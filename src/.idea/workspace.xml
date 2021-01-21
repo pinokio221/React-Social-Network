@@ -2,21 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d5997291-0ce2-40e6-9f02-d3ebae3488c7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/redux/state.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/App.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/render.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Dialogs/Dialogs.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Dialogs/Dialogs.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Dialogs/Dialogs.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/components/Dialogs/Dialogs.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Header/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Header/Header.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Header/Header.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/components/Header/Header.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Navigate/Navigate.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Navigate/Navigate.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Navigate/Navigate.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/components/Navigate/Navigate.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/Profile/MyPosts/MyPosts.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Profile/MyPosts/MyPosts.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Profile/MyPosts/MyPosts.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/components/Profile/MyPosts/MyPosts.module.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Profile/MyPosts/Post/Post.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Profile/MyPosts/Post/Post.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/Profile/Profile.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Profile/Profile.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redux/state.js" beforeDir="false" afterPath="$PROJECT_DIR$/redux/state.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,9 +29,14 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../todo-list/todo-list" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -53,7 +50,12 @@
       <workItem from="1607770927942" duration="8270000" />
       <workItem from="1607940422871" duration="4655000" />
       <workItem from="1608029085334" duration="5158000" />
-      <workItem from="1608114995980" duration="5602000" />
+      <workItem from="1608114995980" duration="6468000" />
+      <workItem from="1609240826268" duration="5316000" />
+      <workItem from="1610704318744" duration="4220000" />
+      <workItem from="1610816193979" duration="7641000" />
+      <workItem from="1610900338768" duration="7727000" />
+      <workItem from="1611071552081" duration="463000" />
     </task>
     <servers />
   </component>
