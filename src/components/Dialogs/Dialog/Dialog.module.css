@@ -1,0 +1,22 @@
+.profile_info {
+    display: block;
+    margin-bottom: 7px;
+    padding: 5px;
+    background-color: rgba(0, 98, 171 , 0.70);
+}
+.profile_info img{
+    width: 50px;
+    border-radius: 50%;
+}
+
+.profile_name{
+    position: relative;
+    bottom: 15px;
+    color: black;
+    text-decoration: none;
+    margin-left: 7px;
+}
+
+a {
+    text-decoration: none;
+}
