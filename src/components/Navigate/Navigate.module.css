@@ -17,21 +17,21 @@
       text-decoration: none;
   }
 
-  .item a.activeLink
+.item a.activeLink
   {
       color: rgb(0, 6, 7 );
       font-weight: bold;
-
   }
 
-  .icon
+.icon
   {
       padding-right: 10px;
       color: rgb(83, 104, 119);
   }
 
-  .item a.activeLink span
+.item a.activeLink span
   {
       color: rgb(2, 136, 152);
       text-decoration: underline;
   }
+

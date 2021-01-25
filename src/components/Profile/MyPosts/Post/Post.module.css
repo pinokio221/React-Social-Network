@@ -1,4 +1,6 @@
 .item {
+    background-color: rgba(139, 183, 187,1);
+    padding: 5px;
     color: green;
 }
 
