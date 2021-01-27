@@ -24,9 +24,9 @@ let initialState = {
     friendsInfo: [
         {
             id: 11,
-            first_name: "Bill",
+            first_name: "1",
             last_name: "Clinton",
-            user_image: "https://i.insider.com/5d42ae8536e03c34d704e872?width=700"
+            user_image: "https://www.biography.com/.image/t_share/MTE5NDg0MDU1MjM5ODg2MzUx/dwayne-johnson-11818916-1-402.jpg"
         },
         {
             id: 12,
@@ -90,8 +90,8 @@ let initialState = {
         }
     ],
     postsData: [
-        {id: 1, message: "Hello, how are you???", likesCount: 150},
-        {id: 2, message: "Please recall me!!!", likesCount: 3}
+        {id: 1, message: "Hello, how are you???Hello, how are you???", likesCount: 123, commentsCount: 94},
+        {id: 2, message: "Please recall me!!!", likesCount: 3, commentsCount: 11}
     ],
     newPostText: ''
 }

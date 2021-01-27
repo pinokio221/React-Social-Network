@@ -7,7 +7,11 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const ProfileInfo = (props) => {
     let friendsList =
-        props.friendsInfo.map(f => <img className={styles.friend_user_image} src={f.user_image} alt=""/>)
+        props.friendsInfo.map(f =><div>
+            <img className={styles.friend_user_image} src={f.user_image} alt=""/>
+            <span>{f.first_name}</span>
+        </div>
+           )
 
     return (
         <div className={styles.component_wrapper}>
@@ -41,43 +45,31 @@ const ProfileInfo = (props) => {
                                 </div>
                             </Col>
                         </Row>
+                        </Container>
+                    <Container>
                         <hr className="my-4"/>
                         <Row>
                             <Col xs={6} md={4}>
-                                <Card className={styles.user_friends} border="light" style={{width: '18rem'}}>
+                                <Card border="light" style={{width: '15rem'}}>
                                     <Card.Header>My Friends List</Card.Header>
-
-                                            { friendsList }
-
-                                </Card>
-                            </Col>
-                            <Col xs={6} md={4}>
-                                <Card className={styles.user_friends} border="light" style={{width: '18rem'}}>
-                                    <Card.Header>My communities</Card.Header>
                                     <Card.Body>
-                                        <Card.Text>
-                                            <Row>
-                                                <Col>1</Col>
-                                                <Col>2</Col>
-                                                <Col>3</Col>
-                                                <Col>4</Col>
-                                            </Row>
-                                        </Card.Text>
+                                            <div className={styles.user_friends}>{ friendsList }</div>
                                     </Card.Body>
                                 </Card>
                             </Col>
                             <Col xs={6} md={4}>
-                                <Card className={styles.user_friends} border="light" style={{width: '18rem'}}>
-                                    <Card.Header>My Photos & Videos</Card.Header>
-                                    <Card.Body>
-                                        <Card.Text>
-                                            <Row>
-                                                <Col>1</Col>
-                                                <Col>2</Col>
-                                                <Col>3</Col>
-                                                <Col>4</Col>
-                                            </Row>
-                                        </Card.Text>
+                                <Card border="light" style={{width: '15rem'}}>
+                                    <Card.Header>My Friends List</Card.Header>
+                                    <Card.Body className={styles.user_friends}>
+                                        { friendsList }
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                            <Col xs={6} md={4}>
+                                <Card border="light" style={{width: '15rem'}}>
+                                    <Card.Header>My Friends List</Card.Header>
+                                    <Card.Body className={styles.user_friends}>
+                                        { friendsList }
                                     </Card.Body>
                                 </Card>
                             </Col>
