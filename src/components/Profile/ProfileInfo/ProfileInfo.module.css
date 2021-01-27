@@ -1,10 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans&display=swap');
+
+
 .descriptionBlock
 {
-    padding: 10px;
+    padding: 20px;
 }
 
+.user_description {
+    border-radius: 2%;
+    max-width: 500px;
+}
 .headerPhoto img
 {
     width: 1100px;
     height: 200px;
 }
+
+.friend_user_image {
+    width: 50px;
+    border-radius: 50%;
+}
+
+.user_friends {
+    display: inline-block;
+}
+.user_image_block {
+    margin: 0 auto;
+}
+.user_image_block Button{
+    margin-top: 10px;
+    width: 250px;
+}
+
+.user_image {
+    display: grid;
+    width: 150px;
+    margin-left: 50px;
+}
+
+.user_name {
+    font-family: 'Public Sans', sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.user_status {
+    font-size: 14px;
+    display: inline-block;
+}
+
+.user_status:hover {
+    cursor: pointer;
+}
+
+.user_image:hover{
+    cursor: pointer;
+}
+
+
+.change_photo_btn:hover {
+    background-color: rgba(71, 138, 85, 0.5);
+    color: white;
+}
+
+.pencil_icon {
+    transition-duration: 0.5s;
+    color: cornflowerblue;
+    margin-left: 10px;
+}
+
+.pencil_icon:hover {
+    transition-duration: 0.5s;
+    color: rgb(0, 108, 129);
+}
+
+
