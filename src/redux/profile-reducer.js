@@ -90,7 +90,7 @@ let initialState = {
         }
     ],
     postsData: [
-        {id: 1, message: "Hello, how are you???Hello, how are you???", likesCount: 123, commentsCount: 94},
+        {id: 1, message: "Hello, how are you???Hello, how are you???", likesCount: 365, commentsCount: 94},
         {id: 2, message: "Please recall me!!!", likesCount: 3, commentsCount: 11}
     ],
     newPostText: ''
