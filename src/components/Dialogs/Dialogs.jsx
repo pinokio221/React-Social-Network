@@ -4,8 +4,8 @@ import Dialog from './Dialog/Dialog'
 import MessagesContainer from "./Messages/MessagesContainer";
 
 const Dialogs = (props) => {
-
-    let dialogsElements = props.dialogsData.map(d => <Dialog name={d.name} dialogid={d.id} profile_picture={d.profile_picture}/>)
+    let state = props.store.getState()
+    let dialogsElements = state.dialogsPage.dialogsData.map(d => <Dialog key = {d.id} name={d.name} dialogid={d.id} profile_picture={d.profile_picture}/>)
 
     return (
         <div className={styles.dialogs}>

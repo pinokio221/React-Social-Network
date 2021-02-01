@@ -5,7 +5,7 @@ import {Button, Form} from "react-bootstrap";
 
 const MyPosts = (props) => {
     let postsElements =
-        props.postsData.map(p =>  <Post message ={p.message} likesCount = {p.likesCount} commentsCount = {p.commentsCount} userInfo={props.userInfo}/>)
+        props.postsData.map(p =>  <Post key = {p.id} message ={p.message} likesCount = {p.likesCount} commentsCount = {p.commentsCount} userInfo={props.userInfo}/>)
 
     let newPostElement = React.createRef();
     

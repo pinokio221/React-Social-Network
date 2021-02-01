@@ -5,7 +5,7 @@ import styles from './Messages.module.css'
 const Messages = (props) => {
 
     let messagesItems =
-        props.messagesData.map(m => <Message message = {m.message} id = {m.id}/>)
+        props.messagesData.map(m => <Message key = {m.id} message = {m.message} id = {m.id}/>)
 
     let onSendMessageClick = () => {
         props.onSendMessageClick();
