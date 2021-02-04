@@ -13,31 +13,27 @@ let initialState = {
         {id: 5, name: 'Vitya', profile_picture:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-j8SPwUHaiopBhd2EgrzDyIUW0hMguVN2RA&usqp=CAU"}
     ],
     messagesData: [
-        {id: 1, message: "Hello, how are you?"},
-        {id: 2, message: "Why you still ignoring me?"},
+        {id: 1, message: "Hello, how are you?"}, {id: 2, message: "Why you still ignoring me?"},
         {id: 3, message: "fuck"}
     ],
     newMessageBody: ""
 }
 
 const dialogsReducer = (state = initialState, action) => {
-    let stateCopy = {
-        ...state,
-        messagesData: [...state.messagesData],
-    };
 
     switch (action.type) {
-        case UPDATE_MESSAGE_BODY: {
-            stateCopy.newMessageBody = action.body;
-            return stateCopy;
-        }
-        case SEND_MESSAGE: {
-            let body = stateCopy.newMessageBody;
-            stateCopy.newMessageBody = body;
-            stateCopy.messagesData.push({id: 10, message: body})
-            stateCopy.newMessageBody = '';
-            return stateCopy;
-        }
+        case UPDATE_MESSAGE_BODY:
+            return {
+                ...state,
+                newMessageBody: action.body
+            }
+        case SEND_MESSAGE:
+            let body = state.newMessageBody;
+            return {
+                ...state,
+                newMessageBody: '',
+                messagesData: [...state.messagesData, {id: 10, message: body}]
+            }
         default: return state;
     }
 }

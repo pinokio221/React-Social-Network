@@ -19,7 +19,10 @@
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "redux": "^4.0.5"
+    "react-uikit-form": "^2.0.3",
+    "react-uikit-icons": "^2.0.3",
+    "redux": "^4.0.5",
+    "uikit": "^3.6.15"
   },
   "scripts": {
     "start": "react-scripts start",
