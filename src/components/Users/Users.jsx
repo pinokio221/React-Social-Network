@@ -17,26 +17,24 @@ const Users = (props) => {
             })
     }
 
-    let newSearchElement = React.createRef();
+    let searchFieldValue = React.createRef();
 
-    let usersElements = props.usersPage.usersList.map(u => <User
-        onAddFriend={props.onAddFriend}
-        cancelInvitation={props.cancelInvitation}
-        key = {u.id}
-        id = {u.id}
-        username = {u.fullname}
-        age={u.age} city={u.city}
-        image={u.profileImage}
-        isFriend={u.isFriend}
-        friendInventation={u.friendInventation}/>)
+    let usersElements = props.usersPage.usersList
+        .filter(f => f.fullname.toLowerCase().includes(props.usersPage.searchInput.toLowerCase().trim()))
+        .map(u => <User
+            onAddFriend={props.onAddFriend}
+            cancelInvitation={props.cancelInvitation}
+            key = {u.id}
+            id = {u.id}
+            username = {u.fullname}
+            age={u.age} city={u.city}
+            image={u.profileImage}
+            isFriend={u.isFriend}
+            friendInventation={u.friendInventation}/>)
+
 
     let onSearchClick = (text) => {
         props.onSearchClick(text);
-    }
-    let onSearchInputChange = () => {
-        let value = newSearchElement.current.value;
-        props.onSearchInputChange(value);
-
     }
 
     return (
@@ -46,13 +44,14 @@ const Users = (props) => {
                     <Form>
                         <Form.Row className="align-items-center">
                             <Col sm={7} className="my-1" className={styles.search_form}>
-                                <Form.Control onChange={ onSearchInputChange } ref={ newSearchElement } value={props.searchInput} id="inlineFormInputName" placeholder="Search friends" />
+                                <Form.Control ref = { searchFieldValue } id="inlineFormInputName" placeholder="Search friends" />
                             </Col>
                             <Col xs="auto" className="my-1">
                                 <div className={styles.filter_icon}><FontAwesomeIcon icon={faFilter} /></div>
                             </Col>
                             <Col xs="auto" className="my-1">
-                                <Button onClick={() => {onSearchClick(props.searchInput)}} className={styles.search_btn}>Search</Button>
+                                <Button onClick={() => {
+                                    onSearchClick(searchFieldValue.current.value)}} className={styles.search_btn}>Search</Button>
                             </Col>
                         </Form.Row>
                     </Form>
@@ -60,7 +59,7 @@ const Users = (props) => {
 
             <hr/>
             <div className={styles.profile_wrapper}>
-                { usersElements }
+                { usersElements.length == 0 ? <div className={styles.not_found}>Users not found</div> : usersElements }
             </div>
         </div>
         </div>

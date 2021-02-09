@@ -41,7 +41,6 @@ let users = {
       isFriend: true,
       friendInventation: false,
       profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
-
     }
   ]
 }

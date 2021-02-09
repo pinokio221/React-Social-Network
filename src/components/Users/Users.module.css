@@ -1,3 +1,4 @@
+
 .search_block {
     display: block;
     margin: auto 0;
@@ -27,6 +28,16 @@
 .filter_icon:hover {
     color: rgb(10, 137, 157);
     transition-duration: 0.5s;
+}
+
+.not_found {
+    width: 250px;
+    text-align: center;
+    margin-left: 100%;
+    border: 1px solid red;
+    color: grey;
+    cursor: default;
+    font-size: 30px;
 }
 
 

@@ -2,7 +2,7 @@ import React from 'react';
 import {
     addFriendActionCreator,
     cancelInvitationActionCreator, onSearchClickActionCreator,
-    onSearchInputChangeActionCreator, setUsersActionCreator
+    setUsersActionCreator
 } from "../../redux/users-reducer";
 import Users from "./Users";
 import connect from "react-redux/lib/connect/connect";
@@ -11,6 +11,7 @@ let mapStateToProps = (state) => {
     return {
         usersPage: state.usersPage,
         searchInput: state.usersPage.searchInput,
+        filter: state.usersPage.filter
     }
 }
 
@@ -22,10 +23,6 @@ let mapDispatchToProps = (dispatch) => {
         },
         cancelInvitation: (userId) => {
             let action = cancelInvitationActionCreator(userId);
-            dispatch(action);
-        },
-        onSearchInputChange: (text) => {
-            let action = onSearchInputChangeActionCreator(text)
             dispatch(action);
         },
         onSearchClick: (text) => {
