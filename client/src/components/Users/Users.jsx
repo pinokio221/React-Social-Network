@@ -13,7 +13,8 @@ const Users = (props) => {
     if(props.usersPage.usersList.length === 0) {
         axios.get(requestURL)
             .then(response => {
-                props.setUsers(response.data.users)
+                debugger;
+                props.setUsers(response.data.items)
             })
     }
 
