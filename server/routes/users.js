@@ -167,7 +167,7 @@ router.get('/', (req, res) => {
     if(!req.query.page) {
         page = 1;
     }
-    
+
     const startIndex = (page-1) * limit;
     const endIndex = page * limit;
     const items = {}
@@ -179,10 +179,9 @@ router.get('/', (req, res) => {
       items.items = usersList
     }
 
-    let count = usersList.length
+    let count = items.items.length
 
     items.totalCount = count;
-
 
     res.send(items)
 });   
