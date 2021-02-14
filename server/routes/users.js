@@ -143,6 +143,14 @@ let usersList = [
     
     ];
 
+const getUserByNamePartial = (query, usersList) => {
+  const result = usersList.filter((user) => {
+    return user.fullname.toLowerCase().includes(query)
+  })
+
+  return result
+}
+
 
 router.get('/', (req, res) => {
     let page = parseInt(req.query.page);
@@ -151,24 +159,32 @@ router.get('/', (req, res) => {
     if (req.query.limit > 100) {
         res.send("The number of users cannot exceed 100.")
     }
+
     if (!req.query.limit) {
         limit = 12;
     }
+
     if(!req.query.page) {
         page = 1;
     }
+
     const startIndex = (page-1) * limit;
     const endIndex = page * limit;
     const items = {}
     items.items = usersList.slice(startIndex, endIndex);
-    let count = usersList.length
+
+    if (req.query.fullname) {
+      const usersList = getUserByNamePartial(req.query.fullname, items.items)
+
+      items.items = usersList
+    }
+
+    let count = items.items.length
 
     items.totalCount = count;
 
-
     res.send(items)
 });   
-
 
 
 router.get('/:userId', async (req, res) => {
@@ -180,8 +196,6 @@ router.get('/:userId', async (req, res) => {
     }catch(err) {
         res.json({message:err})
     }
-
-
 })
 
 
