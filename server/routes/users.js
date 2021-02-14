@@ -120,7 +120,26 @@ let usersList = [
             isFriend: false,
             friendInventation: false,
             profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
-        }
+        },
+        {
+            id: 13,
+            fullname: "Johnny Salvadore",
+            age: 31,
+            city: "Detroit",
+            isFriend: false,
+            friendInventation: false,
+            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
+        },
+        {
+            id: 13,
+            fullname: "Alexey Dubinin",
+            age: 31,
+            city: "Detroit",
+            isFriend: false,
+            friendInventation: false,
+            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
+        },
+        
     
     ];
 
@@ -129,6 +148,9 @@ router.get('/', (req, res) => {
     let page = parseInt(req.query.page);
     let limit = parseInt(req.query.limit);
 
+    if (req.query.limit > 100) {
+        res.send("The number of users cannot exceed 100.")
+    }
     if (!req.query.limit) {
         limit = 12;
     }
@@ -138,11 +160,13 @@ router.get('/', (req, res) => {
     const startIndex = (page-1) * limit;
     const endIndex = page * limit;
     const items = {}
-
-    
     items.items = usersList.slice(startIndex, endIndex);
+    let count = usersList.length
 
-    res.send(JSON.stringify(items))
+    items.totalCount = count;
+
+
+    res.send(items)
 });   
 
 
@@ -150,6 +174,8 @@ router.get('/', (req, res) => {
 router.get('/:userId', async (req, res) => {
     try {
         const user = usersList[req.params.userId-1];
+        if(!user) {res.send("User not found");}
+
         res.json(user);
     }catch(err) {
         res.json({message:err})

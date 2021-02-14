@@ -1,17 +1,23 @@
 import React from 'react';
 import {
     addFriendActionCreator,
-    cancelInvitationActionCreator, onSearchClickActionCreator,
-    setUsersActionCreator
+    cancelInvitationActionCreator, 
+    onSearchClickActionCreator,
+    setUsersActionCreator,
+    setCurrentPageActionCreator
 } from "../../redux/users-reducer";
 import Users from "./Users";
 import connect from "react-redux/lib/connect/connect";
 
 let mapStateToProps = (state) => {
     return {
-        usersPage: state.usersPage,
+        users: state.usersPage.users,
+        filteredUsers: state.usersPage.filteredUsers,
+        filter: state.usersPage.filter,
         searchInput: state.usersPage.searchInput,
-        filter: state.usersPage.filter
+        pageSize: state.usersPage.pageSize,
+        totalUsersCount: state.usersPage.totalUsersCount,
+        currentPage: state.usersPage.currentPage
     }
 }
 
@@ -25,12 +31,16 @@ let mapDispatchToProps = (dispatch) => {
             let action = cancelInvitationActionCreator(userId);
             dispatch(action);
         },
-        onSearchClick: (text) => {
-            let action = onSearchClickActionCreator(text)
+        onSearchClick: (text, users) => {
+            let action = onSearchClickActionCreator(text, users)
             dispatch(action);
         },
         setUsers: (users) => {
             let action = setUsersActionCreator(users);
+            dispatch(action);
+        },
+        setCurrentPage: (p) => {
+            let action = setCurrentPageActionCreator(p);
             dispatch(action);
         }
 

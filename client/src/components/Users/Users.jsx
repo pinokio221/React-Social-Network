@@ -8,20 +8,18 @@ import * as axios from "axios";
 
 const Users = (props) => {
 
-    let requestURL = "http://localhost:9000/users";
+    let requestURL = `http://localhost:9000/users?page=${props.currentPage}&limit=${props.pageSize}`;
 
-    if(props.usersPage.usersList.length === 0) {
-        axios.get(requestURL)
-            .then(response => {
-                debugger;
-                props.setUsers(response.data.items)
-            })
-    }
+        if(props.users.length === 0) {
+            axios.get(requestURL)
+                .then(response => {
+                    props.setUsers(response.data.items)
+                })
+        }
 
     let searchFieldValue = React.createRef();
 
-    let usersElements = props.usersPage.usersList
-        .filter(f => f.fullname.toLowerCase().includes(props.usersPage.searchInput.toLowerCase().trim()))
+    let usersElements = props.users
         .map(u => <User
             onAddFriend={props.onAddFriend}
             cancelInvitation={props.cancelInvitation}
@@ -33,9 +31,38 @@ const Users = (props) => {
             isFriend={u.isFriend}
             friendInventation={u.friendInventation}/>)
 
+    let filteredElements = props.filteredUsers
+        .map(u => <User
+            onAddFriend={props.onAddFriend}
+            cancelInvitation={props.cancelInvitation}
+            key = {u.id}
+            id = {u.id}
+            username = {u.fullname}
+            age={u.age} city={u.city}
+            image={u.profileImage}
+            isFriend={u.isFriend}
+            friendInventation={u.friendInventation}/>)
 
     let onSearchClick = (text) => {
-        props.onSearchClick(text);
+        let filteredUsers = props.users.filter(f => f.fullname.toLowerCase().includes(searchFieldValue.current.value.toLowerCase().trim()))
+        props.onSearchClick(text, filteredUsers, props.filter);
+    }
+
+    let onPageChanged = (p) => {
+        props.setCurrentPage(p);
+        let requestURL = `http://localhost:9000/users?page=${p}&limit=${props.pageSize}`;
+            axios.get(requestURL)
+                .then(response => {
+                    props.setUsers(response.data.items)
+                })
+    }
+
+    // Pages counter
+    let pagesCount = Math.ceil(props.filteredUsers.length / props.pageSize);
+    let pages = [];
+
+    for(let i=1; i <= pagesCount; i++) {
+        pages.push(i)
     }
 
     return (
@@ -60,8 +87,18 @@ const Users = (props) => {
 
             <hr/>
             <div className={styles.profile_wrapper}>
-                { usersElements.length == 0 ? <div className={styles.not_found}>Users not found</div> : usersElements }
+                { usersElements.length == 0 ? <div className={styles.not_found}>Users not found</div>
+                : props.searchInput != "" ? filteredElements : usersElements}
+                
             </div>
+            {props.filter ? 
+                    <div>
+                    { pages.map(p => {
+                        return <span onClick = { () => {onPageChanged(p)} } className={props.currentPage === p && styles.selectedPage}>{p}</span>
+                    }) }
+                </div> : <span>Show more</span>
+            }
+            
         </div>
         </div>
 
