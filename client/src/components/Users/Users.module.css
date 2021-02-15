@@ -24,6 +24,11 @@
     background-color: rgb(76, 144, 196);
 }
 
+.showMoreBtn {
+    display: block;
+    margin: 0px auto;
+    margin-top: 20px;
+}
 
 .filter_icon:hover {
     color: rgb(10, 137, 157);

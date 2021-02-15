@@ -44,10 +44,16 @@ const Users = (props) => {
             friendInventation={u.friendInventation}/>)
 
     let onSearchClick = (text) => {
-        let filteredUsers = props.users.filter(f => f.fullname.toLowerCase().includes(searchFieldValue.current.value.toLowerCase().trim()))
-        props.onSearchClick(text, filteredUsers, props.filter);
+        if(text.trim()) {
+        let requestURL = `http://localhost:9000/users?fullname=${text.toLowerCase()}`;
+        axios.get(requestURL)
+            .then(response => {
+                props.onSearchClick(text, response.data, props.filter);
+            })
+        } else {
+            props.onSearchClick(text, [], props.filter);
+        }
     }
-
     let onPageChanged = (p) => {
         props.setCurrentPage(p);
         let requestURL = `http://localhost:9000/users?page=${p}&limit=${props.pageSize}`;
@@ -57,6 +63,8 @@ const Users = (props) => {
                 })
     }
 
+
+
     // Pages counter
     let pagesCount = Math.ceil(props.filteredUsers.length / props.pageSize);
     let pages = [];
@@ -64,6 +72,7 @@ const Users = (props) => {
     for(let i=1; i <= pagesCount; i++) {
         pages.push(i)
     }
+
 
     return (
         <div className={styles.wrapper}>
@@ -87,8 +96,9 @@ const Users = (props) => {
 
             <hr/>
             <div className={styles.profile_wrapper}>
-                { usersElements.length == 0 ? <div className={styles.not_found}>Users not found</div>
-                : props.searchInput != "" ? filteredElements : usersElements}
+                { usersElements.length == 0? <div className={styles.not_found}>Users not found</div>
+                : props.searchInput == "" ? usersElements : filteredElements.length == 0 ? 
+                <div className={styles.not_found}>Users not found</div> : filteredElements}
                 
             </div>
             {props.filter ? 
@@ -96,7 +106,7 @@ const Users = (props) => {
                     { pages.map(p => {
                         return <span onClick = { () => {onPageChanged(p)} } className={props.currentPage === p && styles.selectedPage}>{p}</span>
                     }) }
-                </div> : <span>Show more</span>
+                </div> : <Button variant="primary" size="lg" className={styles.showMoreBtn}>Show more</Button>
             }
             
         </div>

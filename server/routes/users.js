@@ -122,7 +122,7 @@ let usersList = [
             profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
         },
         {
-            id: 13,
+            id: 14,
             fullname: "Johnny Salvadore",
             age: 31,
             city: "Detroit",
@@ -131,7 +131,7 @@ let usersList = [
             profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
         },
         {
-            id: 13,
+            id: 15,
             fullname: "Alexey Dubinin",
             age: 31,
             city: "Detroit",
@@ -143,13 +143,28 @@ let usersList = [
     
     ];
 
-const getUserByNamePartial = (query, usersList) => {
+
+const getUsersByNamePartial = (query, usersList) => {
   const result = usersList.filter((user) => {
     return user.fullname.toLowerCase().includes(query)
   })
-
-  return result
+  return result;
 }
+
+const getUserById = (query, usersList) => {
+    const result = usersList.find((user) => {
+        return user.id === Number(query)
+    })
+    return result;
+}
+
+const getUsersByCityName = (query, usersList) => {
+    const result = usersList.filter((user) => {
+        return user.city.toLowerCase().includes(query);
+    })
+    return result;
+}
+
 
 
 router.get('/', (req, res) => {
@@ -167,35 +182,35 @@ router.get('/', (req, res) => {
     if(!req.query.page) {
         page = 1;
     }
-
+    
+    const items = {}
     const startIndex = (page-1) * limit;
     const endIndex = page * limit;
-    const items = {}
     items.items = usersList.slice(startIndex, endIndex);
-
-    if (req.query.fullname) {
-      const usersList = getUserByNamePartial(req.query.fullname, items.items)
-
-      items.items = usersList
+    
+    if(req.query.userId) {
+        const user = getUserById(req.query.userId, usersList)
+        res.send(user)
     }
 
-    let count = items.items.length
+
+    if (req.query.fullname) {
+      const users = getUsersByNamePartial(req.query.fullname, usersList)
+      res.send(users)
+    }
+
+    let count = usersList.length
 
     items.totalCount = count;
 
     res.send(items)
 });   
-
-
-router.get('/:userId', async (req, res) => {
-    try {
-        const user = usersList[req.params.userId-1];
-        if(!user) {res.send("User not found");}
-
-        res.json(user);
-    }catch(err) {
-        res.json({message:err})
-    }
+// FILTERS
+router.get('/filter', (req, res) => {
+    if(req.query.city) {
+        const users = getUsersByCityName(req.query.city, usersList)
+        res.send(users)
+    }   
 })
 
 

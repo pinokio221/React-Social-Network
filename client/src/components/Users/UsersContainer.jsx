@@ -4,7 +4,8 @@ import {
     cancelInvitationActionCreator, 
     onSearchClickActionCreator,
     setUsersActionCreator,
-    setCurrentPageActionCreator
+    setCurrentPageActionCreator,
+    showMoreActionCreator
 } from "../../redux/users-reducer";
 import Users from "./Users";
 import connect from "react-redux/lib/connect/connect";
@@ -38,6 +39,10 @@ let mapDispatchToProps = (dispatch) => {
         setUsers: (users) => {
             let action = setUsersActionCreator(users);
             dispatch(action);
+        },
+        onShowMore: (users) => {
+            let action = showMoreActionCreator(users);
+            dispatch(action)
         },
         setCurrentPage: (p) => {
             let action = setCurrentPageActionCreator(p);
