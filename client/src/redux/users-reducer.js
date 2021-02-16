@@ -6,13 +6,13 @@ const SET_PAGE = "SET-PAGE"
 const SHOW_MORE = "SHOW-MORE"
 const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING"
 
-export const addFriendActionCreator = (userId) => ({ type: ADD_FRIEND, userId })
-export const cancelInvitationActionCreator = (userId) => ({ type: CANCEL_INVITATION, userId })
-export const onSearchClickActionCreator = (text, filteredUsers, usersFound) => ({ type: SEARCH_CLICK, text: text, filteredUsers, usersFound})
-export const setUsersActionCreator = (users) => ({ type: SET_USERS, users })
-export const showMoreActionCreator = (users, pagination) => ({ type: SHOW_MORE, users, pagination })
-export const setCurrentPageActionCreator = (page) => ({type: SET_PAGE, page})
-export const toggleIsFetchingActionCreator = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFetching})
+export const addFriend = (userId) => ({ type: ADD_FRIEND, userId })
+export const cancelInvitation = (userId) => ({ type: CANCEL_INVITATION, userId })
+export const onSearchClick = (text, filteredUsers, usersFound) => ({ type: SEARCH_CLICK, text: text, filteredUsers, usersFound})
+export const setUsers = (users) => ({ type: SET_USERS, users })
+export const showMore = (users, pagination) => ({ type: SHOW_MORE, users, pagination })
+export const setCurrentPage = (page) => ({type: SET_PAGE, page})
+export const toggleIsFetching = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFetching})
 
 
 let initialState = {

@@ -1,12 +1,12 @@
 import React from 'react';
-import {
-    addFriendActionCreator,
-    cancelInvitationActionCreator, 
-    onSearchClickActionCreator,
-    setUsersActionCreator,
-    setCurrentPageActionCreator,
-    showMoreActionCreator,
-    toggleIsFetchingActionCreator
+import { //Action Creators
+    addFriend,
+    cancelInvitation, 
+    onSearchClick,
+    setUsers,
+    setCurrentPage,
+    showMore,
+    toggleIsFetching
 } from "../../redux/users-reducer";
 import connect from "react-redux/lib/connect/connect";
 import User from "./User/User";
@@ -16,10 +16,10 @@ import Users from './Users';
 
 class UsersContainer extends React.Component {
     componentDidMount() {
-    this.props.toggleIsFetching(true);
      let requestURL = `http://localhost:9000/users?page=${this.props.currentPage}&limit=${this.props.pageSize}`;
 
         if(this.props.users.length === 0) {
+            this.props.toggleIsFetching(true);
             axios.get(requestURL)
                 .then(response => {
                     this.props.toggleIsFetching(false);
@@ -38,9 +38,16 @@ class UsersContainer extends React.Component {
                 this.props.onSearchClick(text, response.data.items, response.data.usersFound);
             })
         } else {
-            this.props.toggleIsFetching(false);
+            this.props.toggleIsFetching(true);
             this.props.onSearchClick(text, [], 0);
-        }
+            let requestURL = `http://localhost:9000/users?page=${this.props.currentPage}&limit=${this.props.pageSize}`;
+                axios.get(requestURL)
+                    .then(response => {
+                        this.props.toggleIsFetching(false);
+                        this.props.setUsers(response.data.items)
+                    })
+            
+            }
     }
     onPageChanged = (p) => {
         this.props.setCurrentPage(p);
@@ -125,37 +132,14 @@ let mapStateToProps = (state) => {
     }
 }
 
-let mapDispatchToProps = (dispatch) => {
-    return {
-        onAddFriend: (userId) => {
-            let action = addFriendActionCreator(userId);
-            dispatch(action);
-        },
-        cancelInvitation: (userId) => {
-            let action = cancelInvitationActionCreator(userId);
-            dispatch(action);
-        },
-        onSearchClick: (text, users, usersFound) => {
-            let action = onSearchClickActionCreator(text, users, usersFound)
-            dispatch(action);
-        },
-        setUsers: (users) => {
-            let action = setUsersActionCreator(users);
-            dispatch(action);
-        },
-        onShowMore: (users, pagination) => {
-            let action = showMoreActionCreator(users, pagination);
-            dispatch(action);
-        },
-        setCurrentPage: (p) => {
-            let action = setCurrentPageActionCreator(p);
-            dispatch(action);
-        },
-        toggleIsFetching: (isFetching) => {
-            let action = toggleIsFetchingActionCreator(isFetching);
-            dispatch(action);
-        }
-    }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
+
+export default connect(mapStateToProps, {
+    onAddFriend: addFriend,
+    cancelInvitation: cancelInvitation,
+    onSearchClick: onSearchClick,
+    setUsers: setUsers,
+    onShowMore: showMore,
+    setCurrentPage: setCurrentPage,
+    toggleIsFetching: toggleIsFetching
+})(UsersContainer);

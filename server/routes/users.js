@@ -4,149 +4,243 @@ const router = express.Router();
 let usersList = [
     {
             id: 1,
-            fullname: "Alex Menco",
+            fullname: "Keany Reeves",
+            sex: "Male",
+            status: "test",
             age: 29,
+            phone_number: "0976541884",
+            email: "test@gmail.com",
             city: "Los Angeles",
             isFriend: false,
             friendInventation: false,
-            profileImage: "https://d3b4yo2b5lbfy.cloudfront.net/wp-content/uploads/2019/06/d6a1f2019-CP-Forum-Avatars-TealfulEyes-Kodan.png"
+            profileImage: "https://d3b4yo2b5lbfy.cloudfront.net/wp-content/uploads/2019/06/d6a1f2019-CP-Forum-Avatars-TealfulEyes-Kodan.png",
+            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
         },
         {
             id: 2,
             fullname: "Boris Gulyav",
+            sex: "Male",
+            status: "test",
             age: 31,
+            phone_number: "0976541884",
+            email: "test@gmail.com",
             city: "Moscow",
             isFriend: false,
             friendInventation: true,
-            profileImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQecV_20snjsbgZSClHCml7tnMWvSYCD7ojqQ&usqp=CAU"
+            profileImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQecV_20snjsbgZSClHCml7tnMWvSYCD7ojqQ&usqp=CAU",
+            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
 
         },
         {
             id: 3,
             fullname: "Genadiy Bukin",
+            sex: "Male",
+            status: "test",
             age: 37,
+            phone_number: "0976541884",
+            email: "test@gmail.com",
             city: "Ekaterinburg",
             isFriend: false,
             friendInventation: false,
-            profileImage: "https://i2.wp.com/avatarfiles.alphacoders.com/161/161678.jpg"
+            profileImage: "https://i2.wp.com/avatarfiles.alphacoders.com/161/161678.jpg",
+            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
+
 
         },
         {
             id: 4,
             fullname: "Grisha Piven",
+            sex: "Male",
+            status: "test",
             age: 29,
+            phone_number: "0976541884",
+            email: "test@gmail.com",
             city: "Kyiv",
             isFriend: false,
             friendInventation: false,
-            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
+            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg",
+            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
+
         },
         {
             id: 5,
             fullname: "Andrey Rogozin",
+            sex: "Male",
+            status: "test",
             age: 35,
+            phone_number: "0976541884",
+            email: "test@gmail.com",
             city: "St. Petersburg",
             isFriend: false,
             friendInventation: false,
-            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
+            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg",
+            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
+
         },
         {
             id: 6,
             fullname: "Henry Ford",
+            sex: "Male",
+            status: "test",
             age: 28,
+            phone_number: "0976541884",
+            email: "test@gmail.com",
             city: "Miami",
             isFriend: false,
             friendInventation: false,
-            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
+            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg",
+            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
+
         },
         {
             id: 7,
             fullname: "Sam Bloom",
+            sex: "Male",
+            status: "test",
             age: 44,
+            phone_number: "0976541884",
+            email: "test@gmail.com",
             city: "London",
             isFriend: false,
             friendInventation: false,
-            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
+            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg",
+            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
+
         },
         {
             id: 8,
             fullname: "Ivan Gopnik",
+            sex: "Male",
+            status: "test",
             age: 62,
+            phone_number: "0976541884",
+            email: "test@gmail.com",
             city: "Odessa",
             isFriend: false,
             friendInventation: false,
-            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
+            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg",
+            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
+
         },
         {
             id: 9,
             fullname: "Hillary Clinton",
+            sex: "Male",
+            status: "test",
             age: 25,
+            phone_number: "0976541884",
+            email: "test@gmail.com",
             city: "New York",
             isFriend: true,
             friendInventation: false,
-            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
+            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg",
+            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
+
         },
         {
             id: 10,
             fullname: "Elliot Page",
+            sex: "Male",
+            status: "test",
             age: 16,
+            phone_number: "0976541884",
+            email: "test@gmail.com",
             city: "Chicago",
             isFriend: false,
             friendInventation: false,
-            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
+            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg",
+            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
+
         },
         {
             id: 11,
             fullname: "Gregory Hills",
+            sex: "Male",
+            status: "test",
             age: 41,
+            phone_number: "0976541884",
+            email: "test@gmail.com",
             city: "Seattle",
             isFriend: false,
             friendInventation: false,
-            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
+            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg",
+            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
+
         },
         {
             id: 12,
             fullname: "Kim Books",
+            sex: "Male",
+            status: "test",
             age: 23,
+            phone_number: "0976541884",
+            email: "test@gmail.com",
             city: "New York",
             isFriend: false,
             friendInventation: false,
-            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
+            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg",
+            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
+
         },
         {
             id: 13,
             fullname: "Johnny Salvadore",
+            sex: "Male",
+            status: "test",
             age: 31,
+            phone_number: "0976541884",
+            email: "test@gmail.com",
             city: "Detroit",
             isFriend: false,
             friendInventation: false,
-            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
+            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg",
+            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
+
         },
         {
             id: 14,
             fullname: "Johnny Salvadore",
+            sex: "Male",
+            status: "test",
             age: 31,
+            phone_number: "0976541884",
+            email: "test@gmail.com",
             city: "Detroit",
             isFriend: false,
             friendInventation: false,
-            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
+            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg",
+            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
+
         },
         {
             id: 15,
             fullname: "Alexey Dubinin",
+            sex: "Male",
+            status: "test",
             age: 31,
+            phone_number: "0976541884",
+            email: "test@gmail.com",
             city: "Detroit",
             isFriend: false,
             friendInventation: false,
-            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
+            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg",
+            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
+
         },
         {
             id: 16,
             fullname: "po4ka",
+            sex: "Male",
+            status: "test",
             age: 31,
+            phone_number: "0976541884",
+            email: "test@gmail.com",
             city: "Detroit",
             isFriend: false,
             friendInventation: false,
-            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
+            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg",
+            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
+
         },
         
     

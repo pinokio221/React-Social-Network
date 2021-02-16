@@ -1,8 +1,8 @@
 const ADD_POST = "ADD-POST";
 const UPDATE_POST_TEXT = "UPDATE-POST-TEXT"
 
-export const addPostActionCreator = () => ({ type: ADD_POST })
-export const onPostChangeActionCreator = (text) => ({ type: UPDATE_POST_TEXT, newText: text })
+export const addPost = () => ({ type: ADD_POST })
+export const onPostChange = (text) => ({ type: UPDATE_POST_TEXT, newText: text })
 
 let initialState = {
     userInfo:
