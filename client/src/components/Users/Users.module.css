@@ -12,6 +12,13 @@
     margin-left: 10%;
 }
 
+.loader {
+    display: block;
+    margin: 0px auto;
+    width: 80px;
+    margin-top: 20px;
+}
+
 .filter_icon {
     color: gray;
     transition-duration: 0.5s;

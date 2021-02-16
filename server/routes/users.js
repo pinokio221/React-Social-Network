@@ -139,6 +139,15 @@ let usersList = [
             friendInventation: false,
             profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
         },
+        {
+            id: 16,
+            fullname: "po4ka",
+            age: 31,
+            city: "Detroit",
+            isFriend: false,
+            friendInventation: false,
+            profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg"
+        },
         
     
     ];
@@ -196,7 +205,8 @@ router.get('/', (req, res) => {
 
     if (req.query.fullname) {
       const users = getUsersByNamePartial(req.query.fullname, usersList)
-      res.send(users)
+      items.items = users;
+      items.usersFound = users.length
     }
 
     let count = usersList.length
@@ -207,10 +217,14 @@ router.get('/', (req, res) => {
 });   
 // FILTERS
 router.get('/filter', (req, res) => {
+
+    const items = {}
     if(req.query.city) {
         const users = getUsersByCityName(req.query.city, usersList)
-        res.send(users)
-    }   
+        items.items = users
+        items.usersFound = users.length
+    }
+    res.send(items)
 })
 
 

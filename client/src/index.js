@@ -9,10 +9,17 @@ import App from './App';
 import {BrowserRouter} from 'react-router-dom'
 import {Provider} from "react-redux";
 
+class Title extends React.Component {
+    render() {
+        document.title = 'Chilltime - social network'
+        return null;
+    }
+}
 ReactDOM.render(
     <BrowserRouter>
         <Provider store={store}>
             <App />
+            <Title />
         </Provider>
     </BrowserRouter>, document.getElementById('root')
 );

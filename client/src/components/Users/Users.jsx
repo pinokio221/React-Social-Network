@@ -1,78 +1,19 @@
 import React from 'react'
 import styles from './Users.module.css'
-import User from "./User/User";
 import {Button, Col, Form, FormControl, InputGroup, Row} from "react-bootstrap";
 import {faFilter} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import * as axios from "axios";
+import loader from "../../assets/images/loader.gif"
 
 const Users = (props) => {
 
-    let requestURL = `http://localhost:9000/users?page=${props.currentPage}&limit=${props.pageSize}`;
-
-        if(props.users.length === 0) {
-            axios.get(requestURL)
-                .then(response => {
-                    props.setUsers(response.data.items)
-                })
-        }
-
     let searchFieldValue = React.createRef();
-
-    let usersElements = props.users
-        .map(u => <User
-            onAddFriend={props.onAddFriend}
-            cancelInvitation={props.cancelInvitation}
-            key = {u.id}
-            id = {u.id}
-            username = {u.fullname}
-            age={u.age} city={u.city}
-            image={u.profileImage}
-            isFriend={u.isFriend}
-            friendInventation={u.friendInventation}/>)
-
-    let filteredElements = props.filteredUsers
-        .map(u => <User
-            onAddFriend={props.onAddFriend}
-            cancelInvitation={props.cancelInvitation}
-            key = {u.id}
-            id = {u.id}
-            username = {u.fullname}
-            age={u.age} city={u.city}
-            image={u.profileImage}
-            isFriend={u.isFriend}
-            friendInventation={u.friendInventation}/>)
-
-    let onSearchClick = (text) => {
-        if(text.trim()) {
-        let requestURL = `http://localhost:9000/users?fullname=${text.toLowerCase()}`;
-        axios.get(requestURL)
-            .then(response => {
-                props.onSearchClick(text, response.data, props.filter);
-            })
-        } else {
-            props.onSearchClick(text, [], props.filter);
-        }
-    }
-    let onPageChanged = (p) => {
-        props.setCurrentPage(p);
-        let requestURL = `http://localhost:9000/users?page=${p}&limit=${props.pageSize}`;
-            axios.get(requestURL)
-                .then(response => {
-                    props.setUsers(response.data.items)
-                })
-    }
-
-
-
-    // Pages counter
-    let pagesCount = Math.ceil(props.filteredUsers.length / props.pageSize);
+    let pagesCount = Math.ceil(props.filteredUsersCount / props.pageSize);
     let pages = [];
 
     for(let i=1; i <= pagesCount; i++) {
         pages.push(i)
     }
-
 
     return (
         <div className={styles.wrapper}>
@@ -88,25 +29,25 @@ const Users = (props) => {
                             </Col>
                             <Col xs="auto" className="my-1">
                                 <Button onClick={() => {
-                                    onSearchClick(searchFieldValue.current.value)}} className={styles.search_btn}>Search</Button>
+                                    props.onSearchClick(searchFieldValue.current.value)}} className={styles.search_btn}>Search</Button>
                             </Col>
                         </Form.Row>
                     </Form>
             </div>
-
+            {props.isFetching && props.filter ? <img className={styles.loader} src={loader} alt=""/> : null}                         
             <hr/>
             <div className={styles.profile_wrapper}>
-                { usersElements.length == 0? <div className={styles.not_found}>Users not found</div>
-                : props.searchInput == "" ? usersElements : filteredElements.length == 0 ? 
-                <div className={styles.not_found}>Users not found</div> : filteredElements}
+                { props.usersElements.length == 0? <div className={styles.not_found}>Users not found</div>
+                : props.searchInput == "" ? props.usersElements : props.filteredElements.length == 0 ? 
+                <div className={styles.not_found}>Users not found</div> : props.filteredElements}
                 
             </div>
             {props.filter ? 
                     <div>
                     { pages.map(p => {
-                        return <span onClick = { () => {onPageChanged(p)} } className={props.currentPage === p && styles.selectedPage}>{p}</span>
+                        return <span onClick = { () => {props.onPageChanged(p)} } className={props.currentPage === p && styles.selectedPage}>{p}</span>
                     }) }
-                </div> : <Button variant="primary" size="lg" className={styles.showMoreBtn}>Show more</Button>
+                </div> : !props.isFetching ? <Button onClick = { () => {props.onShowMore(props.showMorePagination)} } variant="primary" size="lg" className={styles.showMoreBtn}>Show more</Button> : <img className={styles.loader} src={loader} alt=""/>
             }
             
         </div>
