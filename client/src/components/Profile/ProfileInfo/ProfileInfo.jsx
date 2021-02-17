@@ -3,44 +3,45 @@ import styles from './ProfileInfo.module.css';
 import {Button, Card, Col, Container, Image, Row} from "react-bootstrap";
 import {faPencilAlt, faUser} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import loader from "../../../assets/images/loader.gif"
+
 
 
 const ProfileInfo = (props) => {
     let friendsList =
-        props.friendsInfo.map(f =><div>
+        props.userFriends.map(f =><div>
             <img className={styles.friend_user_image} src={f.user_image} alt=""/>
             <span>{f.first_name}</span>
         </div>
            )
-
     return (
         <div className={styles.component_wrapper}>
             <div className={styles.headerPhoto}>
-                <img src={props.userInfo.user_header}></img>
+                <img src={props.userInfo.headerImage}></img>
             </div>
             <div className={styles.descriptionBlock}>
                 <div>
                     <Container>
                         <Row>
                             <Col xs={6} md={4} className={styles.user_image_block}>
-                                <Image className={styles.user_image} src={props.userInfo.user_image} roundedCircle/>
+                                <Image className={styles.user_image} src={props.userInfo.profileImage} roundedCircle/>
                                 <Button className={styles.change_photo_btn} variant="light">Change profile
                                     photo</Button>
                             </Col>
                             <Col>
                                 <div className={styles.user_description}>
                                     <div><span
-                                        className={styles.user_name}>{props.userInfo.first_name + ' ' + props.userInfo.last_name}</span>
+                                        className={styles.user_name}>{props.userInfo.fullname}</span>
                                     </div>
                                     <div className={styles.user_status}>
-                                        <span>{props.userInfo.user_status}</span><FontAwesomeIcon
+                                        <span>{props.userInfo.status}</span><FontAwesomeIcon
                                         className={styles.pencil_icon} icon={faPencilAlt}/></div>
                                     <br/><br/>
                                     <span><b>User Information</b></span>
                                     <hr className="my-1"/>
                                     <div>
-                                        <span>City: {props.userInfo.user_city}</span><br/>
-                                        <span>Age: {props.userInfo.user_age}</span><br/>
+                                        <span>City: {props.userInfo.city}</span><br/>
+                                        <span>Age: {props.userInfo.age}</span><br/>
                                     </div>
                                 </div>
                             </Col>

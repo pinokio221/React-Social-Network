@@ -1,27 +1,14 @@
 const ADD_POST = "ADD-POST";
 const UPDATE_POST_TEXT = "UPDATE-POST-TEXT"
+const SET_PROFILE_PAGE = "SET-PROFILE-PAGE"
 
 export const addPost = () => ({ type: ADD_POST })
 export const onPostChange = (text) => ({ type: UPDATE_POST_TEXT, newText: text })
+export const setProfilePage = (userInfo) => ({ type: SET_PROFILE_PAGE, userInfo })
 
 let initialState = {
-    userInfo:
-        {
-            user_id: 10,
-            first_name: "Keany",
-            last_name: "Reeves",
-            email: "test@gmail.com",
-            password: "test123",
-            phone_number: "0976541884",
-            birth_date: "06-10-1995",
-            user_image: "https://i.pinimg.com/originals/56/2c/23/562c23a9a63bdd9eaf90ace27ba4b63b.jpg",
-            user_header: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg",
-            user_status: "No one is perfect",
-            user_city: "New York",
-            about: "Hi, i'm Keany",
-            user_age: "50",
-        },
-    friendsInfo: [
+    userInfo: { },
+    userFriends: [
         {
             id: 11,
             first_name: "1",
@@ -117,6 +104,24 @@ const profileReducer = (state = initialState, action) => {
                 ...state,
                 postsData: [...state.postsData, newPost],
                 newPostText: ''
+            }
+        }
+        case SET_PROFILE_PAGE: {
+            let profileInfo = {
+                id: action.userInfo.id,
+                fullname: action.userInfo.fullname,
+                sex: action.userInfo.sex,
+                status: action.userInfo.status,
+                age: action.userInfo.age,
+                phone_number: action.userInfo.phone_number,
+                email: action.userInfo.email,
+                city: action.userInfo.city,
+                profileImage: action.userInfo.profileImage,
+                headerImage: action.userInfo.headerImage
+            }
+            return {
+                ...state,
+                userInfo: profileInfo
             }
         }
 

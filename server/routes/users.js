@@ -28,7 +28,7 @@ let usersList = [
             isFriend: false,
             friendInventation: true,
             profileImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQecV_20snjsbgZSClHCml7tnMWvSYCD7ojqQ&usqp=CAU",
-            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
+            headerImage: "http://techsupport.foreverwarm.com/wp-content/uploads/2011/02/wordpress-header-sunset.jpg"
 
         },
         {
@@ -43,7 +43,7 @@ let usersList = [
             isFriend: false,
             friendInventation: false,
             profileImage: "https://i2.wp.com/avatarfiles.alphacoders.com/161/161678.jpg",
-            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
+            headerImage: "https://blogs.kent.ac.uk/lgbtstaff/files/2012/08/header2.jpg"
 
 
         },
@@ -59,7 +59,7 @@ let usersList = [
             isFriend: false,
             friendInventation: false,
             profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg",
-            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
+            headerImage: "https://www.shutterstock.com/blog/wp-content/uploads/sites/5/2017/08/nature-design.jpg"
 
         },
         {
@@ -74,7 +74,7 @@ let usersList = [
             isFriend: false,
             friendInventation: false,
             profileImage: "https://avatarfiles.alphacoders.com/181/181460.jpg",
-            headerImage: "https://blog.theclymb.com/wp-content/uploads/2013/06/adventure_travel_header.jpg"
+            headerImage: "https://i.pinimg.com/originals/ea/9a/8d/ea9a8d5f0df445353c8bfdc0399544a9.jpg"
 
         },
         {

@@ -7,9 +7,10 @@ import MyPostsContainer from "./MyPosts/MyPostsContainer";
 const Profile = (props) => {
     return (
         <div>
-            <ProfileInfo friendsInfo={props.store.getState().profilePage.friendsInfo} userInfo={props.store.getState().profilePage.userInfo}/>
+            <ProfileInfo userFriends={props.userFriends} userInfo={props.userInfo}/>
             <MyPostsContainer store={props.store}/>
     </div>
+    
     );
 }
 
