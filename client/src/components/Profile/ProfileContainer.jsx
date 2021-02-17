@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import Profile from "./Profile"
-import { setProfilePage } from "../../redux/profile-reducer"
+import { setProfilePage, setProfilePosts } from "../../redux/profile-reducer"
 import connect from "react-redux/lib/connect/connect";
 import withRouter from "react-router-dom/withRouter"
 
@@ -12,12 +12,27 @@ class ProfileContainer extends React.Component {
         if(!userId) {
             userId = 1;
         }
-        let requestURL = `http://localhost:9000/users?userId=${userId}`
-        axios.get(requestURL)
-            .then(response => {
-                debugger;
-                this.props.setProfilePage(response.data)
-            })
+        const setProfilePage = () => {
+            let requestURL = `http://localhost:9000/users?userId=${userId}`
+            axios.get(requestURL)
+                .then(response => {
+                    debugger;
+                    this.props.setProfilePage(response.data)
+                })
+        }
+
+        const setProfilePosts = () => {
+            let requestURL = `http://localhost:9000/posts?userId=${userId}&limit=5`
+            axios.get(requestURL)
+                .then(response => {
+                    debugger;
+                    this.props.setProfilePosts(response.data.posts)
+                })
+        }
+
+        setProfilePage();
+        setProfilePosts();
+        
     }
     render() {
         return (
@@ -40,5 +55,7 @@ let mapStateToProps = (state) => {
 
 let urlDataComponent = withRouter(ProfileContainer);
 
-export default connect(mapStateToProps, {setProfilePage: setProfilePage})(urlDataComponent);
+export default connect(mapStateToProps, 
+    {setProfilePage: setProfilePage, 
+    setProfilePosts: setProfilePosts})(urlDataComponent);
 

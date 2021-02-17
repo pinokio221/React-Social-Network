@@ -1,10 +1,12 @@
 const ADD_POST = "ADD-POST";
 const UPDATE_POST_TEXT = "UPDATE-POST-TEXT"
 const SET_PROFILE_PAGE = "SET-PROFILE-PAGE"
+const SET_PROFILE_POSTS = "SET-PROFILE-POSTS"
 
 export const addPost = () => ({ type: ADD_POST })
 export const onPostChange = (text) => ({ type: UPDATE_POST_TEXT, newText: text })
 export const setProfilePage = (userInfo) => ({ type: SET_PROFILE_PAGE, userInfo })
+export const setProfilePosts = (posts) => ({ type: SET_PROFILE_POSTS, posts })
 
 let initialState = {
     userInfo: { },
@@ -76,10 +78,7 @@ let initialState = {
             user_image: "https://www.biography.com/.image/t_share/MTE5NDg0MDU1MjM5ODg2MzUx/dwayne-johnson-11818916-1-402.jpg"
         }
     ],
-    postsData: [
-        {id: 1, message: "Hello, how are you???Hello, how are you???", likesCount: 365, commentsCount: 94},
-        {id: 2, message: "Please recall me!!!", likesCount: 3, commentsCount: 11}
-    ],
+    postsData: [],
     newPostText: ''
 }
 
@@ -122,6 +121,12 @@ const profileReducer = (state = initialState, action) => {
             return {
                 ...state,
                 userInfo: profileInfo
+            }
+        }
+        case SET_PROFILE_POSTS: {
+            return {
+                ...state,
+                postsData: action.posts
             }
         }
 
