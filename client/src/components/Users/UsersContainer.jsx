@@ -16,7 +16,7 @@ import Users from './Users';
 
 class UsersContainer extends React.Component {
     componentDidMount() {
-     let requestURL = `http://localhost:9000/users?page=${this.props.currentPage}&limit=${this.props.pageSize}`;
+     let requestURL = `http://localhost:9000/api/users?page=${this.props.currentPage}&limit=${this.props.pageSize}`;
 
         if(this.props.users.length === 0) {
             this.props.toggleIsFetching(true);
@@ -31,7 +31,7 @@ class UsersContainer extends React.Component {
     onSearchClick = (text) => {
         this.props.toggleIsFetching(true);
         if(text.trim()) {
-        let requestURL = `http://localhost:9000/users?fullname=${text.toLowerCase()}`;
+        let requestURL = `http://localhost:9000/api/users?fullname=${text.toLowerCase()}`;
         axios.get(requestURL)
             .then(response => {
                 this.props.toggleIsFetching(false);
@@ -40,7 +40,7 @@ class UsersContainer extends React.Component {
         } else {
             this.props.toggleIsFetching(true);
             this.props.onSearchClick(text, [], 0);
-            let requestURL = `http://localhost:9000/users?page=${this.props.currentPage}&limit=${this.props.pageSize}`;
+            let requestURL = `http://localhost:9000/api/users?page=${this.props.currentPage}&limit=${this.props.pageSize}`;
                 axios.get(requestURL)
                     .then(response => {
                         this.props.toggleIsFetching(false);
@@ -51,7 +51,7 @@ class UsersContainer extends React.Component {
     }
     onPageChanged = (p) => {
         this.props.setCurrentPage(p);
-        let requestURL = `http://localhost:9000/users?page=${p}&limit=${this.props.pageSize}`;
+        let requestURL = `http://localhost:9000/api/users?page=${p}&limit=${this.props.pageSize}`;
             axios.get(requestURL)
                 .then(response => {
                     this.props.setUsers(response.data.items)
@@ -61,7 +61,7 @@ class UsersContainer extends React.Component {
     onShowMore = (pagination) => {
         this.props.toggleIsFetching(true);
         pagination+=1;
-        let requestURL = `http://localhost:9000/users?page=${pagination}&limit=${this.props.pageSize}`;
+        let requestURL = `http://localhost:9000/api/users?page=${pagination}&limit=${this.props.pageSize}`;
             axios.get(requestURL)
                 .then(response => {
                     this.props.toggleIsFetching(false);

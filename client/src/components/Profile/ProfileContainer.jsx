@@ -13,19 +13,17 @@ class ProfileContainer extends React.Component {
             userId = 1;
         }
         const setProfilePage = () => {
-            let requestURL = `http://localhost:9000/users?userId=${userId}`
+            let requestURL = `http://localhost:9000/api/users?userId=${userId}`
             axios.get(requestURL)
                 .then(response => {
-                    debugger;
                     this.props.setProfilePage(response.data)
                 })
         }
 
         const setProfilePosts = () => {
-            let requestURL = `http://localhost:9000/posts?userId=${userId}&limit=5`
+            let requestURL = `http://localhost:9000/api/posts?userId=${userId}&limit=5`
             axios.get(requestURL)
                 .then(response => {
-                    debugger;
                     this.props.setProfilePosts(response.data.posts)
                 })
         }

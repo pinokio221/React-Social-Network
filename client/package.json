@@ -14,8 +14,10 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "cors": "^2.8.5",
+    "js-cookies": "^1.0.4",
     "react": "^16.13.1",
     "react-bootstrap": "^1.4.3",
+    "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
     "react-lineicons": "^2.2.0",
     "react-redux": "^7.2.2",
@@ -24,7 +26,8 @@
     "react-uikit-form": "^2.0.3",
     "react-uikit-icons": "^2.0.3",
     "redux": "^4.0.5",
-    "uikit": "^3.6.15"
+    "uikit": "^3.6.15",
+    "universal-cookie": "^4.0.4"
   },
   "scripts": {
     "start": "react-scripts start",
