@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../model/User')
-const mongoose = require('mongoose');
+const User = require('../models/User')
+const knex = require('knex');
 const bcrypt = require('bcryptjs')
 const { registerValidation, loginValidation } = require('../validation') 
 
