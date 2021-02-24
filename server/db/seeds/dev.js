@@ -18,7 +18,6 @@ exports.seed = async function(knex) {
       birthday: "1998-11-20",
       registered_date: "2021-02-23",
       age: 25,
-      phone_number: '38067987547',
       city: "Los Angeles",
       profile_image: null,
       header_image: null
@@ -35,7 +34,6 @@ exports.seed = async function(knex) {
       birthday: "1998-11-20",
       registered_date: "2021-02-23",
       age: 25,
-      phone_number: '38067987517',
       city: "Kyiv",
       profile_image: null,
       header_image: null

@@ -1,16 +1,28 @@
 const express = require("express");
 const app = express();
+const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const port = 9000;
 
 
 let cors = require("cors");
 var corsOptions = {
-    origin: '*',
+    origin: 'http://localhost:3000',
+    optionsSuccessStatus: 200, 
     credentials: true };
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(function(req, res, next) {
+    res.header('Content-Type', 'application/json;charset=UTF-8')
+    res.header('Access-Control-Allow-Credentials', true)
+    res.header(
+      'Access-Control-Allow-Headers',
+      'Origin, X-Requested-With, Content-Type, Accept'
+    )
+    next()
+  })
 
 
 

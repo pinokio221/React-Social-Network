@@ -9,7 +9,7 @@ class HeaderContainer extends React.Component {
         
         // LOGIN REQUEST
         let authRequest = `http://localhost:9000/api/user/login`
-        axios.post(authRequest,{withCredentials: true})
+        axios.post(authRequest,{ withCredentials: true })
             .then(response => {
                 this.props.setUserData(response.data.user.id, response.data.user.name, response.data.user.email, true)
             })
