@@ -2,9 +2,8 @@ const { verify } = require('jsonwebtoken');
 
 module.exports = {
     tokenValidation: (req, res, next) => {
-        let token = req.get('authorization');
+        let token = req.cookies.jwt;
         if(token){
-            token = token.slice(7);
             verify(token, 'my secret', (err, decoded) => {
                 if(err) {
                     res.status(401).json({

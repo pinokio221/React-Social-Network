@@ -83,9 +83,10 @@ function returnUsers(req, res) {
         getAllUsersFromDb().then(function(users){
         const startIndex = (page-1) * limit;
         const endIndex = page * limit;
-        items.items = users;
+        items.items = users.slice(startIndex - endIndex);
         let count = users.length;
-        items.totalCount = count;
+        items.totalUsers = count;
+        items.usersDisplayed = items.items.length
         res.send(items)
     })
     }
