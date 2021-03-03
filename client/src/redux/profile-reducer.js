@@ -13,7 +13,7 @@ let initialState = {
     userFriends: [
         {
             id: 11,
-            first_name: "1",
+            first_name: "Alexey",
             last_name: "Clinton",
             user_image: "https://www.biography.com/.image/t_share/MTE5NDg0MDU1MjM5ODg2MzUx/dwayne-johnson-11818916-1-402.jpg"
         },
@@ -76,7 +76,8 @@ let initialState = {
             first_name: "Dwayne",
             last_name: "Johnson",
             user_image: "https://www.biography.com/.image/t_share/MTE5NDg0MDU1MjM5ODg2MzUx/dwayne-johnson-11818916-1-402.jpg"
-        }
+        },
+        
     ],
     postsData: [],
     newPostText: ''
@@ -112,11 +113,10 @@ const profileReducer = (state = initialState, action) => {
                 sex: action.userInfo.sex,
                 status: action.userInfo.status,
                 age: action.userInfo.age,
-                phone_number: action.userInfo.phone_number,
                 email: action.userInfo.email,
                 city: action.userInfo.city,
-                profileImage: action.userInfo.profileImage,
-                headerImage: action.userInfo.headerImage
+                profileImage: action.userInfo.profile_image,
+                headerImage: action.userInfo.header_image
             }
             return {
                 ...state,

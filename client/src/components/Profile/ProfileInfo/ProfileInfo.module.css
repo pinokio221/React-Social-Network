@@ -17,15 +17,19 @@
 }
 
 .friend_user_image {
-    width: 50px;
+    width: 60px;
     border-radius: 50%;
 }
 
 .user_friends {
     display: grid;
     grid-template-rows: 1fr 1fr 1fr;
-    grid-template-columns: 1fr 2fr 1fr;
-    grid-gap: 1vw;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+    font-size: 14px;
+    height: 18rem;
+    overflow:hidden;
+    text-align: center;
 }
 .user_image_block {
     margin: 0 auto;
@@ -45,6 +49,20 @@
     font-family: 'Public Sans', sans-serif;
     font-weight: bold;
     font-size: 24px;
+}
+
+.no_status {
+    cursor: pointer;
+    font-size: 14px;
+    color: gray;
+    display: inline-block;
+    transition-duration: 0.1s;
+
+}
+
+.no_status:hover {
+    transition-duration: 0.1s;
+    color: black;
 }
 
 .user_status {
@@ -77,4 +95,9 @@
     color: rgb(0, 108, 129);
 }
 
+.showAll{
+    font-size: 12px;
+    color:rgb(0, 108, 129);
+    left: 100%;
+}
 

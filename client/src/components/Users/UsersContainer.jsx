@@ -1,6 +1,6 @@
 import React from 'react';
 import { //Action Creators
-    addFriend,
+    sentInvitation,
     cancelInvitation, 
     onSearchClick,
     setUsers,
@@ -15,12 +15,14 @@ import Users from './Users';
 
 
 class UsersContainer extends React.Component {
+    
     componentDidMount() {
+        
      let requestURL = `http://localhost:9000/api/users?page=${this.props.currentPage}&limit=${this.props.pageSize}`;
 
         if(this.props.users.length === 0) {
             this.props.toggleIsFetching(true);
-            axios.get(requestURL)
+            axios.get(requestURL, { withCredentials: true })
                 .then(response => {
                     this.props.toggleIsFetching(false);
                     this.props.setUsers(response.data.items)
@@ -32,7 +34,7 @@ class UsersContainer extends React.Component {
         this.props.toggleIsFetching(true);
         if(text.trim()) {
         let requestURL = `http://localhost:9000/api/users?fullname=${text.toLowerCase()}`;
-        axios.get(requestURL)
+        axios.get(requestURL, { withCredentials: true })
             .then(response => {
                 this.props.toggleIsFetching(false);
                 this.props.onSearchClick(text, response.data.items, response.data.usersFound);
@@ -41,7 +43,7 @@ class UsersContainer extends React.Component {
             this.props.toggleIsFetching(true);
             this.props.onSearchClick(text, [], 0);
             let requestURL = `http://localhost:9000/api/users?page=${this.props.currentPage}&limit=${this.props.pageSize}`;
-                axios.get(requestURL)
+                axios.get(requestURL, { withCredentials: true })
                     .then(response => {
                         this.props.toggleIsFetching(false);
                         this.props.setUsers(response.data.items)
@@ -52,7 +54,7 @@ class UsersContainer extends React.Component {
     onPageChanged = (p) => {
         this.props.setCurrentPage(p);
         let requestURL = `http://localhost:9000/api/users?page=${p}&limit=${this.props.pageSize}`;
-            axios.get(requestURL)
+            axios.get(requestURL, { withCredentials: true })
                 .then(response => {
                     this.props.setUsers(response.data.items)
                 })
@@ -62,18 +64,37 @@ class UsersContainer extends React.Component {
         this.props.toggleIsFetching(true);
         pagination+=1;
         let requestURL = `http://localhost:9000/api/users?page=${pagination}&limit=${this.props.pageSize}`;
-            axios.get(requestURL)
+            axios.get(requestURL,{ withCredentials: true })
                 .then(response => {
                     this.props.toggleIsFetching(false);
                     this.props.onShowMore(response.data.items, pagination);
                 })
     }
 
+    sentInvitation = (userId) => {
+        
+        let urlRequest = `http://localhost:9000/api/friendship/sent/${userId}`
+        axios.post(urlRequest,
+            { headers: {
+            "Content-Type": "application/json",
+        },},{ withCredentials: true })
+            .then(response => {
+                this.props.sentInvitation(userId);
+            })
+    }
+    cancelInvitation = (userId) => {
+        let urlRequest = `http://localhost:9000/api/friendship/cancel/${userId}`
+        axios.delete(urlRequest,{ withCredentials: true })
+            .then(response => {
+                this.props.cancelInvitation(userId);
+            })
+    }
+
     render() {
         let usersElements = this.props.users
         .map(u => <User
-            onAddFriend={this.props.onAddFriend}
-            cancelInvitation={this.props.cancelInvitation}
+            sentInvitation={this.sentInvitation}
+            cancelInvitation={this.cancelInvitation}
             key = {u.id}
             id = {u.id}
             username = {u.fullname}
@@ -84,8 +105,8 @@ class UsersContainer extends React.Component {
 
     let filteredElements = this.props.filteredUsers
         .map(u => <User
-            onAddFriend={this.props.onAddFriend}
-            cancelInvitation={this.props.cancelInvitation}
+            sentInvitation={this.sentInvitation}
+            cancelInvitation={this.cancelInvitation}
             key = {u.id}
             id = {u.id}
             username = {u.fullname}
@@ -119,6 +140,7 @@ class UsersContainer extends React.Component {
 
 let mapStateToProps = (state) => {
     return {
+        profileInfo: state.auth,
         users: state.usersPage.users,
         filteredUsers: state.usersPage.filteredUsers,
         filter: state.usersPage.filter,
@@ -135,7 +157,7 @@ let mapStateToProps = (state) => {
 
 
 export default connect(mapStateToProps, {
-    onAddFriend: addFriend,
+    sentInvitation: sentInvitation,
     cancelInvitation: cancelInvitation,
     onSearchClick: onSearchClick,
     setUsers: setUsers,

@@ -1,0 +1,97 @@
+ul {
+    list-style-type: none;
+}
+
+.wrapper {
+    display: block;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    background-color: white;
+    margin: 0px auto;
+    padding: 4%;
+    border-radius: 3px;
+    width: 500px;
+    margin-top: 5%;
+}
+
+.form_row{
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    padding: 8px;
+}
+
+.form_row > label {
+    padding: 3px 16px 3px 0px;
+    flex: 1;
+  }
+
+
+
+.form_row > input:focus {
+    background-color: rgb(214, 214, 214);
+    transition-duration: 0.5s;
+    color: #000;
+    outline: none;
+}
+
+.form_row > input {
+    transition-duration: 0.5s;
+    background-color: whitesmoke;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+    flex: 2;
+}
+.form_row > img {
+    align-self: center;
+    width: 300px;
+}
+.form_row > a {
+    width: max-content;
+    margin-top: 5%;
+    flex: 3;
+}
+
+.footer_form_row {
+    font-size: 16px;
+    margin-top: 5%;
+}
+.footer_form_row > span {
+    margin-left: 25%;
+    
+}
+
+.form_row > button{
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 10px;
+    color: white;
+    background-color: rgb(42, 141, 234);
+    transition-duration: 0.3s;
+    border: none;
+    margin-top: 2%;
+    outline: none;
+}
+
+.form_row > button:hover{
+    background-color: rgb(43, 121, 181);
+    transition-duration: 0.3s;
+}
+
+.form_row > button:active{
+    background-color: rgb(22, 82, 127);
+    transition-duration: 0.3s;
+}
+
+
+.signin{
+    float: right;
+}
+  
+
+
+
+
+

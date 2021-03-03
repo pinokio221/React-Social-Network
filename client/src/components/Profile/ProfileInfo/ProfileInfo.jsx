@@ -11,7 +11,7 @@ const ProfileInfo = (props) => {
     let friendsList =
         props.userFriends.map(f =><div>
             <img className={styles.friend_user_image} src={f.user_image} alt=""/>
-            <span>{f.first_name}</span>
+            <a href=''>{f.first_name}</a>
         </div>
            )
     return (
@@ -33,9 +33,12 @@ const ProfileInfo = (props) => {
                                     <div><span
                                         className={styles.user_name}>{props.userInfo.fullname}</span>
                                     </div>
-                                    <div className={styles.user_status}>
-                                        <span>{props.userInfo.status}</span><FontAwesomeIcon
-                                        className={styles.pencil_icon} icon={faPencilAlt}/></div>
+                                    {props.userInfo.status ?
+                                     <div className={styles.user_status}>
+                                     <span>{props.userInfo.status}</span><FontAwesomeIcon
+                                     className={styles.pencil_icon} icon={faPencilAlt}/></div> :
+                                     <span className={styles.no_status}>change status</span>}
+                                   
                                     <br/><br/>
                                     <span><b>User Information</b></span>
                                     <hr className="my-1"/>
@@ -50,25 +53,34 @@ const ProfileInfo = (props) => {
                     <Container>
                         <hr className="my-4"/>
                         <Row>
-                            <Col xs={6} md={4}>
-                                <Card border="light" style={{width: '15rem'}}>
-                                    <Card.Header>My Friends List</Card.Header>
-                                    <Card.Body>
-                                            <div className={styles.user_friends}>{ friendsList }</div>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                            <Col xs={6} md={4}>
-                                <Card border="light" style={{width: '15rem'}}>
-                                    <Card.Header>My Friends List</Card.Header>
+                        <Col xs={6} md={4}>
+                                <Card border="light" style={{width: '20rem'}}>
+                                    <Card.Header>
+                                        <span>My social media</span>
+                                        <a className={styles.showAll} href=''>Show all</a>
+                                    </Card.Header>
                                     <Card.Body className={styles.user_friends}>
                                         { friendsList }
                                     </Card.Body>
                                 </Card>
                             </Col>
                             <Col xs={6} md={4}>
-                                <Card border="light" style={{width: '15rem'}}>
-                                    <Card.Header>My Friends List</Card.Header>
+                                <Card border="light" style={{width: '20rem'}}>
+                                <Card.Header>
+                                        <span>My friends</span>
+                                        <a className={styles.showAll} href=''>Show all</a>
+                                    </Card.Header>
+                                    <Card.Body className={styles.user_friends}>
+                                        { friendsList }
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                            <Col xs={6} md={4}>
+                                <Card border="light" style={{width: '20rem'}}>
+                                <Card.Header>
+                                        <span>My communitites</span>
+                                        <a className={styles.showAll} href=''>Show all</a>
+                                    </Card.Header>
                                     <Card.Body className={styles.user_friends}>
                                         { friendsList }
                                     </Card.Body>

@@ -6,12 +6,22 @@ import connect from "react-redux/lib/connect/connect";
 
 class HeaderContainer extends React.Component {
     componentDidMount() {
-        
         // LOGIN REQUEST
-        let authRequest = `http://localhost:9000/api/user/login`
-        axios.post(authRequest,{ withCredentials: true })
+        let loginRequest = `http://localhost:9000/api/user/login`
+        axios.post(loginRequest,{
+            login: "pinokio98",
+            password: "1234567"
+        },{ withCredentials: true })
             .then(response => {
-                this.props.setUserData(response.data.user.id, response.data.user.name, response.data.user.email, true)
+                console.log(response)
+            })
+        let authRequest = `http://localhost:9000/api/user/me`
+        axios.get(authRequest,{ withCredentials: true })
+            .then(response => {
+                if(response.status === 200){
+                    let {id, login, email} = response.data.user;
+                    this.props.setUserData(id, login, email, true)
+                }
             })
 
     }
@@ -19,6 +29,7 @@ class HeaderContainer extends React.Component {
         return <Header {...this.props} />
     }
 }
+
 
 let mapStateToProps = (state) => {
     return {

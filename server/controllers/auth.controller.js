@@ -128,6 +128,7 @@ const checkCurrentUser = (req, res, next) => {
                 res.locals.user = null;
                 next();
             } else {
+                console.log(decoded.userId)
                 User.query().select('id', 'login', 'email')
                 .where('id', decoded.userId)
                 .first().then(function(user){

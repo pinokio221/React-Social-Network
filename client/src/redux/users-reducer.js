@@ -1,4 +1,4 @@
-const ADD_FRIEND = "ADD-FRIEND"
+const SENT_INVITATION = "SENT-INVITATION"
 const CANCEL_INVITATION = "CANCEL-INVENTATION"
 const SEARCH_CLICK = "SEARCH-CLICK"
 const SET_USERS = "SET-USERS"
@@ -6,7 +6,7 @@ const SET_PAGE = "SET-PAGE"
 const SHOW_MORE = "SHOW-MORE"
 const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING"
 
-export const addFriend = (userId) => ({ type: ADD_FRIEND, userId })
+export const sentInvitation = (userId) => ({ type: SENT_INVITATION, userId })
 export const cancelInvitation = (userId) => ({ type: CANCEL_INVITATION, userId })
 export const onSearchClick = (text, filteredUsers, usersFound) => ({ type: SEARCH_CLICK, text: text, filteredUsers, usersFound})
 export const setUsers = (users) => ({ type: SET_USERS, users })
@@ -30,7 +30,7 @@ let initialState = {
 
 const usersReducer = (state = initialState, action) => {
     switch (action.type) {
-        case ADD_FRIEND:
+        case SENT_INVITATION:
             return {
                 ...state,
                 filteredUsers: state.filteredUsers.map(u => {
