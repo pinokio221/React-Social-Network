@@ -4,10 +4,10 @@ const { Model } = require('objection');
 
 Model.knex(knex(knexConfig.development));
 
-class FriendRequest extends Model {
+class Friend extends Model {
     static get tableName() {
-        return 'friend_requests';
+        return 'friends';
     }
 }
 
-module.exports = FriendRequest;
+module.exports = Friend;

@@ -1,7 +1,29 @@
-const FriendRequest = require('../models/FriendRequest')
+const Friend = require('../models/Friend')
 const { verify } = require('jsonwebtoken');
 
-const sentRequest = (req, res) => {
+
+const returnInvitations = (req, res) => {
+    let items = {}
+    if(req.params.list === 'sent') {
+        Friend.query().select('userId2')
+        .where('userId1', 1).then(function(requests){
+            items.items = requests;
+            items.sentInvitations = items.items.length
+            res.json(items)
+        })
+    }
+    if(req.params.list === 'received'){
+        Friend.query().select('userId1') // NEED TOKEN
+        .where('userId2', 1).then(function(requests){
+            items.items = requests;
+            items.receivedInvitations = items.items.length
+            res.json(items)
+        })
+    }
+    
+}
+
+const sendRequest = (req, res) => {
     try {
         let token = req.cookies.jwt;
         if(token){
@@ -14,9 +36,9 @@ const sentRequest = (req, res) => {
                     console.log(decoded)
                     next();
                 } else {
-                    FriendRequest.query().select('id')
-                    .where('from_id', decoded.userId)
-                    .andWhere('to_id', req.params.to_id)
+                    Friend.query().select('status')
+                    .where('userId1', decoded.userId)
+                    .andWhere('userId2', req.params.to_id)
                     .first()
                     .then(async function(result){
                         if(result){
@@ -24,9 +46,10 @@ const sentRequest = (req, res) => {
                                 message: "You have already sent an invitation to this user."
                             })
                         }
-                        FriendRequest.query().insert({
-                            from_id: decoded.userId,
-                            to_id: req.params.to_id,
+                        Friend.query().insert({
+                            userId1: decoded.userId,
+                            userId2: req.params.to_id,
+                            status: 1
                         }).then(function(result){
                             res.status(201).json({
                                 message: "Your friend invitation successfully sended",
@@ -54,9 +77,9 @@ const cancelRequest = (req, res) => {
                     res.locals.user = null;
                     next();
                 } else {
-                    FriendRequest.query().select('id')
-                    .where('from_id', decoded.userId)
-                    .andWhere('to_id', req.params.to_id)
+                    Friend.query().select('status')
+                    .where('userId1', decoded.userId)
+                    .andWhere('userId2', req.params.to_id)
                     .first()
                     .then(async function(result){
                         if(!result){
@@ -64,15 +87,20 @@ const cancelRequest = (req, res) => {
                                 message: "Invitation not found."
                             })
                         }
-                        FriendRequest.query()
-                        .where('from_id', decoded.userId)
-                        .andWhere('to_id', req.params.to_id)
-                        .del()
-                        .then(function(result){
-                            res.status(200).json({
-                                message: "Your friend invitation canceled",
-                            })
-                        })
+                        else {
+                            if(result.status === 1){
+                                Friend.query()
+                                .where('userId1', decoded.userId)
+                                .andWhere('userId2', req.params.to_id)
+                                .del()
+                                .then(function(result){
+                                    res.status(200).json({
+                                        message: "Your friend invitation canceled",
+                                    })
+                                })
+                            }
+                        }
+                        
                     })
                 }
             })
@@ -84,6 +112,7 @@ const cancelRequest = (req, res) => {
 
 
 module.exports = {
-    sentRequest: sentRequest,
-    cancelRequest: cancelRequest
+    sendRequest: sendRequest,
+    cancelRequest: cancelRequest,
+    returnInvitations: returnInvitations
 }

@@ -1,5 +1,5 @@
 const User = require('../models/User')
-const FriendRequest = require('../models/FriendRequest');
+const Friend = require('../models/Friend');
 const { verify } = require('jsonwebtoken');
 
 const verifyToken = (req, res, next) => {
@@ -25,15 +25,16 @@ const verifyToken = (req, res, next) => {
 
 function returnFriendshipStatus(req, res, next, userId){
     let userInfo = verifyToken(req, res, next);
-    console.log(userInfo)
-    return FriendRequest.query().select('id')
-    .where('from_id', userInfo.userId)
-    .andWhere('to_id', userId).then(function(result){
+    return Friend.query().select('status')
+    .where('userId2', userInfo.userId)
+    .andWhere('userId1', userId)
+    .orWhere('userId1', userInfo.userId)
+    .andWhere('userId2', userId)
+    .then(function(result){
         if(result.length !== 0){
-            return true;
-        }
-        else{
-            return false;
+            return result[0].status;
+        } else {
+            return 0;
         }
     })
 }
@@ -44,49 +45,56 @@ const getAllUsersFromDb = async (req, res, next) => {
         'status', 'age', 'city', 'profile_image', 'header_image').then(async function(result){
             for(let user of result){
                 let status = await returnFriendshipStatus(req, res, next, user.id);
-                user.invitation = status;
+                user.friendshipStatus = status;
                 users.push(user)
             }
             return users;
         })
 }
 
-const getUsersByNamePartial = (query) => {
+const getUsersByNamePartial = (req, res, next, query) => {
   let users = [];
   return User.query().select(
     'id', 'login', 'first_name', 'last_name', 'fullname', 'gender',
         'status', 'age', 'city', 'profile_image', 'header_image')
     .where('fullname', 'like', '%'+query+'%')
-    .then(function(query) {
-        query.forEach(function(value) {
-            users.push(value);
-        });
+    .then(async function(result) {
+        for(let user of result){
+            let status = await returnFriendshipStatus(req, res, next, user.id);
+            user.friendshipStatus = status;
+            users.push(user)
+        }
         return users;
     });
 
 }
 
-const getUserById = (query) => {
+const getUserById = (req, res, next, query) => {
     return User.query().select(
         'id', 'login', 'first_name', 'last_name', 'fullname', 'gender',
         'status', 'age', 'city', 'profile_image', 'header_image')
     .where('id', query)
     .first()
-    .then(function(result) {
+    .then(async function(result) {
+        let status = await returnFriendshipStatus(req, res, next, result.id);
+        result.friendshipStatus = status; 
         return result;
     });
+    
 }
 
-const getUsersByCityName = (query) => {
+const getUsersByCityName = (req, res, next, query) => {
     let users = [];
     return User.query().select(
         'id', 'login', 'first_name', 'last_name', 'fullname', 'gender',
         'status', 'age', 'city', 'profile_image', 'header_image')
         .where('city', query)
-        .then(function(query) {
-            query.forEach(function(value) {
-                users.push(value);
-            });
+        .then(async function(result) {
+            for(let user of result){
+                let status = await returnFriendshipStatus(req, res, next, user.id);
+                user.friendshipStatus = status;
+                users.push(user)
+            }
             return users;
         });
 }
@@ -109,7 +117,7 @@ function returnUsers(req, res, next) {
     }
 
     if(req.query.userId) {
-        getUserById(req.query.userId).then(function(user){
+        getUserById(req, res, next, req.query.userId).then(function(user){
             items.items = user;
             res.send(user);
         })
@@ -117,7 +125,7 @@ function returnUsers(req, res, next) {
     }
 
     else if(req.query.fullname) {
-      getUsersByNamePartial(req.query.fullname).then(function(result){
+      getUsersByNamePartial(req, res, next, req.query.fullname).then(function(result){
           items.items = result;
           items.usersFound = result.length
           res.send(items);
@@ -136,10 +144,10 @@ function returnUsers(req, res, next) {
     }
 }
 
-function returnUsersByFilter(req, res){
+function returnUsersByFilter(req, res, next){
     const items = {}
     if(req.query.city) {
-        getUsersByCityName(req.query.city).then(function(result){
+        getUsersByCityName(req, res, next, req.query.city).then(function(result){
             items.items = result;
             items.usersFound = result.length
             res.send(items);
