@@ -76,9 +76,11 @@ const getUserById = (req, res, next, query) => {
     .where('id', query)
     .first()
     .then(async function(result) {
-        let status = await returnFriendshipStatus(req, res, next, result.id);
-        result.friendshipStatus = status; 
-        return result;
+        if(result){
+            let status = await returnFriendshipStatus(req, res, next, result.id);
+            result.friendshipStatus = status; 
+            return result;
+        }
     });
     
 }
@@ -157,5 +159,6 @@ function returnUsersByFilter(req, res, next){
 
 module.exports = {
     returnUsers: returnUsers,
-    returnUsersByFilter: returnUsersByFilter
+    returnUsersByFilter: returnUsersByFilter,
+    getUserById: getUserById
 }

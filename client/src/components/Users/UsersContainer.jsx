@@ -12,74 +12,61 @@ import connect from "react-redux/lib/connect/connect";
 import User from "./User/User";
 import * as axios from "axios";
 import Users from './Users';
+import { usersAPI } from '../../api/api';
 
 
 class UsersContainer extends React.Component {
     
     componentDidMount() {
+        this.props.toggleIsFetching(false);
+        usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
+            this.props.toggleIsFetching(false);
+            console.log(data.items)
+            this.props.setUsers(data.items)
+        })
         
-     let requestURL = `http://localhost:9000/api/users?page=${this.props.currentPage}&limit=${this.props.pageSize}`;
-
-        if(this.props.users.length === 0) {
-            this.props.toggleIsFetching(true);
-            axios.get(requestURL, { withCredentials: true })
-                .then(response => {
-                    this.props.toggleIsFetching(false);
-                    this.props.setUsers(response.data.items)
-                })
-        }
     }
 
     onSearchClick = (text) => {
         this.props.toggleIsFetching(true);
         if(text.trim()) {
-        let requestURL = `http://localhost:9000/api/users?fullname=${text.toLowerCase()}`;
-        axios.get(requestURL, { withCredentials: true })
-            .then(response => {
+            usersAPI.getUserByNamePartial(text.toLowerCase()).then(data => {
                 this.props.toggleIsFetching(false);
-                this.props.onSearchClick(text, response.data.items, response.data.usersFound);
+                this.props.onSearchClick(text, data.items, data.usersFound);
             })
         } else {
             this.props.toggleIsFetching(true);
             this.props.onSearchClick(text, [], 0);
-            let requestURL = `http://localhost:9000/api/users?page=${this.props.currentPage}&limit=${this.props.pageSize}`;
-                axios.get(requestURL, { withCredentials: true })
-                    .then(response => {
+            usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
                         this.props.toggleIsFetching(false);
-                        this.props.setUsers(response.data.items)
+                        this.props.setUsers(data.items)
                     })
             
             }
     }
     onPageChanged = (p) => {
         this.props.setCurrentPage(p);
-        let requestURL = `http://localhost:9000/api/users?page=${p}&limit=${this.props.pageSize}`;
-            axios.get(requestURL, { withCredentials: true })
-                .then(response => {
-                    this.props.setUsers(response.data.items)
-                })
+        usersAPI.getUsers(p, this.props.pageSize).then(data => {
+            this.props.setUsers(data.items)
+        })
     }
-
     onShowMore = (pagination) => {
         this.props.toggleIsFetching(true);
         pagination+=1;
-        let requestURL = `http://localhost:9000/api/users?page=${pagination}&limit=${this.props.pageSize}`;
-            axios.get(requestURL,{ withCredentials: true })
-                .then(response => {
-                    this.props.toggleIsFetching(false);
-                    this.props.onShowMore(response.data.items, pagination);
-                })
+        usersAPI.getUsers(pagination, this.props.pageSize).then(data => {
+            this.props.toggleIsFetching(false);
+            this.props.onShowMore(data.items, pagination);
+        })
     }
 
     sentInvitation = (userId) => {
-        
-        let urlRequest = `http://localhost:9000/api/friendship/sent/${userId}`
+        let urlRequest = `http://localhost:9000/api/friendship/send/${userId}`
         axios.post(urlRequest,
             { headers: {
             "Content-Type": "application/json",
         },},{ withCredentials: true })
             .then(response => {
-                this.props.sentInvitation(userId);
+                this.props.sentInvitation(userId, response.data.friendshipStatus);
             })
     }
     cancelInvitation = (userId) => {
@@ -100,8 +87,7 @@ class UsersContainer extends React.Component {
             username = {u.fullname}
             age={u.age} city={u.city}
             image={u.profileImage}
-            isFriend={u.isFriend}
-            friendInventation={u.friendInventation}/>)
+            friendshipStatus ={u.friendshipStatus}/>)
 
     let filteredElements = this.props.filteredUsers
         .map(u => <User
@@ -112,8 +98,7 @@ class UsersContainer extends React.Component {
             username = {u.fullname}
             age={u.age} city={u.city}
             image={u.profileImage}
-            isFriend={u.isFriend}
-            friendInventation={u.friendInventation}/>)
+            friendshipStatus ={u.friendshipStatus}/>)
     
         return <>
         <Users 

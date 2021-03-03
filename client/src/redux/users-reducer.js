@@ -6,7 +6,7 @@ const SET_PAGE = "SET-PAGE"
 const SHOW_MORE = "SHOW-MORE"
 const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING"
 
-export const sentInvitation = (userId) => ({ type: SENT_INVITATION, userId })
+export const sentInvitation = (userId, status) => ({ type: SENT_INVITATION, userId, status })
 export const cancelInvitation = (userId) => ({ type: CANCEL_INVITATION, userId })
 export const onSearchClick = (text, filteredUsers, usersFound) => ({ type: SEARCH_CLICK, text: text, filteredUsers, usersFound})
 export const setUsers = (users) => ({ type: SET_USERS, users })
@@ -35,13 +35,13 @@ const usersReducer = (state = initialState, action) => {
                 ...state,
                 filteredUsers: state.filteredUsers.map(u => {
                     if(u.id === action.userId) {
-                        return {...u, friendInventation: true}
+                        return {...u, friendshipStatus: action.status}
                     }
                     return u;
                 }),
                 users: state.users.map(u => {
                     if(u.id === action.userId) {
-                        return {...u, friendInventation: true}
+                        return {...u, friendshipStatus: action.status}
                     }
                     return u;
                 }),
@@ -51,13 +51,13 @@ const usersReducer = (state = initialState, action) => {
                 ...state,
                 users: state.users.map(u => {
                     if(u.id === action.userId) {
-                        return {...u, friendInventation: false}
+                        return {...u, friendshipStatus: 0}
                     }
                     return u;
                 }),
                 filteredUsers: state.filteredUsers.map(u => {
                     if(u.id === action.userId) {
-                        return {...u, friendInventation: false}
+                        return {...u, friendshipStatus: 0}
                     }
                     return u;
                 })
