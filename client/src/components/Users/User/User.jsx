@@ -6,8 +6,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {NavLink} from "react-router-dom";
 
 const User = (props) => {
-    let sentInvitation = (userId) => {
-        props.sentInvitation(userId);
+    let sendInvitation = (userId) => {
+        props.sendInvitation(userId);
     }
     let cancelInvitation = (userId) => {
         props.cancelInvitation(userId);
@@ -20,7 +20,7 @@ const User = (props) => {
                 <div className={styles.status}>
                     {props.friendshipStatus === 1 ? <div><span className={styles.inventation_status}>{"Friend invitation sent"}</span><Button onClick={()=> { cancelInvitation(props.id) }} className={styles.undo_btn} size="sm" variant="danger">cancel <FontAwesomeIcon className={styles.friend_icon} icon={faUndo}/></Button>{' '}</div> :
                         props.friendshipStatus === 2 ? <span className={styles.friend_status}><b>{"You are friends"}</b><FontAwesomeIcon className={styles.friend_icon} icon={faUserFriends}/></span>
-                            : <Button onClick={()=> { sentInvitation(props.id) }} className={styles.add_btn} variant="outline-success">Add friend <span className={styles.vl}></span>
+                            : <Button onClick={()=> { sendInvitation(props.id) }} className={styles.add_btn} variant="outline-success">Add friend <span className={styles.vl}></span>
                                 <FontAwesomeIcon icon={faUserPlus}/></Button> }
                 </div>
 

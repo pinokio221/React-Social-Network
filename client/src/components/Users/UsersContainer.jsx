@@ -1,86 +1,45 @@
 import React from 'react';
 import { //Action Creators
-    sentInvitation,
-    cancelInvitation, 
-    onSearchClick,
-    setUsers,
-    setCurrentPage,
-    showMore,
-    toggleIsFetching
+    getUsersThunkCreator,
+    getUsersBySearchQueryThunkCreator,
+    getMoreUsersThunkCreator,
+    sendInvitationThunkCreator,
+    cancelInvitationThunkCreator
 } from "../../redux/users-reducer";
 import connect from "react-redux/lib/connect/connect";
 import User from "./User/User";
-import * as axios from "axios";
 import Users from './Users';
-import { usersAPI } from '../../api/api';
 
 
 class UsersContainer extends React.Component {
     
     componentDidMount() {
-        this.props.toggleIsFetching(false);
-        usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
-            this.props.toggleIsFetching(false);
-            console.log(data.items)
-            this.props.setUsers(data.items)
-        })
-        
+        this.props.getUsers(this.props.currentPage, this.props.pageSize); // redux-thunk
     }
 
-    onSearchClick = (text) => {
-        this.props.toggleIsFetching(true);
-        if(text.trim()) {
-            usersAPI.getUserByNamePartial(text.toLowerCase()).then(data => {
-                this.props.toggleIsFetching(false);
-                this.props.onSearchClick(text, data.items, data.usersFound);
-            })
-        } else {
-            this.props.toggleIsFetching(true);
-            this.props.onSearchClick(text, [], 0);
-            usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
-                        this.props.toggleIsFetching(false);
-                        this.props.setUsers(data.items)
-                    })
-            
-            }
+    onSearchClick = (query) => {
+        this.props.getUsersBySearchQuery(query, this.props.currentPage, this.props.pageSize);
     }
     onPageChanged = (p) => {
         this.props.setCurrentPage(p);
-        usersAPI.getUsers(p, this.props.pageSize).then(data => {
-            this.props.setUsers(data.items)
-        })
+        this.props.getUsers(p, this.props.pageSize); // redux-thunk
+
     }
     onShowMore = (pagination) => {
-        this.props.toggleIsFetching(true);
         pagination+=1;
-        usersAPI.getUsers(pagination, this.props.pageSize).then(data => {
-            this.props.toggleIsFetching(false);
-            this.props.onShowMore(data.items, pagination);
-        })
+        this.props.getMoreUsers(pagination, this.props.pageSize)
     }
-
-    sentInvitation = (userId) => {
-        let urlRequest = `http://localhost:9000/api/friendship/send/${userId}`
-        axios.post(urlRequest,
-            { headers: {
-            "Content-Type": "application/json",
-        },},{ withCredentials: true })
-            .then(response => {
-                this.props.sentInvitation(userId, response.data.friendshipStatus);
-            })
+    sendInvitation = (userId) => {
+        this.props.sendInvitation(userId);
     }
     cancelInvitation = (userId) => {
-        let urlRequest = `http://localhost:9000/api/friendship/cancel/${userId}`
-        axios.delete(urlRequest,{ withCredentials: true })
-            .then(response => {
-                this.props.cancelInvitation(userId);
-            })
+        this.props.cancelInvitation(userId);
     }
 
     render() {
         let usersElements = this.props.users
         .map(u => <User
-            sentInvitation={this.sentInvitation}
+            sendInvitation={this.sendInvitation}
             cancelInvitation={this.cancelInvitation}
             key = {u.id}
             id = {u.id}
@@ -91,7 +50,7 @@ class UsersContainer extends React.Component {
 
     let filteredElements = this.props.filteredUsers
         .map(u => <User
-            sentInvitation={this.sentInvitation}
+            sendInvitation={this.sendInvitation}
             cancelInvitation={this.cancelInvitation}
             key = {u.id}
             id = {u.id}
@@ -142,11 +101,9 @@ let mapStateToProps = (state) => {
 
 
 export default connect(mapStateToProps, {
-    sentInvitation: sentInvitation,
-    cancelInvitation: cancelInvitation,
-    onSearchClick: onSearchClick,
-    setUsers: setUsers,
-    onShowMore: showMore,
-    setCurrentPage: setCurrentPage,
-    toggleIsFetching: toggleIsFetching
+    getUsers: getUsersThunkCreator,
+    getUsersBySearchQuery: getUsersBySearchQueryThunkCreator,
+    getMoreUsers: getMoreUsersThunkCreator,
+    sendInvitation: sendInvitationThunkCreator,
+    cancelInvitation: cancelInvitationThunkCreator
 })(UsersContainer);

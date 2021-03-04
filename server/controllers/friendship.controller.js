@@ -1,5 +1,4 @@
 const Friend = require('../models/Friend')
-const { verify } = require('jsonwebtoken');
 const verifyUser = require('../verifyUser');
 const usersController = require('../controllers/users.controller');
 
@@ -42,7 +41,7 @@ const returnInvitations = async (req, res, next) => {
             .where('userId1', user.userId)
             .andWhere('status', 1)
             .then(function(result){
-                items.items = requests;
+                items.items = result;
                 items.sentInvitations = items.items.length
                 res.json(items)
             })
