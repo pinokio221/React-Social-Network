@@ -1,12 +1,14 @@
+import { usersAPI, postsAPI } from "../api/api"
+ 
 const ADD_POST = "ADD-POST";
 const UPDATE_POST_TEXT = "UPDATE-POST-TEXT"
 const SET_PROFILE_PAGE = "SET-PROFILE-PAGE"
 const SET_PROFILE_POSTS = "SET-PROFILE-POSTS"
 
-export const addPost = () => ({ type: ADD_POST })
-export const onPostChange = (text) => ({ type: UPDATE_POST_TEXT, newText: text })
-export const setProfilePage = (userInfo) => ({ type: SET_PROFILE_PAGE, userInfo })
-export const setProfilePosts = (posts) => ({ type: SET_PROFILE_POSTS, posts })
+export const addPostAction = () => ({ type: ADD_POST })
+export const onPostChangeAction = (post_content) => ({ type: UPDATE_POST_TEXT, post_content: post_content})
+export const setProfilePageAction = (userInfo) => ({ type: SET_PROFILE_PAGE, userInfo })
+export const setProfilePostsAction = (posts) => ({ type: SET_PROFILE_POSTS, posts })
 
 let initialState = {
     userInfo: { },
@@ -83,13 +85,44 @@ let initialState = {
     newPostText: ''
 }
 
+
+export const getProfilePage = (userId) => {
+    return (dispatch) => {
+        usersAPI.getProfilePage(userId).then(data => {
+            dispatch(setProfilePageAction(data));
+        })
+    }
+}
+
+export const getProfilePosts = (userId) => {
+    return(dispatch) => {
+        postsAPI.getProfilePosts(userId).then(data => {
+            dispatch(setProfilePostsAction(data.posts))
+        })
+    }
+}
+
+export const addPost = (post_content) => {
+    return(dispatch) => {
+        postsAPI.addNewPost(post_content).then(data => {
+            dispatch(addPostAction);
+        })
+    } 
+}
+
+export const updatePostContent = (post_content) => {
+    return(dispatch) => {
+        dispatch(onPostChangeAction(post_content));
+    }
+}
+
 const profileReducer = (state = initialState, action) => {
 
     switch (action.type) {
         case UPDATE_POST_TEXT:{
             return {
                 ...state,
-                newPostText: action.newText
+                newPostText: action.post_content
             }
         }
         case ADD_POST: {
@@ -97,7 +130,7 @@ const profileReducer = (state = initialState, action) => {
                 id: 5,
                 message: state.newPostText,
                 likesCount: 0,
-                commentsCount: 2
+                commentsCount: 0
             };
 
             return {

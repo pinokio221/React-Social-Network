@@ -8,66 +8,66 @@ const SET_PAGE = "SET-PAGE"
 const SHOW_MORE = "SHOW-MORE"
 const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING"
 
-export const sendInvitation = (userId, status) => ({ type: SEND_INVITATION, userId, status })
-export const cancelInvitation = (userId) => ({ type: CANCEL_INVITATION, userId })
-export const onSearchClick = (text, filteredUsers, usersFound) => ({ type: SEARCH_CLICK, text: text, filteredUsers, usersFound})
-export const setUsers = (users) => ({ type: SET_USERS, users })
-export const showMore = (users, pagination) => ({ type: SHOW_MORE, users, pagination })
-export const setCurrentPage = (page) => ({type: SET_PAGE, page})
-export const toggleIsFetching = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFetching})
+export const sendInvitationAction = (userId, status) => ({ type: SEND_INVITATION, userId, status })
+export const cancelInvitationAction = (userId) => ({ type: CANCEL_INVITATION, userId })
+export const onSearchClickAction = (text, filteredUsers, usersFound) => ({ type: SEARCH_CLICK, text: text, filteredUsers, usersFound})
+export const setUsersAction = (users) => ({ type: SET_USERS, users })
+export const showMoreAction = (users, pagination) => ({ type: SHOW_MORE, users, pagination })
+export const setCurrentPageAction = (page) => ({type: SET_PAGE, page})
+export const toggleIsFetchingAction = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFetching})
 
 
-export const getUsersThunkCreator = (currentPage, pageSize) => {
+export const getUsers = (currentPage, pageSize) => {
     return (dispatch) => {
-        dispatch(toggleIsFetching(true));
+        dispatch(toggleIsFetchingAction(true));
         usersAPI.getUsers(currentPage, pageSize).then(data => {
-            dispatch(toggleIsFetching(false));
-            dispatch(setUsers(data.items));
+            dispatch(toggleIsFetchingAction(false));
+            dispatch(setUsersAction(data.items));
         })
     }
 }
 
-export const getUsersBySearchQueryThunkCreator = (query, currentPage, pageSize) => {
+export const getUsersBySearchQuery= (query, currentPage, pageSize) => {
     return (dispatch) => {
-        dispatch(toggleIsFetching(true));
+        dispatch(toggleIsFetchingAction(true));
         if(query.trim()) {
             usersAPI.getUserByNamePartial(query.toLowerCase()).then(data => {
-                dispatch(toggleIsFetching(false));
-                dispatch(onSearchClick(query, data.items, data.usersFound));
+                dispatch(toggleIsFetchingAction(false));
+                dispatch(onSearchClickAction(query, data.items, data.usersFound));
             })
         } else {
-            dispatch(toggleIsFetching(true));
-            dispatch(onSearchClick(query, [], 0));
+            dispatch(toggleIsFetchingAction(true));
+            dispatch(onSearchClickAction(query, [], 0));
             usersAPI.getUsers(currentPage, pageSize).then(data => {
-                        dispatch(toggleIsFetching(false));
-                        dispatch(setUsers(data.items));
+                        dispatch(toggleIsFetchingAction(false));
+                        dispatch(setUsersAction(data.items));
                     })
             }
     }
 }
 
-export const getMoreUsersThunkCreator = (pagination, pageSize) => {
-    return(dispatch) => {
-        dispatch(toggleIsFetching(true));
+export const getMoreUsers = (pagination, pageSize) => {
+    return (dispatch) => {
+        dispatch(toggleIsFetchingAction(true));
         usersAPI.getUsers(pagination, pageSize).then(data => {
-            dispatch(toggleIsFetching(false));
-            dispatch(showMore(data.items, pagination));
+            dispatch(toggleIsFetchingAction(false));
+            dispatch(showMoreAction(data.items, pagination));
         })
     }
 }
 
-export const sendInvitationThunkCreator = (userId) => {
+export const sendInvitation = (userId) => {
     return(dispatch) => {
         friendshipAPI.sendInvitation(userId).then(data => {
-            dispatch(sendInvitation(userId, data.friendshipStatus));
+            dispatch(sendInvitationAction(userId, data.friendshipStatus));
         })
     }
 }
 
-export const cancelInvitationThunkCreator = (userId) => {
+export const cancelInvitation = (userId) => {
     return(dispatch) => {
         friendshipAPI.cancelInvitation(userId).then(data => {
-            dispatch(cancelInvitation(userId));
+            dispatch(cancelInvitationAction(userId));
         })
     }
 }

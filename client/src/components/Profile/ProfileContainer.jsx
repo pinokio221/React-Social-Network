@@ -1,37 +1,15 @@
-import axios from 'axios';
 import React from 'react';
 import Profile from "./Profile"
-import { setProfilePage, setProfilePosts } from "../../redux/profile-reducer"
 import connect from "react-redux/lib/connect/connect";
 import withRouter from "react-router-dom/withRouter"
+import { getProfilePage, getProfilePosts } from "../../redux/profile-reducer"
 
 
 class ProfileContainer extends React.Component {
     componentDidMount() {
         let userId = this.props.match.params.userId;
-        if(!userId) {
-            userId = 1;
-        }
-        const setProfilePage = () => {
-            let requestURL = `http://localhost:9000/api/users?userId=${userId}`
-            axios.get(requestURL, { withCredentials: true })
-                .then(response => {
-                    console.log(response)
-                    this.props.setProfilePage(response.data)
-                })
-        }
-
-        const setProfilePosts = () => {
-            let requestURL = `http://localhost:9000/api/posts?userId=${userId}&limit=5`
-            axios.get(requestURL, { withCredentials: true })
-                .then(response => {
-                    this.props.setProfilePosts(response.data.posts)
-                })
-        }
-
-        setProfilePage();
-        setProfilePosts();
-        
+        if(!userId) { userId = 1; }
+        this.props.getProfilePage(userId);
     }
     render() {
         return (
@@ -42,7 +20,6 @@ class ProfileContainer extends React.Component {
     }
     
 }
-
 let mapStateToProps = (state) => {
     return {
         userInfo: state.profilePage.userInfo,
@@ -54,7 +31,8 @@ let mapStateToProps = (state) => {
 
 let urlDataComponent = withRouter(ProfileContainer);
 
-export default connect(mapStateToProps, 
-    {setProfilePage: setProfilePage, 
-    setProfilePosts: setProfilePosts})(urlDataComponent);
+export default connect(mapStateToProps, {
+    getProfilePage, 
+    getProfilePosts
+})(urlDataComponent);
 

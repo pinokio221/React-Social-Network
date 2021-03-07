@@ -1,10 +1,10 @@
 import React from 'react';
 import { //Action Creators
-    getUsersThunkCreator,
-    getUsersBySearchQueryThunkCreator,
-    getMoreUsersThunkCreator,
-    sendInvitationThunkCreator,
-    cancelInvitationThunkCreator
+    getUsers,
+    getUsersBySearchQuery,
+    getMoreUsers,
+    sendInvitation,
+    cancelInvitation
 } from "../../redux/users-reducer";
 import connect from "react-redux/lib/connect/connect";
 import User from "./User/User";
@@ -101,9 +101,6 @@ let mapStateToProps = (state) => {
 
 
 export default connect(mapStateToProps, {
-    getUsers: getUsersThunkCreator,
-    getUsersBySearchQuery: getUsersBySearchQueryThunkCreator,
-    getMoreUsers: getMoreUsersThunkCreator,
-    sendInvitation: sendInvitationThunkCreator,
-    cancelInvitation: cancelInvitationThunkCreator
+    getUsers, getUsersBySearchQuery, getMoreUsers,
+    sendInvitation, cancelInvitation
 })(UsersContainer);

@@ -1,10 +1,58 @@
 const Post = require('../models/Post');
+const verifyUser = require('../verifyUser');
+
 
 const getAllPosts = () => {
     return Post.query();
 }
 const getPostsByUserId = (query) => {
     return Post.query().where('user_id', query)
+}
+
+const addNewPost = (req, res, next) => {
+    try {
+        let user = verifyUser.getCurrentUser(req, res, next);
+        if(user){
+            Post.query().insert({
+                user_id: user.userId,
+                content: req.body.content,
+            })
+            .then(function(result){
+                res.status(201).json({
+                    message: "You succesfully added a new post",
+                })
+            }
+        )}
+    } catch(err) {
+        res.status(400).send(err);
+    }
+}
+
+const deletePost = (req, res, next) => {
+    try {
+        let user = verifyUser.getCurrentUser(req, res, next);
+        if(user){
+            Post.query()
+                .where('id', req.query.id)
+                .andWhere('user_id', user.userId)
+            .del()
+            .then(function(result){
+                if(result){
+                    res.status(201).json({
+                        message: "You succesfully removed your post.",
+                    })
+                }
+                else{
+                    return res.status(400).json({
+                        message: "Post not found"
+                    })
+                }
+                
+            })
+        }
+    } catch(err) {
+        res.status(400).send(err);
+    }
 }
 
 function returnPosts(req, res){
@@ -37,4 +85,4 @@ function returnPosts(req, res){
     }
 }
 
-module.exports = { returnPosts };
+module.exports = { returnPosts, addNewPost, deletePost };

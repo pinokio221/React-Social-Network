@@ -1,8 +1,34 @@
 import React from 'react';
-import {addPost, onPostChange} from "../../../redux/profile-reducer";
 import MyPosts from "./MyPosts";
 import connect from "react-redux/lib/connect/connect";
+import withRouter from "react-router-dom/withRouter"
+import { getProfilePosts, addPost, updatePostContent } from "../../../redux/profile-reducer"
 
+
+
+class MyPostsContainer extends React.Component {
+    componentDidMount() {
+        let userId = this.props.match.params.userId;
+        if(!userId) { userId = 1; }
+        this.props.getProfilePosts(userId);
+    }
+
+    addPost = (post_content) => {
+        this.props.addPost(post_content);
+    }
+
+    updatePostContent = (post_content) => {
+        this.props.updatePostContent(post_content)
+    }
+    render() {
+        return (
+            <div>
+                <MyPosts {...this.props}/>
+        </div>
+        );
+    }
+    
+}
 
 let mapStateToProps = (state) => {
     return {
@@ -12,20 +38,8 @@ let mapStateToProps = (state) => {
     }
 }
 
-let mapDispatchToProps = (dispatch) => {
-    return {
-        updateNewPostText: (text) => {
-            let action = onPostChange(text)
-            dispatch(action);
-        },
-        addPost: () => {
-            let action = addPost();
-            dispatch(action);
-        }
-    }
-}
+let urlDataComponent = withRouter(MyPostsContainer);
 
-const MyPostsContainer = connect(mapStateToProps, 
-    { updateNewPostText: onPostChange, addPost: addPost })(MyPosts)
 
-export default MyPostsContainer;
+export default connect(mapStateToProps, 
+    {   getProfilePosts, updatePostContent, addPost})(urlDataComponent)
