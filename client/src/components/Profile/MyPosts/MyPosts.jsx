@@ -15,11 +15,11 @@ const MyPosts = (props) => {
             <div>
                 <Form>
                     <Form.Group controlId="exampleForm.ControlTextarea1">
-                        <Form.Control as="textarea" rows={3} onChange={ props.updatePostContent(newPostElement.value) } ref={ newPostElement } value={props.newPostText} />
+                        <Form.Control as="textarea" rows={3} onChange={ () => { props.updatePostContent(newPostElement.current.value) }} ref={ newPostElement } value={props.newPostText} />
                     </Form.Group>
                 </Form>
                 
-                <Button variant="info" onClick={props.addPost(props.newPostText)}>Add Post</Button>{' '}
+                <Button variant="info" onClick={() => {props.addPost(props.newPostText)}}>Add Post</Button>{' '}
                 
             </div>
             <div className={s.posts}>

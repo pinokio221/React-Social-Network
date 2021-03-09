@@ -7,9 +7,10 @@ const Header = (props) => {
     return (
         <header className = {styles.header}>
             <img src='https://www.freeiconspng.com/uploads/facebook-simple-text-22.png'></img>
-            {!props.isAuth ? <div className={styles.loginBlock}>
+            <div className={styles.loginBlock}>
+            {props.isAuth ? props.login : 
                 <NavLink to = {'/login'}>Login</NavLink>
-            </div> : null}
+            }</div>
             
         </header>
     );

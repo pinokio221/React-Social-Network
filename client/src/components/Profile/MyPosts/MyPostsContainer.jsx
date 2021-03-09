@@ -5,7 +5,6 @@ import withRouter from "react-router-dom/withRouter"
 import { getProfilePosts, addPost, updatePostContent } from "../../../redux/profile-reducer"
 
 
-
 class MyPostsContainer extends React.Component {
     componentDidMount() {
         let userId = this.props.match.params.userId;
@@ -23,7 +22,7 @@ class MyPostsContainer extends React.Component {
     render() {
         return (
             <div>
-                <MyPosts {...this.props}/>
+                <MyPosts {...this.props} addPost={this.addPost} updatePostContent={this.updatePostContent}/>
         </div>
         );
     }

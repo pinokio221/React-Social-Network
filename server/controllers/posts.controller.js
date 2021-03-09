@@ -18,9 +18,14 @@ const addNewPost = (req, res, next) => {
                 content: req.body.content,
             })
             .then(function(result){
-                res.status(201).json({
-                    message: "You succesfully added a new post",
+                Post.query().select()
+                .where('id', result.id).first().then(function(value){
+                    res.status(201).json({
+                        post: value,
+                        message: "You succesfully added a new post",
+                    })
                 })
+                
             }
         )}
     } catch(err) {
@@ -68,7 +73,7 @@ function returnPosts(req, res){
     const posts = {};
 
     if(req.query.userId) {
-        getPostsByUserId(req.query.userId).then(function(user_posts){
+        getPostsByUserId(req.query.userId).orderBy('id','desc').then(function(user_posts){
             posts.posts = user_posts.slice(startIndex, endIndex);
             let totalPosts = user_posts.length;
             posts.totalUserPosts = totalPosts;
@@ -76,7 +81,7 @@ function returnPosts(req, res){
         })
     }
     else {
-        getAllPosts().then(function(result){
+        getAllPosts().orderBy('id','desc').then(function(result){
             posts.posts = result.slice(startIndex, endIndex);
             let allPostsCount = result.length;
             posts.totalCount = allPostsCount;

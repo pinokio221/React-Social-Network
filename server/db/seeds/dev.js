@@ -19,9 +19,8 @@ exports.seed = async function(knex) {
       birthday: "1998-11-20",
       registered_date: "2021-02-23",
       age: 25,
-      city: "Los Angeles",
-      profile_image: null,
-      header_image: null
+      city: "Los Angeles"
+    
   },
   {
       login: "borisikk",
@@ -35,9 +34,8 @@ exports.seed = async function(knex) {
       birthday: "1998-11-20",
       registered_date: "2021-02-23",
       age: 25,
-      city: "Kyiv",
-      profile_image: null,
-      header_image: null
+      city: "Kyiv"
+  
   },
   {
     login: "hillary",
@@ -51,9 +49,8 @@ exports.seed = async function(knex) {
     birthday: "1998-11-20",
     registered_date: "2021-02-23",
     age: 25,
-    city: "Kyiv",
-    profile_image: null,
-    header_image: null
+    city: "Kyiv"
+    
   },
   {
     login: "john",
@@ -67,9 +64,8 @@ exports.seed = async function(knex) {
     birthday: "1998-11-20",
     registered_date: "2021-02-23",
     age: 25,
-    city: "Kyiv",
-    profile_image: null,
-    header_image: null
+    city: "Kyiv"
+    
   },
   {
     login: "billy223",
@@ -83,9 +79,8 @@ exports.seed = async function(knex) {
     birthday: "1998-11-20",
     registered_date: "2021-02-23",
     age: 25,
-    city: "Kyiv",
-    profile_image: null,
-    header_image: null
+    city: "Kyiv"
+    
   },
   {
     login: "barak223",
@@ -99,9 +94,8 @@ exports.seed = async function(knex) {
     birthday: "1998-11-20",
     registered_date: "2021-02-23",
     age: 41,
-    city: "Los Angeles",
-    profile_image: null,
-    header_image: null
+    city: "Los Angeles"
+    
   },
   {
     login: "george",
@@ -115,9 +109,8 @@ exports.seed = async function(knex) {
     birthday: "1998-11-20",
     registered_date: "2021-02-23",
     age: 25,
-    city: "Kyiv",
-    profile_image: null,
-    header_image: null
+    city: "Kyiv"
+    
   },
   {
     login: "borsky",
@@ -131,9 +124,8 @@ exports.seed = async function(knex) {
     birthday: "1998-11-20",
     registered_date: "2021-02-23",
     age: 25,
-    city: "Moscow",
-    profile_image: null,
-    header_image: null
+    city: "Moscow"
+    
   }
 
 ]);

@@ -27,6 +27,29 @@ export const usersAPI = {
     }
 }
 
+export const authAPI = {
+    authMe() {
+        let requestURL = `http://localhost:9000/api/user/me`
+        return instance.get(requestURL,{ withCredentials: true })
+        .then(response => {
+            if(response.status === 200){
+                return response.data;
+            }
+        })
+    },
+    userLogin() {
+        let requestURL = `http://localhost:9000/api/user/login`
+        return instance.post(requestURL,{
+            login: "pinokio98",
+            password: "1234567"
+        },{ withCredentials: true })
+    },
+    userLogout() {
+        let requestURL = `http://localhost:9000/api/user/logout`
+        return instance.get(requestURL, { withCredentials: true })
+    }
+}
+
 export const friendshipAPI = {
     sendInvitation(userId) {
         let requestURL = `http://localhost:9000/api/friendship/send/${userId}`
@@ -61,16 +84,13 @@ export const postsAPI = {
 
     addNewPost(post_content){
         let requestURL = `http://localhost:9000/api/posts/add`
-        return instance.post(requestURL, {
-            headers: {
-                "Content-Type": "application/json", },
-            },
+        return instance.post(requestURL, 
             {
                content: post_content
             },
             { withCredentials: true })
             .then(response => {
-                return response.data;
+                return response.data.post;
             })
     }
 }

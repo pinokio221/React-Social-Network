@@ -1,4 +1,5 @@
 import React from 'react'
+import { Redirect } from 'react-router-dom'
 import Message from './Message/Message'
 import styles from './Messages.module.css'
 
@@ -14,6 +15,10 @@ const Messages = (props) => {
     let onChangeMessageBody = (e) => {
         let body = e.target.value;
         props.onChangeMessageBody(body);
+    }
+
+    if(props.isAuth === false){
+        return <Redirect to={'/login'}/>
     }
 
     return (

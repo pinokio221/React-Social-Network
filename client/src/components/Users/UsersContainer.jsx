@@ -7,6 +7,7 @@ import { //Action Creators
     cancelInvitation
 } from "../../redux/users-reducer";
 import connect from "react-redux/lib/connect/connect";
+import { Redirect } from 'react-router-dom'
 import User from "./User/User";
 import Users from './Users';
 
@@ -16,6 +17,9 @@ class UsersContainer extends React.Component {
     componentDidMount() {
         this.props.getUsers(this.props.currentPage, this.props.pageSize); // redux-thunk
     }
+    componentWillUnmount() {
+        this.props.getMoreUsers(1, 6); // reflesh
+    }
 
     onSearchClick = (query) => {
         this.props.getUsersBySearchQuery(query, this.props.currentPage, this.props.pageSize);
@@ -23,7 +27,6 @@ class UsersContainer extends React.Component {
     onPageChanged = (p) => {
         this.props.setCurrentPage(p);
         this.props.getUsers(p, this.props.pageSize); // redux-thunk
-
     }
     onShowMore = (pagination) => {
         pagination+=1;
@@ -37,7 +40,10 @@ class UsersContainer extends React.Component {
     }
 
     render() {
-        let usersElements = this.props.users
+        if(this.props.isAuth === false){
+            return <Redirect to={'/login'}/>
+        }
+    let usersElements = this.props.users
         .map(u => <User
             sendInvitation={this.sendInvitation}
             cancelInvitation={this.cancelInvitation}
@@ -45,7 +51,7 @@ class UsersContainer extends React.Component {
             id = {u.id}
             username = {u.fullname}
             age={u.age} city={u.city}
-            image={u.profileImage}
+            image={u.profile_image}
             friendshipStatus ={u.friendshipStatus}/>)
 
     let filteredElements = this.props.filteredUsers
@@ -56,7 +62,7 @@ class UsersContainer extends React.Component {
             id = {u.id}
             username = {u.fullname}
             age={u.age} city={u.city}
-            image={u.profileImage}
+            image={u.profile_image}
             friendshipStatus ={u.friendshipStatus}/>)
     
         return <>
@@ -94,7 +100,8 @@ let mapStateToProps = (state) => {
         totalUsersCount: state.usersPage.totalUsersCount,
         filteredUsersCount: state.usersPage.filteredUsersCount,
         currentPage: state.usersPage.currentPage,
-        showMorePagination: state.usersPage.showMorePagination
+        showMorePagination: state.usersPage.showMorePagination,
+        isAuth: state.auth.isAuth
     }
 }
 

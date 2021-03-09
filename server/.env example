@@ -1,4 +1,0 @@
-DB_HOST = [type host here. Default: 127.0.0.1]
-DB_USER = [type username here. Default: root]
-DB_PASSWORD = [type password here]
-DB_NAME = [type database name here]

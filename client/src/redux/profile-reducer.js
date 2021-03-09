@@ -5,8 +5,8 @@ const UPDATE_POST_TEXT = "UPDATE-POST-TEXT"
 const SET_PROFILE_PAGE = "SET-PROFILE-PAGE"
 const SET_PROFILE_POSTS = "SET-PROFILE-POSTS"
 
-export const addPostAction = () => ({ type: ADD_POST })
-export const onPostChangeAction = (post_content) => ({ type: UPDATE_POST_TEXT, post_content: post_content})
+export const addPostAction = (post) => ({ type: ADD_POST, post })
+export const onPostChangeAction = (post_content) => ({ type: UPDATE_POST_TEXT, newText: post_content})
 export const setProfilePageAction = (userInfo) => ({ type: SET_PROFILE_PAGE, userInfo })
 export const setProfilePostsAction = (posts) => ({ type: SET_PROFILE_POSTS, posts })
 
@@ -105,7 +105,7 @@ export const getProfilePosts = (userId) => {
 export const addPost = (post_content) => {
     return(dispatch) => {
         postsAPI.addNewPost(post_content).then(data => {
-            dispatch(addPostAction);
+            dispatch(addPostAction(data));
         })
     } 
 }
@@ -122,20 +122,13 @@ const profileReducer = (state = initialState, action) => {
         case UPDATE_POST_TEXT:{
             return {
                 ...state,
-                newPostText: action.post_content
+                newPostText: action.newText
             }
         }
         case ADD_POST: {
-            let newPost = {
-                id: 5,
-                message: state.newPostText,
-                likesCount: 0,
-                commentsCount: 0
-            };
-
             return {
                 ...state,
-                postsData: [...state.postsData, newPost],
+                postsData: [action.post,...state.postsData.slice(0,4)],
                 newPostText: ''
             }
         }
