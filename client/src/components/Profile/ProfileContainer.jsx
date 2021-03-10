@@ -2,8 +2,7 @@ import React from 'react';
 import Profile from "./Profile"
 import connect from "react-redux/lib/connect/connect";
 import withRouter from "react-router-dom/withRouter"
-import { getProfilePage } from "../../redux/profile-reducer"
-import { withAuthRedirect } from '../../hoc/AuthRedirect';
+import { getProfilePage, updateProfileStatus } from "../../redux/profile-reducer"
 import { compose } from 'redux';
 
 
@@ -31,11 +30,12 @@ let mapStateToProps = (state) => {
         newPostText: state.profilePage.newPostText,
     }
 }
+    
 
 export default compose(
     //withAuthRedirect,
     connect(mapStateToProps, {
-        getProfilePage
+        getProfilePage, updateProfileStatus
     }),
     withRouter,
 )(ProfileContainer)

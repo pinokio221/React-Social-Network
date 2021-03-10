@@ -17,13 +17,6 @@ export const usersAPI = {
         return instance.get(requestURL).then(response => {
             return response.data;
         })
-    },
-    getProfilePage(userId) {
-        let requestURL = `http://localhost:9000/api/users?userId=${userId}`
-        return instance.get(requestURL, { withCredentials: true })
-            .then(response => {
-                return response.data;
-            })
     }
 }
 
@@ -91,6 +84,33 @@ export const postsAPI = {
             { withCredentials: true })
             .then(response => {
                 return response.data.post;
+            })
+    }
+}
+
+export const profileAPI = {
+    getProfilePage(userId) {
+        let requestURL = `http://localhost:9000/api/users?userId=${userId}`
+        return instance.get(requestURL, { withCredentials: true })
+            .then(response => {
+                return response.data;
+            })
+    },
+    updateProfileStatus(user_status){
+        let requestURL = `http://localhost:9000/api/profile/status`
+        return instance.put(requestURL,
+            {
+                status: user_status
+            },
+            { withCredentials: true }).then(response => {
+                return response;
+            })
+    },
+    getProfileStatus(userId){
+        let requestURL = `http://localhost:9000/api/profile/status/${userId}`
+        return instance.get(requestURL,
+            { withCredentials: true }).then(response => {
+                return response.data;
             })
     }
 }

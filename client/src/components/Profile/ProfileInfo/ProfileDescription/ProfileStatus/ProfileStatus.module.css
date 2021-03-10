@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans&display=swap');
+
+.no_status {
+    cursor: pointer;
+    font-size: 14px;
+    color: gray;
+    display: inline-block;
+    transition-duration: 0.1s;
+
+}
+
+.no_status:hover {
+    transition-duration: 0.1s;
+    color: black;
+}
+
+.user_status {
+    font-size: 14px;
+    display: inline-block;
+}
+
+.user_status:hover {
+    cursor: pointer;
+}
+
+.user_image:hover{
+    cursor: pointer;
+}
+
+.pencil_icon {
+    transition-duration: 0.5s;
+    color: cornflowerblue;
+    margin-left: 10px;
+}
+
+.pencil_icon:hover {
+    transition-duration: 0.5s;
+    color: rgb(0, 108, 129);
+}
+

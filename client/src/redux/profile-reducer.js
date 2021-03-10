@@ -1,17 +1,19 @@
-import { usersAPI, postsAPI } from "../api/api"
+import { usersAPI, postsAPI, profileAPI } from "../api/api"
  
 const ADD_POST = "ADD-POST";
 const UPDATE_POST_TEXT = "UPDATE-POST-TEXT"
 const SET_PROFILE_PAGE = "SET-PROFILE-PAGE"
 const SET_PROFILE_POSTS = "SET-PROFILE-POSTS"
+const UPDATE_PROFILE_STATUS = "UPDATE-PROFILE-STATUS"
 
 export const addPostAction = (post) => ({ type: ADD_POST, post })
 export const onPostChangeAction = (post_content) => ({ type: UPDATE_POST_TEXT, newText: post_content})
 export const setProfilePageAction = (userInfo) => ({ type: SET_PROFILE_PAGE, userInfo })
 export const setProfilePostsAction = (posts) => ({ type: SET_PROFILE_POSTS, posts })
+export const updateStatusAction = (status) => ({type: UPDATE_PROFILE_STATUS, status})
 
 let initialState = {
-    userInfo: { },
+    userInfo: {},
     userFriends: [
         {
             id: 11,
@@ -88,7 +90,7 @@ let initialState = {
 
 export const getProfilePage = (userId) => {
     return (dispatch) => {
-        usersAPI.getProfilePage(userId).then(data => {
+        profileAPI.getProfilePage(userId).then(data => {
             dispatch(setProfilePageAction(data));
         })
     }
@@ -116,6 +118,17 @@ export const updatePostContent = (post_content) => {
     }
 }
 
+export const updateProfileStatus = (user_status) => {
+    return(dispatch) => {
+        profileAPI.updateProfileStatus(user_status).then(response => {
+            if(response.status === 200) {
+                dispatch(updateStatusAction(response.data.status))
+            } 
+        })
+    }
+
+}
+
 const profileReducer = (state = initialState, action) => {
 
     switch (action.type) {
@@ -133,20 +146,9 @@ const profileReducer = (state = initialState, action) => {
             }
         }
         case SET_PROFILE_PAGE: {
-            let profileInfo = {
-                id: action.userInfo.id,
-                fullname: action.userInfo.fullname,
-                sex: action.userInfo.sex,
-                status: action.userInfo.status,
-                age: action.userInfo.age,
-                email: action.userInfo.email,
-                city: action.userInfo.city,
-                profileImage: action.userInfo.profile_image,
-                headerImage: action.userInfo.header_image
-            }
             return {
                 ...state,
-                userInfo: profileInfo
+                userInfo: action.userInfo
             }
         }
         case SET_PROFILE_POSTS: {
@@ -154,6 +156,13 @@ const profileReducer = (state = initialState, action) => {
                 ...state,
                 postsData: action.posts
             }
+        }
+        case UPDATE_PROFILE_STATUS: {
+            return {
+                ...state,
+                status: action.status // doesnt work
+            }
+
         }
 
         default: return state;

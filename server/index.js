@@ -30,6 +30,7 @@ app.use(function(req, res, next) {
 const usersRoute = require('./routes/users');
 const postsRoute = require('./routes/posts');
 const authRoute = require('./routes/auth');
+const profileRoute = require('./routes/profile');
 const friendshipRoute = require('./routes/friendship');
 
 
@@ -39,6 +40,7 @@ app.use(express.json());
 app.use('/api/users', usersRoute);
 app.use('/api/posts', postsRoute);
 app.use('/api/user', authRoute);
+app.use('/api/profile', profileRoute);
 app.use('/api/friendship', friendshipRoute);
 
 //Routes
