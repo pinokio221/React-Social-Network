@@ -7,7 +7,7 @@ import connect from "react-redux/lib/connect/connect";
 class HeaderContainer extends React.Component {
     componentDidMount() {
         //this.props.userLogin();
-        this.props.userLogout();
+        //this.props.userLogout();
         this.props.authMe();
     }
     render() {

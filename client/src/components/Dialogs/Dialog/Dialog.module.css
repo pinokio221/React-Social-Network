@@ -1,20 +1,38 @@
+a:hover {
+    text-decoration: none;
+}
 .profile_info {
-    display: block;
+    display: flex;
+    align-items: center;
     margin-bottom: 7px;
     padding: 5px;
+    width: 300px;
     background-color: rgba(0, 98, 171 , 0.70);
+    border-radius: 5px;
+    transition-duration: 0.3s;
+
 }
+
+.profile_info:hover {
+    background-color: rgba(49, 108, 150);
+    transition-duration: 0.3s;
+}
+
+
 .profile_info img{
     width: 50px;
     border-radius: 50%;
 }
 
-.profile_name{
-    color: black;
-    text-decoration: none;
-    margin-left: 7px;
+.profile_message {
+    font-size: 14px;
+    color: rgb(226, 212, 49);
 }
 
-a {
+.profile_name{
+    color: whitesmoke;
     text-decoration: none;
+    margin-left: 7px;
+    flex: 1;
 }
+

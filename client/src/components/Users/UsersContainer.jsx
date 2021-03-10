@@ -7,9 +7,10 @@ import { //Action Creators
     cancelInvitation
 } from "../../redux/users-reducer";
 import connect from "react-redux/lib/connect/connect";
-import { Redirect } from 'react-router-dom'
 import User from "./User/User";
 import Users from './Users';
+import { withAuthRedirect } from '../../hoc/AuthRedirect';
+import { compose } from 'redux';
 
 
 class UsersContainer extends React.Component {
@@ -40,9 +41,6 @@ class UsersContainer extends React.Component {
     }
 
     render() {
-        if(this.props.isAuth === false){
-            return <Redirect to={'/login'}/>
-        }
     let usersElements = this.props.users
         .map(u => <User
             sendInvitation={this.sendInvitation}
@@ -101,13 +99,15 @@ let mapStateToProps = (state) => {
         filteredUsersCount: state.usersPage.filteredUsersCount,
         currentPage: state.usersPage.currentPage,
         showMorePagination: state.usersPage.showMorePagination,
-        isAuth: state.auth.isAuth
     }
 }
 
+export default compose(
+    withAuthRedirect,
+    connect(mapStateToProps, {
+        getUsers, getUsersBySearchQuery, getMoreUsers,
+        sendInvitation, cancelInvitation
+    }),
 
+)(UsersContainer)
 
-export default connect(mapStateToProps, {
-    getUsers, getUsersBySearchQuery, getMoreUsers,
-    sendInvitation, cancelInvitation
-})(UsersContainer);
