@@ -1,5 +1,6 @@
 import * as axios from "axios";
 
+
 const instance = axios.create({
     baseURL: 'http://localhost:9000/api/',
     withCredentials: true
@@ -30,12 +31,14 @@ export const authAPI = {
             }
         })
     },
-    userLogin() {
+    userLogin(data) {
         let requestURL = `http://localhost:9000/api/user/login`
         return instance.post(requestURL,{
-            login: "pinokio98",
-            password: "1234567"
-        },{ withCredentials: true })
+            login: data.login,
+            password: data.password
+        },{ withCredentials: true }).then(response => {
+            return response;
+        })
     },
     userLogout() {
         let requestURL = `http://localhost:9000/api/user/logout`

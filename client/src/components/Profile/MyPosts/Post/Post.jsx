@@ -11,7 +11,7 @@ const Post = (props) => {
     return (
         <div className={styles.item}>
             <Alert key='info' variant='info'>
-                <div><img src={props.userInfo.profileImage} alt=""/><span className={styles.user_name}><NavLink to = {'/profile/' + props.userInfo.id} activeClassName={styles.activeLink}>{props.userInfo.fullname}</NavLink>{" added a new post:"}</span></div>
+                <div><img src={props.userInfo.profile_image} alt=""/><span className={styles.user_name}><NavLink to = {'/profile/' + props.userInfo.id} activeClassName={styles.activeLink}>{props.userInfo.fullname}</NavLink>{" added a new post:"}</span></div>
                 <div className={styles.post_content}>{props.content}</div>
                 <hr className="my-2"/>
                 <div>

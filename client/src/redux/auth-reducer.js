@@ -1,4 +1,7 @@
 import { authAPI } from "../api/api"
+import { Redirect } from "react-router"
+import React from 'react'
+
 
 const SET_USER_DATA = 'SET-USER-DATA';
 
@@ -20,15 +23,21 @@ export const authMe = () => {
     }
 }
 
-export const userLogin = () => {
-    return(dispatch) => {
-        authAPI.userLogin();
-    }
+export const userLogin = (data) => (dispatch) => {
+    authAPI.userLogin(data).then(response => {
+        if(response.status === 200) {
+            dispatch(authMe())
+        } else {
+            console.log(null) // !!!!!!!
+        }
+    })
 }
 
 export const userLogout = () => {
     return(dispatch) => {
-        authAPI.userLogout();
+        authAPI.userLogout().then(() =>{
+            dispatch(setUserData(null, null, null, false))
+        })
     }
 }
 

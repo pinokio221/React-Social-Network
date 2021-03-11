@@ -16,13 +16,10 @@ class MyPostsContainer extends React.Component {
         this.props.addPost(post_content);
     }
 
-    updatePostContent = (post_content) => {
-        this.props.updatePostContent(post_content)
-    }
     render() {
         return (
             <div>
-                <MyPosts {...this.props} addPost={this.addPost} updatePostContent={this.updatePostContent}/>
+                <MyPosts {...this.props} addPost={this.addPost}/>
         </div>
         );
     }
@@ -33,7 +30,6 @@ let mapStateToProps = (state) => {
     return {
         userInfo: state.profilePage.userInfo,
         postsData: state.profilePage.postsData,
-        newPostText: state.profilePage.newPostText
     }
 }
 
@@ -41,4 +37,4 @@ let urlDataComponent = withRouter(MyPostsContainer);
 
 
 export default connect(mapStateToProps, 
-    {   getProfilePosts, updatePostContent, addPost})(urlDataComponent)
+    {   getProfilePosts, addPost})(urlDataComponent)

@@ -26,6 +26,7 @@
     "react-uikit-form": "^2.0.3",
     "react-uikit-icons": "^2.0.3",
     "redux": "^4.0.5",
+    "redux-form": "^8.3.7",
     "redux-thunk": "^2.3.0",
     "uikit": "^3.6.15",
     "universal-cookie": "^4.0.4"

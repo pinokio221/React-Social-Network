@@ -1,6 +1,7 @@
 import React from 'react';
 import {faPencilAlt} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { Form } from "react-bootstrap";
 import styles from './ProfileStatus.module.css';
 
 
@@ -43,13 +44,13 @@ class ProfileStatus extends React.Component {
     render() {
         return (
             <div>
-                {this.state.editMode ? 
-                <input autoFocus onChange={this.onStatusChange} onBlur={this.toggleEditMode} value={this.state.status} className={styles.status_input}></input> : 
-                this.props.status ?
+                {this.state.editMode ?
+                <div><Form.Control autoFocus onChange={this.onStatusChange} onBlur={this.toggleEditMode} value={this.state.status} className={styles.status_input} /></div> : 
+                this.state.status ?
                     <div onClick = { this.toggleEditMode } className={styles.user_status}>
                     <span>{this.state.status}</span>
                     <FontAwesomeIcon className={styles.pencil_icon} icon={faPencilAlt}/></div> :
-                    <span className={styles.no_status}>change status</span>}
+                    <span onClick = { this.toggleEditMode } className={styles.no_status}>change status</span>}
                       
             </div>
                 
