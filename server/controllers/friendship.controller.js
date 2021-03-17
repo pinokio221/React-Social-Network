@@ -5,31 +5,28 @@ const usersController = require('../controllers/users.controller');
 
 const returnUserFriends = (req, res, next) => {
     let items = {}
-    let user = verifyUser.getCurrentUser(req, res, next);
-    if(user){
-        Friend.query().select()
-        .where('userId1', user.userId)
-        .andWhere('status', 2)
-        .orWhere('userId2',user.userId)
-        .andWhere('status', 2)
-        .then(async function(result){
-            if(result){
-                let users = [];
-                let friendId;
-                for(let value of result){
-                    if(value.userId1 === user.userId) { friendId = value.userId2 }
-                    else { friendId = value.userId1 }
-                    let friend = await usersController.getUserById(req, res, next, friendId);
-                    users.push(friend)
-                }
-                items.items = users;
-                items.totalFriends = items.items.length
+    //let user = verifyUser.getCurrentUser(req, res, next);
+    Friend.query().select()
+    .where('userId1', req.params.userId)
+    .andWhere('status', 2)
+    .orWhere('userId2',req.params.userId)
+    .andWhere('status', 2)
+    .then(async function(result){
+        if(result){
+            let users = [];
+            let friendId;
+            for(let value of result){
+                if(value.userId1 == req.params.userId) { friendId = value.userId2 }
+                else { friendId = value.userId1 }
+                let friend = await usersController.getUserById(req, res, next, friendId);
+                delete friend.friendshipStatus;
+                users.push(friend)
             }
-            res.json(items)
-        })
-
-            
-    }
+            items.items = users;
+            items.totalFriends = items.items.length
+        }
+        res.json(items)
+    })
 }
 
 const returnInvitations = async (req, res, next) => {

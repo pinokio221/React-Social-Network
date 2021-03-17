@@ -27,9 +27,11 @@ const signUp = (req, res) => {
     .orWhere('login', req.body.login)
     .first().then(async function(result){
         if(result){
-            return res.status(400).json("User with same email or login already exists.")
+            return res.status(400).json({
+                message: "User with same email or login already exists"
+            })
         }
-        const { login, email, password } = req.body;
+        const { firstname, lastname, fullname, login, email, gender, birthday, age, password } = req.body;
     
         //HASH THE PASSWORD 
         const salt = await bcrypt.genSalt(10);
@@ -37,8 +39,14 @@ const signUp = (req, res) => {
 
         try {
             User.query().insert({
+                first_name: firstname,
+                last_name: lastname,
+                fullname: fullname,
                 login: login,
                 email: email,
+                gender: gender,
+                birthday: birthday,
+                age: age,
                 password: hashedPassword,
             })
             .then(function(result){

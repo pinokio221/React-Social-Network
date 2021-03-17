@@ -5,11 +5,14 @@
     border-radius: 50%;
 }
 
+a{
+    white-space: pre-wrap;
+}
 .user_friends {
     display: grid;
     grid-template-rows: 1fr 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 10px;
+    grid-gap: 35px;
     font-size: 14px;
     height: 18rem;
     overflow:hidden;

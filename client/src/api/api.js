@@ -31,6 +31,24 @@ export const authAPI = {
             }
         })
     },
+    userRegister(data) {
+        let requestURL = `http://localhost:9000/api/user/register`
+        return instance.post(requestURL, {
+            firstname: data.firstname,
+            lastname: data.lastname,
+            fullname: data.fullname,
+            email: data.email,
+            login: data.login,
+            gender: data.gender,
+            birthday: data.birthday,
+            age: data.age,
+            password: data.password
+        },).then(response => {
+            return response;
+        }).catch((error) => {
+            return error.response
+        })
+    },
     userLogin(data) {
         let requestURL = `http://localhost:9000/api/user/login`
         return instance.post(requestURL,{
@@ -88,6 +106,14 @@ export const postsAPI = {
             .then(response => {
                 return response.data.post;
             })
+    },
+
+    deletePost(post_id) {
+        let requestURL = `http://localhost:9000/api/posts/delete?id=${post_id}`
+        return instance.delete(requestURL, {withCredentials: true })
+            .then(response => {
+                return response;
+            })
     }
 }
 
@@ -97,6 +123,13 @@ export const profileAPI = {
         return instance.get(requestURL, { withCredentials: true })
             .then(response => {
                 return response.data;
+            })
+    },
+    getProfileFriends(userId) {
+        let requestURL = `http://localhost:9000/api/friendship/friends/${userId}`
+        return instance.get(requestURL, { withCredentials: true })
+            .then(response => {
+                return response;
             })
     },
     updateProfileStatus(user_status){

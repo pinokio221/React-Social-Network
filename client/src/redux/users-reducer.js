@@ -152,7 +152,7 @@ const usersReducer = (state = initialState, action) => {
                 users: [...state.users, ...action.users],
                 showMorePagination: action.pagination
             }
-        case TOGGLE_IS_FETCHING: 
+        case TOGGLE_IS_FETCHING:
             return {...state, isFetching: action.isFetching}
 
 

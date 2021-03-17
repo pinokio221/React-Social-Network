@@ -3,6 +3,7 @@ import s from './MyPosts.module.css';
 import Post from './Post/Post';
 import {Button, Form} from "react-bootstrap";
 import { Field, reduxForm } from "redux-form"
+import { required, maxLength } from "../../../validators/LoginFormValidator"
 
 const ReduxFormControl = ({input, meta, ...props}) => {
     return <Form.Control as={'textarea'} {...props} {...input} />
@@ -15,7 +16,7 @@ const PostForm = (props) => {
         <form onSubmit={props.handleSubmit}>
             <Form >
                 <Form.Group controlId="exampleForm.ControlTextarea1">
-                    <Field component={ReduxFormControl} name='post'/>
+                    <Field component={ReduxFormControl} name='post' validate={[required, maxLength]}/>
                 </Form.Group>
             </Form>
         <Button type='submit' variant="info">Add Post</Button>
@@ -33,7 +34,16 @@ const PostReduxForm = reduxForm({
 
 const MyPosts = (props) => {
     let postsElements =
-        props.postsData.map(p =>  <Post key = {p.id} content ={p.content} likesCount = {p.likes} commentsCount = {p.comments} repostsCount={p.reposts} userInfo={props.userInfo}/>)
+        props.postsData.map(p =>  <Post 
+            id = {p.id} 
+            key = {p.id} 
+            content ={p.content} 
+            likesCount = {p.likes} 
+            commentsCount = {p.comments} 
+            repostsCount={p.reposts} 
+            userInfo={props.userInfo}
+            authId={props.authData.id}
+            deletePost={props.deletePost}/>)
     
     let addPost = (values) => {
         props.addPost(values.post)

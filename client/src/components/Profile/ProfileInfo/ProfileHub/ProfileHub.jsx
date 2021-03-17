@@ -1,13 +1,15 @@
 import React from 'react';
 import {Card, Col, Container, Row} from "react-bootstrap";
 import styles from './ProfileHub.module.css'
+import {NavLink} from "react-router-dom";
+
 
 
 const ProfileHub = (props) => {
     let friendsList =
         props.userFriends.map(f =><div>
-            <img className={styles.friend_user_image} src={f.user_image} alt=""/>
-            <a href=''>{f.first_name}</a>
+            <NavLink to={ "/profile/" + f.id}><img className={styles.friend_user_image} src={f.profile_image} alt=""/>
+            <span>{f.first_name}</span></NavLink>
         </div>
            )
     return (
@@ -22,7 +24,7 @@ const ProfileHub = (props) => {
                                 <a className={styles.showAll} href=''>Show all</a>
                             </Card.Header>
                             <Card.Body className={styles.user_friends}>
-                                { friendsList }
+                                <span></span>
                             </Card.Body>
                         </Card>
                     </Col>
@@ -44,7 +46,7 @@ const ProfileHub = (props) => {
                                 <a className={styles.showAll} href=''>Show all</a>
                             </Card.Header>
                             <Card.Body className={styles.user_friends}>
-                                { friendsList }
+                                <span></span>
                             </Card.Body>
                         </Card>
                     </Col>

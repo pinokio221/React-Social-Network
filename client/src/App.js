@@ -11,6 +11,7 @@ import UsersContainer from "./components/Users/UsersContainer";
 import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
 import LoginContainer from './components/Login/LoginContainer';
+import RegisterContainer from './components/Register/RegisterContainer';
 
 const App = (props) => {
   return (
@@ -27,6 +28,8 @@ const App = (props) => {
           <Route path='/settings' render={ () => <Settings /> } />
           <Route path='/users' render={ () => <UsersContainer store={store}/> } />
           <Route path='/login' render={ () => <LoginContainer store={store}/> } />
+          <Route path='/signup' render={ () => <RegisterContainer store={store}/> } />
+
       </div>
       
   </div>
