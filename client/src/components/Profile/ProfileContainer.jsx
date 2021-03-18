@@ -3,8 +3,8 @@ import Profile from "./Profile"
 import connect from "react-redux/lib/connect/connect";
 import withRouter from "react-router-dom/withRouter"
 import { getProfilePage, updateProfileStatus } from "../../redux/profile-reducer"
+import { toggleLogFormInProcess } from "../../redux/auth-reducer"
 import { compose } from 'redux';
-
 
 
 class ProfileContainer extends React.Component {
@@ -13,6 +13,7 @@ class ProfileContainer extends React.Component {
         if(!userId) { userId = 9; }
         this.props.getProfilePage(userId);
     }
+    
     render() {
         return (
             <div>
@@ -28,15 +29,20 @@ let mapStateToProps = (state) => {
         userFriends: state.profilePage.userFriends,
         postsData: state.profilePage.postsData,
         newPostText: state.profilePage.newPostText,
+        logFormInProcess: state.auth.logFormInProcess
+    }
+}
+
+let mapDispatchToProps = (dispatch) => {
+    return {
+        toggleLogFormInProcess
     }
 }
     
 
 export default compose(
     //withAuthRedirect,
-    connect(mapStateToProps, {
-        getProfilePage, updateProfileStatus
-    }),
+    connect(mapStateToProps, { mapDispatchToProps, updateProfileStatus, getProfilePage }),
     withRouter,
 )(ProfileContainer)
 

@@ -29,7 +29,6 @@ export const getProfilePage = (userId) => {
             dispatch(setProfilePageAction(data));
         })
         profileAPI.getProfileFriends(userId).then(data => {
-            debugger;
             dispatch(setProfileFriendsAction(data.data.items, data.data.totalFriends))
         })
     }

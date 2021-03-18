@@ -4,7 +4,6 @@ import styles from './ProfileHub.module.css'
 import {NavLink} from "react-router-dom";
 
 
-
 const ProfileHub = (props) => {
     let friendsList =
         props.userFriends.map(f =><div>

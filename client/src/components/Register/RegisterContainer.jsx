@@ -20,4 +20,5 @@ let mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { userRegister })(RegisterContainer)
+
+export default connect(mapStateToProps, {userRegister})(RegisterContainer)

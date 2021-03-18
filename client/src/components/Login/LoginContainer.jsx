@@ -12,12 +12,19 @@ class LoginContainer extends React.Component {
     }
     render(){
         return (
-            <Login {...this.props} userLogin={this.userLogin}/>
+            <Login {...this.props} logFormInProcess={this.props.logFormInProcess} isAuth={this.props.isAuth} userLogin={this.userLogin}/>
         )
     }
 }
 
-export default connect(null, {userLogin})(LoginContainer)
+let mapStateToProps = (state) => {
+    return {
+        isAuth: state.auth.isAuth,
+        logFormInProcess: state.auth.logFormInProcess
+    }
+}
+
+export default connect(mapStateToProps, {userLogin})(LoginContainer)
 /*export default compose(
     withAuthRedirect,
     connect(null, {userLogin}),

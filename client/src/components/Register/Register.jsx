@@ -92,6 +92,7 @@ const RegisterForm = (props) => {
   const classes = useStyles();
   const { handleSubmit, pristine, reset, submitting} = props
   return (
+    <div className={styles.page}>
     <form className={styles.wrapper} onSubmit = { handleSubmit }>
       <div className={styles.form}>
       <div className={styles.logo}>
@@ -132,6 +133,7 @@ const RegisterForm = (props) => {
       </div>
     </div>
   </form>
+</div>
   )
 }
 
