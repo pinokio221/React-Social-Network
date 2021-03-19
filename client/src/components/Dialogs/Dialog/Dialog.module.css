@@ -2,14 +2,10 @@ a:hover {
     text-decoration: none;
 }
 .profile_info {
-    display: flex;
-    align-items: center;
+    display: block;
     margin-bottom: 7px;
     padding: 5px;
-    width: 300px;
     background-color: rgba(0, 98, 171 , 0.70);
-    border-radius: 5px;
-    transition-duration: 0.3s;
 
 }
 
@@ -25,8 +21,10 @@ a:hover {
 }
 
 .profile_message {
+    font-weight: bold;
     font-size: 14px;
     color: rgb(226, 212, 49);
+    float: right;
 }
 
 .profile_name{

@@ -1,4 +1,5 @@
-import { usersAPI, postsAPI, profileAPI } from "../api/api"
+import { postsAPI } from "../api/posts-api"
+import { profileAPI } from "../api/profile-api"
  
 const ADD_POST = "ADD-POST";
 const DELETE_POST = "DELETE-POST";

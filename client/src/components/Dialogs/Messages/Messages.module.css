@@ -1,0 +1,7 @@
+.wrapper {
+    display: block;
+    margin: auto;
+    border: 2px solid gray;
+    width: 30%;
+}
+

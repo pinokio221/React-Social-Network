@@ -1,4 +1,5 @@
-import { usersAPI, friendshipAPI } from '../api/api';
+import { usersAPI } from "../api/users-api"
+import { friendshipAPI } from "../api/friendship-api"
 
 const SEND_INVITATION = "SEND-INVITATION"
 const CANCEL_INVITATION = "CANCEL-INVENTATION"

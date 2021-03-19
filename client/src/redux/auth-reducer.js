@@ -1,4 +1,4 @@
-import { authAPI } from "../api/api"
+import { authAPI } from "../api/auth-api"
 import { Redirect } from "react-router"
 import React from 'react'
 

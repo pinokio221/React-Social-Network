@@ -12,6 +12,7 @@ import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
 import LoginContainer from './components/Login/LoginContainer';
 import RegisterContainer from './components/Register/RegisterContainer';
+import MessagesContainer from './components/Dialogs/Messages/MessagesContainer';
 import SuccessRegistrationAlert from "../src/components/Alerts/SuccessRegistrationAlert"
 
 
@@ -55,10 +56,13 @@ const DefaultContainer = () => {
         <HeaderContainer store={store}/>
         <Navigate />
       <div className='app-wrapper-content'>
+        <Route exact path='/' render={() => <Redirect to={"/profile"}/>}/>
           <Route path='/profile/:userId?' render={ () =>
               <ProfileContainer store={store}/> } />
           <Route exact path='/dialogs' render={ () =>
               <DialogsContainer store={store}/> } />
+          <Route exact path='/dialogs/:dialogId' render={ () =>
+              <MessagesContainer store={store}/> } />
           <Route path='/news' render={ () => <News /> } />
           <Route path='/music' render={ () => <Music /> } />
           <Route path='/settings' render={ () => <Settings /> } />

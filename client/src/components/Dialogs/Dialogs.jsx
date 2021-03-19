@@ -1,21 +1,17 @@
 import React from 'react';
 import styles from './Dialogs.module.css'
 import Dialog from './Dialog/Dialog'
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const Dialogs = (props) => {
-    let state = props.store.getState()
-    let dialogsElements = state.dialogsPage.dialogsData.map(d => <Dialog key = {d.id} name={d.name} dialogid={d.id} profile_picture={d.profile_picture}/>)
+    let dialogsElements = props.dialogsData.map(d => <Dialog key = {d.id} name={d.first_name} dialogid={d.dialogId} profile_image={d.profile_image}/>)
 
     return (
         <div>
-            <h4>Dialogs and chat rooms</h4>
-            <hr/>
             <div className={styles.dialogs}>
                 <div className={styles.dialogsItems}>
-                    <label className={styles.column_type}>Dialogs</label>
-                    <hr/>
-                    { dialogsElements }
+                <label className={styles.dialogs_text}>Dialogs</label>
+                    {props.dialogsIsFetching ? <div className={styles.progress}><CircularProgress /></div> : dialogsElements}
                 </div>
 
             </div>

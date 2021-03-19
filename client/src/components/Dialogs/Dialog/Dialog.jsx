@@ -7,7 +7,7 @@ const Dialog = (props) => {
         <div>
             <div className={styles.dialog + ' ' + styles.active}>
                 <NavLink to={'/dialogs/' + props.dialogid }>
-                    <div className={styles.profile_info}><img src={props.profile_picture} alt=""/>
+                    <div className={styles.profile_info}><img src={props.profile_image} alt=""/>
                     <span className={styles.profile_name}>{props.name}</span>
                     <span className={styles.profile_message}>3 new messages</span></div></NavLink>
             </div>
