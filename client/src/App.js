@@ -14,6 +14,7 @@ import LoginContainer from './components/Login/LoginContainer';
 import RegisterContainer from './components/Register/RegisterContainer';
 import SuccessRegistrationAlert from "../src/components/Alerts/SuccessRegistrationAlert"
 
+
 const App = () => {
   return(
   <BrowserRouter>

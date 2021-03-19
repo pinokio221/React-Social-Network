@@ -32,8 +32,7 @@ const postsRoute = require('./routes/posts');
 const authRoute = require('./routes/auth');
 const profileRoute = require('./routes/profile');
 const friendshipRoute = require('./routes/friendship');
-
-
+const chatRoute = require('./routes/chat')
 
 
 app.use(express.json());
@@ -42,6 +41,7 @@ app.use('/api/posts', postsRoute);
 app.use('/api/user', authRoute);
 app.use('/api/profile', profileRoute);
 app.use('/api/friendship', friendshipRoute);
+app.use('/api/chat', chatRoute);
 
 //Routes
 

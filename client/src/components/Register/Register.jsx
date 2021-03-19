@@ -14,6 +14,9 @@ import { validate, asyncValidate } from '../../validators/RegisterFormValidator'
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns';
 import moment from 'moment'
+import { Fade } from "react-awesome-reveal";
+
+
 
 
 const RenderTextField = ({label, input, meta: { touched, invalid, error }, ...custom}) => (
@@ -92,48 +95,50 @@ const RegisterForm = (props) => {
   const classes = useStyles();
   const { handleSubmit, pristine, reset, submitting} = props
   return (
-    <div className={styles.page}>
-    <form className={styles.wrapper} onSubmit = { handleSubmit }>
-      <div className={styles.form}>
-      <div className={styles.logo}>
-        <img src="https://static.chilltime.com/v1/interface/media/chilltime/chilltime_logo_1200x750_default.png" alt=""/>
-      </div>
-        <h5>Sign Up</h5>
-      <div className={classes.inline_field}>
-        <Field name="firstname" component={RenderTextField} label="First Name"/>
-        <Field name="lastname" component={RenderTextField} label="Last Name" />
-      
-        <Field name="email" component={RenderTextField} label="Email" />
-        <Field name="login" component={RenderTextField} label="Login" />
-      </div>
-      <br/>
-      <div className={styles.middle}>
-        <Field name="gender" component={RenderRadioButton}>
-          <Radio value="1" label="male" />
-          <Radio value="2" label="female" />
-        </Field>
-      <br/><br/>
-      <div>
-        <Field name='birthday' component={RenderDatePicker} label='Birthday'/>
-      </div>
-      </div>
-      <div/>
-      <br/>
-      <div className={classes.inline_field}>
-        <Field name='password' component={RenderPasswordField} label='Password'/>
-        <Field name='repeat_password' component={RenderPasswordField} label='Repeat password' />
-      </div>
-      <div className={styles.signup_btn}>
-        {props.regFormInProcess ? <CircularProgress /> : 
-        <Button disabled={pristine || submitting} type='submit' variant="contained" size="large" color="primary" >
-        Sign UP
-        </Button>
-        }
+      <div className={styles.page}>
+        <Fade direction='right'>
+      <form className={styles.wrapper} onSubmit = { handleSubmit }>
+        <div className={styles.form}>
+        <div className={styles.logo}>
+          <img src="https://static.chilltime.com/v1/interface/media/chilltime/chilltime_logo_1200x750_default.png" alt=""/>
+        </div>
+          <h5>Sign Up</h5>
+        <div className={classes.inline_field}>
+          <Field name="firstname" component={RenderTextField} label="First Name"/>
+          <Field name="lastname" component={RenderTextField} label="Last Name" />
         
+          <Field name="email" component={RenderTextField} label="Email" />
+          <Field name="login" component={RenderTextField} label="Login" />
+        </div>
+        <br/>
+        <div className={styles.middle}>
+          <Field name="gender" component={RenderRadioButton}>
+            <Radio value="1" label="male" />
+            <Radio value="2" label="female" />
+          </Field>
+        <br/><br/>
+        <div>
+          <Field name='birthday' component={RenderDatePicker} label='Birthday'/>
+        </div>
+        </div>
+        <div/>
+        <br/>
+        <div className={classes.inline_field}>
+          <Field name='password' component={RenderPasswordField} label='Password'/>
+          <Field name='repeat_password' component={RenderPasswordField} label='Repeat password' />
+        </div>
+        <div className={styles.signup_btn}>
+          {props.regFormInProcess ? <CircularProgress /> : 
+          <Button disabled={pristine || submitting} type='submit' variant="contained" size="large" color="primary" >
+          Sign UP
+          </Button>
+          }
+          
+        </div>
       </div>
-    </div>
-  </form>
-</div>
+    </form></Fade>
+  </div>
+
   )
 }
 
@@ -171,7 +176,8 @@ const Register = (props) => {
       props.userRegister(generateForm(formData));
   }
     return (
-        <ReduxRegisterForm onSubmit={signUp} regFormInProcess={props.regFormInProcess}/>
+      
+            <ReduxRegisterForm onSubmit={signUp} regFormInProcess={props.regFormInProcess}/>
     );
 }
 

@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { Slide } from "react-awesome-reveal";
 
 const options = [
     'Edit',
@@ -31,8 +32,8 @@ const Post = (props) => {
     setAnchorEl(null);};
     return (
         <div className={styles.item}>
+            <Slide triggerOnce={true} direction="bottom">
             <Alert key='info' variant='info'>
-                
                 <div>
                     <img src={props.userInfo.profile_image} alt=""/>
                     <span className={styles.user_name}>
@@ -76,9 +77,10 @@ const Post = (props) => {
                     </table>
                 </div>
             </Alert>
-        <div>
+            <div>
         </div>
-            </div>
+    </Slide>
+</div>
     );
 
 }
