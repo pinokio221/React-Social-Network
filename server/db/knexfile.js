@@ -1,6 +1,6 @@
 const dotenv = require('dotenv').config();
 
-module.exports  = {
+module.exports  = { // FIX THAT!!!
     development: {
         client: 'mysql',
         connection: {

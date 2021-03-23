@@ -1,9 +1,10 @@
 const express = require("express");
 const app = express();
+const http = require('http');
+const server = http.createServer(app);
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const port = 9000;
-
 
 let cors = require("cors");
 var corsOptions = {
@@ -24,7 +25,7 @@ app.use(function(req, res, next) {
     next()
   })
 
-
+require('./sockets/chat').listen(server);
 
 //Import Routes
 const usersRoute = require('./routes/users');
@@ -48,10 +49,6 @@ app.use('/api/chat', chatRoute);
 app.get('/', (req, res) => {
     res.send("We are on home");
 });
-
-
-//
-
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Listening on port ${port}`)
 })

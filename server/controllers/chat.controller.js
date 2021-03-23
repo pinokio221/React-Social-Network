@@ -24,7 +24,6 @@ const returnDialogMessages = (req, res, next) => {
         let user = verifyUser.getCurrentUser(req, res, next);
         if(user){
             let dialogId = parseInt(req.query.dialog);
-            console.log(dialogId, user.userId)
             Dialog.query().select('id')
             .where('sendId', user.userId)
             .andWhere('id', dialogId)
@@ -57,8 +56,47 @@ const returnDialogMessages = (req, res, next) => {
     }
 }
 
+const returnUserDialogById = (req, res, next) => {
+    try {
+        let items = {}
+        let user = verifyUser.getCurrentUser(req, res, next);
+        if(user){
+            Dialog.query().select()
+            .where('sendId', user.userId)
+            .andWhere('id', req.query.id)
+            .orWhere('receiveId', user.userId)
+            .andWhere('id', req.query.id)
+            .first()
+            .then(async function(result){
+                if(result){
+                    let interlocutorId;
+                    if(result.sendId == user.userId) { interlocutorId = result.receiveId }
+                    else { interlocutorId = result.sendId }
+                    let dialog = await User.query().select(
+                        'id', 'first_name','last_name','fullname','profile_image')
+                        .where('id', interlocutorId).first()
+                        dialog.dialogId = result.id
+                    items.items = dialog;
+                    items.totalDialogs = items.items.length;
+                }
+                else {
+                    return res.status(400).json({
+                        message: "You do not have access to this dialog"
+                    })
+                }
+                res.status(200).json(items)
+            })
+        }
+    }catch(err){
+        res.status(400).send(err)
+    }
+}
+
 const returnUserDialogs = (req, res, next) => {
     try {
+        if(req.query.id) {
+            return returnUserDialogById(req, res, next);
+        }
         let items = {}
         let user = verifyUser.getCurrentUser(req, res, next);
         if(user){
@@ -88,11 +126,11 @@ const returnUserDialogs = (req, res, next) => {
     }
 }
 
-const sentMessage = async (req, res, next) => {
+const sentMessage = async (req, res, next, receiveId, message) => {
     try{
         let user = verifyUser.getCurrentUser(req, res, next);
         if(user){
-            let receiveUser = await User.query().select('id').where('id', req.body.receiveId).first()
+            let receiveUser = await User.query().select('id').where('id', receiveId).first()
             if(!receiveUser){
                 return res.status(404).json({
                     message: "User not found"
@@ -112,7 +150,7 @@ const sentMessage = async (req, res, next) => {
                     Message.query().insert({
                         dialogId: id.id,
                         author: user.userId,
-                        content: req.body.content
+                        content: message
                     }).then(function(){
                         res.status(201).json({
                             message: "Message succesfully send"
@@ -125,11 +163,10 @@ const sentMessage = async (req, res, next) => {
                     sendId: user.userId,
                     receiveId: receiveUser.id
                 }).then(async function(){
-                    console.log(dialog)
                     await Message.query().insert({
                         dialogId: dialog.id,
                         author: user.userId,
-                        content: req.body.content
+                        content: message
                     }).then(function(){
                         res.status(201).json({
                             message: "Message succesfully send!!!"

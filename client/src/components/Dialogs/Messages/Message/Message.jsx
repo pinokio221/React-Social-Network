@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './Message.module.css'
 
 const Message = (props) => {
+
     return(
         <div className={styles.wrapper}>
             <img className={styles.userPhoto} src={props.authorData.profile_image} alt=""/>

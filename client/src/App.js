@@ -57,7 +57,7 @@ const DefaultContainer = () => {
         <Navigate />
       <div className='app-wrapper-content'>
         <Route exact path='/' render={() => <Redirect to={"/profile"}/>}/>
-          <Route path='/profile/:userId?' render={ () =>
+          <Route exec path='/profile/:userId?' render={ () =>
               <ProfileContainer store={store}/> } />
           <Route exact path='/dialogs' render={ () =>
               <DialogsContainer store={store}/> } />
