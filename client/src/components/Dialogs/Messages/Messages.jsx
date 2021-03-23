@@ -13,7 +13,9 @@ import SendIcon from '@material-ui/icons/Send';
 const Messages = (props) => {
 
     let messagesElements = props.messagesData.map(m => <Message 
-        key={m.id} 
+        key={m.id}
+        author={m.author}
+        authData={props.authData}
         authorData={m.authorData} 
         content={m.content}
         dialogId={m.dialogId}
@@ -21,10 +23,12 @@ const Messages = (props) => {
 
     return(
         <div className={styles.wrapper}>
-            <div className={styles.messageItems}>
+            <div>
                 {props.messagesIsFetching ? <CircularProgress/> : 
                 <div>
-                    { messagesElements }
+                    <div className={styles.messageItems}>
+                        { messagesElements }
+                    </div>
                     <form onSubmit = {props.submitChatMessage}>
                     <div className={styles.inputBlock}>
                         <InputGroup>

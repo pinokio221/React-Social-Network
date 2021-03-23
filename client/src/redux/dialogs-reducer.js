@@ -9,7 +9,7 @@ const TOGGLE_MESSAGES_FETCHING = "TOGGLE-MESSAGES-FETCHING"
 const RESET_DIALOG = "RESET-DIALOG"
 const SET_CURRENT_DIALOG = "SET-CURRENT-DIALOG"
 
-export const sendMessageActionCreator = () => ({ type: SEND_MESSAGE })
+export const sendMessageActionCreator = (message) => ({ type: SEND_MESSAGE, message })
 export const updateMessageBodyActionCreator = (body) => ({ type: UPDATE_MESSAGE_BODY, body: body })
 export const setProfileDialogsAction = (dialogs, dialogsCount) => ({ type: SET_PROFILE_DIALOGS, dialogs, dialogsCount})
 export const setProfileDialogMessagesAction = (messages, messagesCount) => ({ type: SET_DIALOG_MESSAGES, messages, messagesCount })
@@ -68,7 +68,7 @@ const dialogsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 newMessageBody: '',
-                messagesData: [...state.messagesData, {id: 10, message: body}]
+                messagesData: [...state.messagesData, action.message]
             }
         case SET_PROFILE_DIALOGS:
             return {

@@ -126,7 +126,8 @@ const returnUserDialogs = (req, res, next) => {
     }
 }
 
-const sentMessage = async (req, res, next, receiveId, message) => {
+/*const sentMessage = async (req, res, next, receiveId, message) => {
+    console.log(message)
     try{
         let user = verifyUser.getCurrentUser(req, res, next);
         if(user){
@@ -180,14 +181,14 @@ const sentMessage = async (req, res, next, receiveId, message) => {
     }catch(err) {
         res.status(400).send(err)
     }
-}
+}*/
 
 
 
 module.exports = {
+    returnDialogUser: returnDialogUser,
     returnUserDialogs: returnUserDialogs,
-    returnDialogMessages: returnDialogMessages,
-    sentMessage: sentMessage
+    returnDialogMessages: returnDialogMessages
 }
 
 

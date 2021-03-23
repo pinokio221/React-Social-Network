@@ -37,6 +37,7 @@ const chatRoute = require('./routes/chat')
 
 
 app.use(express.json());
+
 app.use('/api/users', usersRoute);
 app.use('/api/posts', postsRoute);
 app.use('/api/user', authRoute);

@@ -1,9 +1,10 @@
 .wrapper {
     display: block;
     margin: auto;
-    border: 2px solid gray;
     width: 80%;
-    padding: 5%;
+    padding: 4%;
+    background-color: whitesmoke;
+    border-radius: 30px;
 }
 
 .inputBlock {
@@ -12,6 +13,13 @@
     margin-top: 5%;
 }
 
+.messageItems {
+    display: flex;
+    scroll-margin-block: 20px;
+    flex-direction: column;
+    justify-self: center;
+    padding: 10px;
+}
 .sendBtn {
     align-self: center;
     height: 40px;

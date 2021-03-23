@@ -2,6 +2,7 @@ const { verify } = require('jsonwebtoken');
 
 module.exports = {
     getCurrentUser(req, res, next) {
+        console.log(req.cookies)
         let token = req.cookies.jwt;
         if(token){
             return verify(token, 'my secret', (err, decoded) => {
