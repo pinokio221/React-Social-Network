@@ -3,11 +3,11 @@ import styles from './Messages.module.css'
 import Message from './Message/Message'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {InputGroup, FormControl} from "react-bootstrap";
-import queryString from 'query-string';
-import Button from '@material-ui/core/Button';
-import Icon from '@material-ui/core/Icon';
-import { makeStyles } from '@material-ui/core/styles';
+import SentimentSatisfiedSharpIcon from '@material-ui/icons/SentimentSatisfiedSharp';import Button from '@material-ui/core/Button';
 import SendIcon from '@material-ui/icons/Send';
+import ScrollToBottom from 'react-scroll-to-bottom';
+import 'emoji-mart/css/emoji-mart.css'
+import { Picker } from 'emoji-mart'
 
 
 const Messages = (props) => {
@@ -26,9 +26,10 @@ const Messages = (props) => {
             <div>
                 {props.messagesIsFetching ? <CircularProgress/> : 
                 <div>
+                    <ScrollToBottom>
                     <div className={styles.messageItems}>
                         { messagesElements }
-                    </div>
+                    </div></ScrollToBottom>
                     <form onSubmit = {props.submitChatMessage}>
                     <div className={styles.inputBlock}>
                         <InputGroup>
@@ -38,7 +39,6 @@ const Messages = (props) => {
                             placeholder="Enter message"
                             value={props.chatMessage}
                             onChange={props.handleSearchChange}
-                            onSubmit = {props.submitChatMessage}
                             />
                         </InputGroup>
                         <Button
@@ -50,6 +50,13 @@ const Messages = (props) => {
                             Send
                         </Button>
                         </div>
+                        <div className={styles.iconsTab}>
+                            <SentimentSatisfiedSharpIcon onClick={props.toggleEmojiPicker} className={styles.emojiIcon} color="primary"/>
+                        </div>
+                        { props.emojiPicker ?
+                            <div className={styles.emojiPicker}><Picker autoFocus tabIndex={0}  set='apple' onSelect={props.addEmoji} /></div>
+                            : null
+                            }
                     </form>
                 </div>
                 }

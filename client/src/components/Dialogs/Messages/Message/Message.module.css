@@ -1,6 +1,6 @@
 .userPhoto {
     width: 35px;
-    border-radius: 50%; 
+    border-radius: 50%;
 }
 
 
@@ -9,8 +9,9 @@
     font-size: 16px;
     color: white;
     width: max-content;
-    max-width: 300px;
-    word-wrap: break-word;
+    width: auto;
+    max-width: 500px;
+    word-wrap:break-word;
     padding: 10px;
     border-radius: 5px;
 }

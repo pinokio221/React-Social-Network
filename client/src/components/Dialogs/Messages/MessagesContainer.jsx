@@ -11,7 +11,8 @@ import io from 'socket.io-client';
 
 class MessagesContainer extends React.Component {
     state = {
-        chatMessage: ""
+        chatMessage: "",
+        emojiPicker: false
     }
     handleSearchChange = (e) => {
         this.setState({
@@ -24,14 +25,34 @@ class MessagesContainer extends React.Component {
         let chatMessage = this.state.chatMessage;
         let authorId = this.props.authData.id;
         let dialogId = this.props.currentDialogData.dialogId
+        console.log(typeof(this.state.chatMessage))
 
         this.socket.emit('input-chat-message', {
             authorId,
             dialogId,
             chatMessage
         });
-        this.setState({ chatMessage: "" });
+        this.setState({ chatMessage: "", emojiPicker: false });
         
+    }
+    toggleEmojiPicker = () => {
+        if(this.state.emojiPicker){
+            setTimeout(() => {
+                this.setState({
+                    emojiPicker: false
+                })
+            }, 100);
+            
+        } else {
+            setTimeout(() => {
+                this.setState({
+                    emojiPicker: true
+                })
+            }, 100);
+        }
+    }
+    addEmoji = (emoji) => {
+        this.setState({ chatMessage: this.state.chatMessage+emoji.native });
     }
     componentDidMount() {
         let server = 'http://localhost:9000';
@@ -50,9 +71,13 @@ class MessagesContainer extends React.Component {
         return(
             <Messages 
                 {...this.props} 
-                chatMessage={this.state.chatMessage} 
+                chatMessage={this.state.chatMessage}
+                emojiPicker={this.state.emojiPicker}
+                addEmoji={this.addEmoji}
                 handleSearchChange={this.handleSearchChange}
-                submitChatMessage={this.submitChatMessage}/>
+                submitChatMessage={this.submitChatMessage}
+                toggleEmojiPicker={this.toggleEmojiPicker}
+                />
         )
     }
 }

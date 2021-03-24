@@ -12,6 +12,7 @@ const io = require('socket.io')( {
 });
 
 const sentMessage = async (msg) => {
+  console.log(msg)
   try {
     Message.query().insert({
       author: msg.authorId,
