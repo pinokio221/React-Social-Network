@@ -24,15 +24,25 @@ class MessagesContainer extends React.Component {
 
         let chatMessage = this.state.chatMessage;
         let authorId = this.props.authData.id;
-        let dialogId = this.props.currentDialogData.dialogId
-        console.log(typeof(this.state.chatMessage))
-
-        this.socket.emit('input-chat-message', {
-            authorId,
-            dialogId,
-            chatMessage
-        });
-        this.setState({ chatMessage: "", emojiPicker: false });
+        let dialog = this.props.currentDialogData;
+        let receiveId = this.props.match.params.receiveId
+        let status = '0';
+        if(dialog === null) {
+            this.socket.emit('input-create-new-dialog', {
+                authorId,
+                receiveId,
+                status
+            })
+            
+        } else {
+            let dialogId = this.props.currentDialogData.dialogId
+            this.socket.emit('input-chat-message', {
+                authorId,
+                dialogId,
+                chatMessage
+            });
+            this.setState({ chatMessage: "", emojiPicker: false });
+        }
         
     }
     toggleEmojiPicker = () => {
@@ -61,10 +71,23 @@ class MessagesContainer extends React.Component {
         this.socket.on('output-chat-message', msg => {
             this.props.sendMessageActionCreator(msg)
         })
-        let dialogid = this.props.match.params.dialogId
-        this.props.getDialogMessages(dialogid);
+        this.socket.on('output-create-new-dialog', data => {
+            this.props.getDialogMessages(data.receiveId)
+            let dialogId = data.id;
+            let authorId = data.sendId;
+            let chatMessage = this.state.chatMessage;
+
+            this.socket.emit('input-chat-message', {
+                authorId,
+                dialogId,
+                chatMessage
+            })
+        })
+        let receiveId = this.props.match.params.receiveId
+        this.props.getDialogMessages(receiveId);
     }
     componentWillUnmount() {
+        this.socket.close()
         this.props.resetDialogMessages();
     }
     render() {
@@ -95,5 +118,5 @@ let mapStateToProps = (state) => {
 export default compose(
     withAuthRedirect,
     withRouter,
-    connect(mapStateToProps, { getDialogMessages, resetDialogMessages, sendMessageActionCreator })
+    connect(mapStateToProps, { getDialogMessages, resetDialogMessages, sendMessageActionCreator})
 )(MessagesContainer);

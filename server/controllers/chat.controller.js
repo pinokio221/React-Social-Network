@@ -18,25 +18,20 @@ const returnDialogUser = async (userid) => {
     
 }
 
-const returnDialogMessages = (req, res, next) => {
+const returnDialogMessages = async (req, res, next) => {
     try{
         let items = {}
         let user = verifyUser.getCurrentUser(req, res, next);
         if(user){
-            let dialogId = parseInt(req.query.dialog);
-            Dialog.query().select('id')
+            let dialog = await Dialog.query().select('id')
             .where('sendId', user.userId)
-            .andWhere('id', dialogId)
-            .orWhere('receiveId', user.userId)
-            .andWhere('id', dialogId)
-            .first().then(async function(result){
-                if(!result){
-                    return res.status(400).json({
-                        message: "You do not have access to this dialog"
-                    })
-                }
+            .andWhere('receiveId', req.query.target)
+            .orWhere('sendId', req.query.target)
+            .andWhere('receiveId', user.userId)
+            .first()
+            if(dialog) {
                 Message.query().select()
-                .where('dialogId', result.id).then(async function(message_result){
+                .where('dialogId', dialog.id).then(async function(message_result){
                     if(message_result){
                         let messages = [];
                         for(let value of message_result){
@@ -45,11 +40,16 @@ const returnDialogMessages = (req, res, next) => {
                             messages.push(value)
                         }
                         items.items = messages;
+                        items.dialogId = dialog.id;
                         items.totalMessages = items.items.length
                     }
                     res.status(200).send(items);
                 })
-            })
+            } else {
+                res.status(404).json({
+                    message: "Dialog not found"
+                })
+            }
         }
     }catch(err){
         res.status(400).send(err)
@@ -80,8 +80,8 @@ const returnUserDialogById = (req, res, next) => {
                     items.totalDialogs = items.items.length;
                 }
                 else {
-                    return res.status(400).json({
-                        message: "You do not have access to this dialog"
+                    return res.status(404).json({
+                        message: "Your message history is empty"
                     })
                 }
                 res.status(200).json(items)

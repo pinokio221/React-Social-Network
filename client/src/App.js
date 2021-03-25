@@ -61,7 +61,7 @@ const DefaultContainer = () => {
               <ProfileContainer store={store}/> } />
           <Route exact path='/dialogs' render={ () =>
               <DialogsContainer store={store}/> } />
-          <Route exact path='/dialogs/:dialogId' render={ () =>
+          <Route exact path='/dialogs/:receiveId' render={ () =>
               <MessagesContainer store={store}/> } />
           <Route path='/news' render={ () => <News /> } />
           <Route path='/music' render={ () => <Music /> } />

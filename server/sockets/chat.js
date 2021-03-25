@@ -12,7 +12,6 @@ const io = require('socket.io')( {
 });
 
 const sentMessage = async (msg) => {
-  console.log(msg)
   try {
     Message.query().insert({
       author: msg.authorId,
@@ -28,10 +27,29 @@ const sentMessage = async (msg) => {
   }
 }
 
+const createNewDialog = async (msg) => {
+  try {
+    Dialog.query().insert({
+      sendId: msg.authorId,
+      receiveId: msg.receiveId,
+      status: msg.status
+    }).then(async function(res) {
+      console.log(res)
+      return io.emit('output-create-new-dialog', res)
+    })
+
+  } catch(err) {
+    console.error(err);
+  }
+}
+
 
 io.on('connection', function(socket) {
   socket.on('input-chat-message', msg => {
-      sentMessage(msg);
+    sentMessage(msg);
+  })
+  socket.on('input-create-new-dialog', msg => {
+    createNewDialog(msg);
   })
 })
 

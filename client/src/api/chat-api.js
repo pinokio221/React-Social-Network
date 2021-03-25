@@ -6,7 +6,6 @@ const instance = axios.create({
     baseURL: 'http://localhost:9000/api/',
     withCredentials: true
 })
-let socket = io.connect('http://localhost:9000');
 
 export const chatAPI = {
     getProfileDialogs(){
@@ -17,12 +16,14 @@ export const chatAPI = {
             return response;
         })
     },
-    getDialogMessages(dialogid) {
-        let requestURL = `http://localhost:9000/api/chat/messages?dialog=${dialogid}`
+    getDialogMessages(receiveId) {
+        let requestURL = `http://localhost:9000/api/chat/messages?target=${receiveId}`
         return instance.get(requestURL,
         { withCredentials: true })
         .then(response => {
             return response;
+        }).catch((error) => {
+            return error.response
         })
     },
     sentMessage(receiveId, content) {
@@ -42,7 +43,9 @@ export const chatAPI = {
         { withCredentials: true })
         .then(response => {
             return response;
+        }).catch((error) => {
+            return error.response
         })
-    }
+    },
     
 }

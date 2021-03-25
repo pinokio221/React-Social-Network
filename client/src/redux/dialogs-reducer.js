@@ -36,25 +36,38 @@ export const getProfileDialogs = () => {
             dispatch(toggleDialogsFetchingAction(false));
         })
     }
+    
 }
 
 export const getProfileDialogById = (dialogid) => {
     return (dispatch) => {
         chatAPI.getProfileDialogById(dialogid).then(response => {
-            dispatch(setCurrentDialogAction(response.data.items));
+            if(response.status === 200) {
+                dispatch(setCurrentDialogAction(response.data.items));
+            }
+            if(response.status === 404) {
+                console.log(response.data.message)
+            }
         })
     }
 }
 
-export const getDialogMessages = (dialogid) => {
+export const getDialogMessages = (receiveId) => {
     return(dispatch) => {
-        chatAPI.getDialogMessages(dialogid).then(response => {
-            dispatch(setProfileDialogMessagesAction(response.data.items, response.data.totalMessages))
-            dispatch(toggleMessagesFetchingAction(false));
+        chatAPI.getDialogMessages(receiveId).then(response => {
+            if(response.status === 200) {
+                dispatch(setProfileDialogMessagesAction(response.data.items, response.data.totalMessages))
+                dispatch(getProfileDialogById(response.data.dialogId));
+                dispatch(toggleMessagesFetchingAction(false));
+            }
+            if(response.status === 404) {
+                dispatch(toggleMessagesFetchingAction(false));
+            }
+            
         })
-        dispatch(getProfileDialogById(dialogid));
     }
 }
+
 
 const dialogsReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -91,6 +104,7 @@ const dialogsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 messagesData: [],
+                currentDialogData: null,
                 messagesCount: null,
                 messagesIsFetching: true
             }
