@@ -14,9 +14,10 @@
     margin-top: 5%;
 }
 
-
-
-
+.fetchProgress {
+    display: flex;
+    justify-content: center;
+}
 
 .messageItems {
     display: flex;

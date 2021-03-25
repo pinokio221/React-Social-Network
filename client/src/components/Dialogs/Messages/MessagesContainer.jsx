@@ -82,6 +82,7 @@ class MessagesContainer extends React.Component {
                 dialogId,
                 chatMessage
             })
+            this.setState({ chatMessage: "", emojiPicker: false });
         })
         let receiveId = this.props.match.params.receiveId
         this.props.getDialogMessages(receiveId);

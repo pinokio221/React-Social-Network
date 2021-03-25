@@ -1,0 +1,12 @@
+.wrapper {
+   display: block;
+   margin: 0px auto;
+   width: 70%;
+   background-color: rgba(188, 188, 188, 0.5);
+   padding: 10px;
+   border-radius: 10px;
+}
+.field {
+    width:max-content;
+    margin: 0px auto;
+}

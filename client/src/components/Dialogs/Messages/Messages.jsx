@@ -24,12 +24,13 @@ const Messages = (props) => {
     return(
         <div className={styles.wrapper}>
             <div>
-                {props.messagesIsFetching ? <CircularProgress/> : 
                 <div>
                     <ScrollToBottom>
-                    <div className={styles.messageItems}>
+                    {props.messagesIsFetching ? <div class={styles.fetchProgress}><CircularProgress/></div>
+                    : <div className={styles.messageItems}>
                         { messagesElements }
-                    </div></ScrollToBottom>
+                        </div>}
+                    </ScrollToBottom>
                     <form onSubmit = {props.submitChatMessage}>
                     <div className={styles.inputBlock}>
                         <InputGroup>
@@ -59,7 +60,6 @@ const Messages = (props) => {
                             }
                     </form>
                 </div>
-                }
             </div>
         </div>
     );

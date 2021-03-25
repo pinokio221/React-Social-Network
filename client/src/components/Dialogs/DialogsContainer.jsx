@@ -19,6 +19,7 @@ class DialogsContainer extends React.Component {
 let mapStateToProps = (state) => {
     return {
         dialogsData: state.dialogsPage.dialogsData,
+        userFriends: state.profilePage.userFriends,
         dialogsCount: state.dialogsPage.dialogsCount,
         dialogsIsFetching: state.dialogsPage.dialogsIsFetching
     }
