@@ -16,8 +16,8 @@ export const chatAPI = {
             return response;
         })
     },
-    getDialogMessages(receiveId) {
-        let requestURL = `http://localhost:9000/api/chat/messages?target=${receiveId}`
+    getDialogMessages(receiveId, pagination) {
+        let requestURL = `http://localhost:9000/api/chat/messages?target=${receiveId}&page=${pagination}`
         return instance.get(requestURL,
         { withCredentials: true })
         .then(response => {

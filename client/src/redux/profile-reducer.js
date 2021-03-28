@@ -23,16 +23,21 @@ let initialState = {
     friendsFetching: true,
 }
 
-
-export const getProfilePage = (userId) => {
+export const getProfileFriends = (userId) => {
     return (dispatch) => {
-        profileAPI.getProfilePage(userId).then(data => {
-            dispatch(setProfilePageAction(data));
-        })
         profileAPI.getProfileFriends(userId).then(data => {
             dispatch(setProfileFriendsAction(data.data.items, data.data.totalFriends))
         })
     }
+}
+
+export const getProfilePage = (userId) => (dispatch) => {
+    
+    profileAPI.getProfilePage(userId).then(data => {
+        dispatch(setProfilePageAction(data));
+    })
+    dispatch(getProfileFriends(userId));
+    
 }
 
 export const getProfilePosts = (userId) => {

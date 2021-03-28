@@ -1,4 +1,5 @@
 import { chatAPI } from "../api/chat-api"
+import { profileAPI } from "../api/profile-api"
 
 const UPDATE_MESSAGE_BODY = "UPDATE-MESSAGE-BODY"
 const SEND_MESSAGE = "SEND-MESSAGE"
@@ -8,21 +9,28 @@ const TOGGLE_DIALOGS_FETCHING = "TOGGLE-DIALOGS-FETCHING"
 const TOGGLE_MESSAGES_FETCHING = "TOGGLE-MESSAGES-FETCHING"
 const RESET_DIALOG = "RESET-DIALOG"
 const SET_CURRENT_DIALOG = "SET-CURRENT-DIALOG"
+const SET_PROFILE_CONTACTS = "SET-PROFILE-CONTACTS"
+const FETCH_MORE_MESSAGES = "FETCH-MORE-MESSAGES"
 
 export const sendMessageActionCreator = (message) => ({ type: SEND_MESSAGE, message })
 export const updateMessageBodyActionCreator = (body) => ({ type: UPDATE_MESSAGE_BODY, body: body })
 export const setProfileDialogsAction = (dialogs, dialogsCount) => ({ type: SET_PROFILE_DIALOGS, dialogs, dialogsCount})
-export const setProfileDialogMessagesAction = (messages, messagesCount) => ({ type: SET_DIALOG_MESSAGES, messages, messagesCount })
+export const setProfileDialogMessagesAction = (messages, messagesCount, messagesPagination) => ({ type: SET_DIALOG_MESSAGES, messages, messagesCount, messagesPagination })
 export const toggleDialogsFetchingAction = (isFetching) => ({ type: TOGGLE_DIALOGS_FETCHING, isFetching})
 export const toggleMessagesFetchingAction = (isFetching) => ({ type: TOGGLE_MESSAGES_FETCHING, isFetching})
 export const resetDialogMessages = () => ({ type: RESET_DIALOG });
 export const setCurrentDialogAction = (dialog_data) => ({ type: SET_CURRENT_DIALOG, dialog_data});
+export const setProfileContactsAction = (contacts, totalContacts) => ({ type: SET_PROFILE_CONTACTS, contacts, totalContacts })
+export const fetchMoreMessagesAction = (messages, pagination) => ({ type: FETCH_MORE_MESSAGES, messages, pagination})
 
 let initialState = {
     dialogsData: [],
+    contactsData: [],
+    totalContacts: null,
     dialogsCount: null,
     messagesData: [],
     messagesCount: null,
+    messagesPagination: 1,
     currentDialogData: null,
     newMessageBody: "",
     dialogsIsFetching: true,
@@ -39,6 +47,14 @@ export const getProfileDialogs = () => {
     
 }
 
+export const getProfileContacts = (userId) => {
+    return (dispatch) => {
+        profileAPI.getProfileFriends(userId).then(data => {
+            dispatch(setProfileContactsAction(data.data.items, data.data.totalFriends))
+        })
+    }
+}
+
 export const getProfileDialogById = (dialogid) => {
     return (dispatch) => {
         chatAPI.getProfileDialogById(dialogid).then(response => {
@@ -52,11 +68,11 @@ export const getProfileDialogById = (dialogid) => {
     }
 }
 
-export const getDialogMessages = (receiveId) => {
+export const getDialogMessages = (receiveId, pagination) => {
     return(dispatch) => {
-        chatAPI.getDialogMessages(receiveId).then(response => {
+        chatAPI.getDialogMessages(receiveId, pagination).then(response => {
             if(response.status === 200) {
-                dispatch(setProfileDialogMessagesAction(response.data.items, response.data.totalMessages))
+                dispatch(setProfileDialogMessagesAction(response.data.items, response.data.totalMessages, response.data.page))
                 dispatch(getProfileDialogById(response.data.dialogId));
                 dispatch(toggleMessagesFetchingAction(false));
             }
@@ -64,6 +80,17 @@ export const getDialogMessages = (receiveId) => {
                 dispatch(toggleMessagesFetchingAction(false));
             }
             
+        })
+    }
+}
+
+export const fetchMoreMessages = (receiveId, pagination) => {
+    return(dispatch) => {
+        chatAPI.getDialogMessages(receiveId, pagination).then(response => {
+            if(response.status === 200) {
+                dispatch(fetchMoreMessagesAction(response.data.items, response.data.page))
+                
+            }
         })
     }
 }
@@ -81,7 +108,7 @@ const dialogsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 newMessageBody: '',
-                messagesData: [...state.messagesData, action.message]
+                messagesData: [action.message, ...state.messagesData,]
             }
         case SET_PROFILE_DIALOGS:
             return {
@@ -89,6 +116,13 @@ const dialogsReducer = (state = initialState, action) => {
                 dialogsData: action.dialogs,
                 dialogsCount: action.dialogsCount
             }
+        case SET_PROFILE_CONTACTS: {
+            return {
+                ...state,
+                contactsData: action.contacts,
+                totalContacts: action.totalContacts
+            }
+        }
         case SET_CURRENT_DIALOG:
             return {
                 ...state,
@@ -98,7 +132,14 @@ const dialogsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 messagesData: action.messages,
-                messagesCount: action.messagesCount
+                messagesCount: action.messagesCount,
+                messagesPagination: action.messagesPagination
+            }
+        case FETCH_MORE_MESSAGES:
+            return {
+                ...state,
+                messagesData: [...state.messagesData, ...action.messages],
+                messagesPagination: action.pagination
             }
         case RESET_DIALOG:
             return {
@@ -106,7 +147,8 @@ const dialogsReducer = (state = initialState, action) => {
                 messagesData: [],
                 currentDialogData: null,
                 messagesCount: null,
-                messagesIsFetching: true
+                messagesIsFetching: true,
+                messagesPagination: 1
             }
         case TOGGLE_DIALOGS_FETCHING:
             return {

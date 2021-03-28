@@ -69,7 +69,7 @@ const Dialogs = (props) => {
     };
 
     let dialogsElements = props.dialogsData.map(d => <Dialog key = {d.id} receiveId = {d.id} name={d.first_name} profile_image={d.profile_image}/>)
-    let friendsElements = props.userFriends.map(f => <Contact key = {f.id} receiveId = {f.id} name={f.first_name} fullname={f.fullname} profile_image={f.profile_image}/>)
+    let contactsElements = props.contactsData.map(f => <Contact key = {f.id} receiveId = {f.id} name={f.first_name} fullname={f.fullname} profile_image={f.profile_image}/>)
     return (
         <div>
             <div className={styles.selectTab}>
@@ -100,8 +100,8 @@ const Dialogs = (props) => {
                     </TabPanel>
                     <TabPanel value={value} index={1} dir={theme.direction}>
                         <div className={styles.tabContentWrap}>
-                            <div className={styles.friendsItems}>
-                                {props.dialogsIsFetching ? <div className={styles.progress}><CircularProgress /></div> : friendsElements}
+                            <div className={styles.contactsItems}>
+                                {props.dialogsIsFetching ? <div className={styles.progress}><CircularProgress /></div> : contactsElements}
                             </div>
                         </div>
                     </TabPanel>

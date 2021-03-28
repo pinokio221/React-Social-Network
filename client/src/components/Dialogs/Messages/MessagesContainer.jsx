@@ -4,15 +4,23 @@ import Messages from './Messages'
 import { withAuthRedirect } from '../../../hoc/AuthRedirect';
 import { compose } from 'redux';
 import connect from "react-redux/lib/connect/connect";
-import { getDialogMessages, resetDialogMessages, sendMessageActionCreator} from '../../../redux/dialogs-reducer';
+import { getDialogMessages, resetDialogMessages, sendMessageActionCreator, fetchMoreMessages} from '../../../redux/dialogs-reducer';
 import withRouter from "react-router-dom/withRouter"
 import io from 'socket.io-client';
+import { animateScroll } from "react-scroll";
+
 
 
 class MessagesContainer extends React.Component {
+    
     state = {
         chatMessage: "",
-        emojiPicker: false
+        emojiPicker: false,
+        displayDownButton: false,
+        pagination: 1,
+        hasMore: true,
+        scrollPosition: 0,
+        receiveId: this.props.match.params.receiveId
     }
     handleSearchChange = (e) => {
         this.setState({
@@ -25,7 +33,7 @@ class MessagesContainer extends React.Component {
         let chatMessage = this.state.chatMessage;
         let authorId = this.props.authData.id;
         let dialog = this.props.currentDialogData;
-        let receiveId = this.props.match.params.receiveId
+        let receiveId = this.state.receiveId
         let status = '0';
         if(dialog === null) {
             this.socket.emit('input-create-new-dialog', {
@@ -58,11 +66,24 @@ class MessagesContainer extends React.Component {
                 this.setState({
                     emojiPicker: true
                 })
-            }, 100);
+            }, 0);
         }
     }
     addEmoji = (emoji) => {
         this.setState({ chatMessage: this.state.chatMessage+emoji.native });
+    }
+    fetchMoreMessages = () => {
+        console.log('1')
+        if(this.props.messagesData.length >= this.props.messagesCount) {
+            this.setState({ hasMore: false });
+            return;
+        }
+        setTimeout(() => {
+            this.setState({
+                pagination: this.state.pagination+=1
+            })
+            this.props.fetchMoreMessages(this.state.receiveId, this.state.pagination);
+        }, 1000)
     }
     componentDidMount() {
         let server = 'http://localhost:9000';
@@ -72,7 +93,7 @@ class MessagesContainer extends React.Component {
             this.props.sendMessageActionCreator(msg)
         })
         this.socket.on('output-create-new-dialog', data => {
-            this.props.getDialogMessages(data.receiveId)
+            this.props.getDialogMessages(data.receiveId, this.props.pagination)
             let dialogId = data.id;
             let authorId = data.sendId;
             let chatMessage = this.state.chatMessage;
@@ -84,9 +105,10 @@ class MessagesContainer extends React.Component {
             })
             this.setState({ chatMessage: "", emojiPicker: false });
         })
-        let receiveId = this.props.match.params.receiveId
-        this.props.getDialogMessages(receiveId);
+        let receiveId = this.state.receiveId
+        this.props.getDialogMessages(receiveId, this.props.pagination);
     }
+
     componentWillUnmount() {
         this.socket.close()
         this.props.resetDialogMessages();
@@ -97,7 +119,11 @@ class MessagesContainer extends React.Component {
                 {...this.props} 
                 chatMessage={this.state.chatMessage}
                 emojiPicker={this.state.emojiPicker}
+                displayDownButton={this.state.displayDownButton}
+                totalMessages={this.props.dialogsPage.messagesCount}
+                fetchMoreMessages={this.fetchMoreMessages}
                 addEmoji={this.addEmoji}
+                hasMore={this.state.hasMore}
                 handleSearchChange={this.handleSearchChange}
                 submitChatMessage={this.submitChatMessage}
                 toggleEmojiPicker={this.toggleEmojiPicker}
@@ -108,7 +134,9 @@ class MessagesContainer extends React.Component {
 let mapStateToProps = (state) => {
     return {
         authData: state.auth,
+        dialogsPage: state.dialogsPage,
         messagesData: state.dialogsPage.messagesData,
+        pagination: state.dialogsPage.messagesPagination,
         currentDialogData: state.dialogsPage.currentDialogData,
         messagesCount: state.dialogsPage.messagesCount,
         messagesIsFetching: state.dialogsPage.messagesIsFetching
@@ -119,5 +147,5 @@ let mapStateToProps = (state) => {
 export default compose(
     withAuthRedirect,
     withRouter,
-    connect(mapStateToProps, { getDialogMessages, resetDialogMessages, sendMessageActionCreator})
+    connect(mapStateToProps, { getDialogMessages, resetDialogMessages, sendMessageActionCreator, fetchMoreMessages})
 )(MessagesContainer);

@@ -7,7 +7,8 @@ module.exports  = { // FIX THAT!!!
             host : '127.0.0.1',
             user : 'root',
             password : 'Ogurec_22',
-            database : 'social_network'
+            database : 'social_network',
+            charset : 'utf8mb4'
     },
         migrations: {
             tableName: 'knex_migrations'

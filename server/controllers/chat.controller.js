@@ -20,8 +20,11 @@ const returnDialogUser = async (userid) => {
 
 const returnDialogMessages = async (req, res, next) => {
     try{
+        let page = parseInt(req.query.page);
+        let limit = 30;
         let items = {}
         let user = verifyUser.getCurrentUser(req, res, next);
+        if(!req.query.page) { page = 1; }
         if(user){
             let dialog = await Dialog.query().select('id')
             .where('sendId', user.userId)
@@ -31,7 +34,7 @@ const returnDialogMessages = async (req, res, next) => {
             .first()
             if(dialog) {
                 Message.query().select()
-                .where('dialogId', dialog.id).then(async function(message_result){
+                .where('dialogId', dialog.id).orderBy('id','desc').then(async function(message_result){
                     if(message_result){
                         let messages = [];
                         for(let value of message_result){
@@ -39,9 +42,13 @@ const returnDialogMessages = async (req, res, next) => {
                             value.authorData = dialogUser;
                             messages.push(value)
                         }
-                        items.items = messages;
+                        const startIndex = (page-1) * limit
+                        const endIndex = page * limit;
+                        items.items = messages.slice(startIndex, endIndex);
                         items.dialogId = dialog.id;
-                        items.totalMessages = items.items.length
+                        items.page = page;
+                        items.limit = limit;
+                        items.totalMessages = messages.length
                     }
                     res.status(200).send(items);
                 })
@@ -55,6 +62,7 @@ const returnDialogMessages = async (req, res, next) => {
         res.status(400).send(err)
     }
 }
+
 
 const returnUserDialogById = (req, res, next) => {
     try {

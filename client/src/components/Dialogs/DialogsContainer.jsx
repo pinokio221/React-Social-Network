@@ -4,11 +4,12 @@ import Dialogs from './Dialogs'
 import { withAuthRedirect } from '../../hoc/AuthRedirect';
 import { compose } from 'redux';
 import connect from "react-redux/lib/connect/connect";
-import { getProfileDialogs } from '../../redux/dialogs-reducer';
+import { getProfileDialogs, getProfileContacts } from '../../redux/dialogs-reducer';
 
 class DialogsContainer extends React.Component {
     componentDidMount() {
         this.props.getProfileDialogs();
+        this.props.getProfileContacts(this.props.userId);
     }
     render() {
         return(
@@ -18,8 +19,9 @@ class DialogsContainer extends React.Component {
 }
 let mapStateToProps = (state) => {
     return {
+        userId: state.auth.id,
         dialogsData: state.dialogsPage.dialogsData,
-        userFriends: state.profilePage.userFriends,
+        contactsData: state.dialogsPage.contactsData,
         dialogsCount: state.dialogsPage.dialogsCount,
         dialogsIsFetching: state.dialogsPage.dialogsIsFetching
     }
@@ -27,5 +29,5 @@ let mapStateToProps = (state) => {
 }
 export default compose(
     withAuthRedirect,
-    connect(mapStateToProps, { getProfileDialogs })
+    connect(mapStateToProps, { getProfileDialogs, getProfileContacts })
 )(DialogsContainer);

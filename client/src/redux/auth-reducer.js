@@ -32,7 +32,6 @@ export const authMe = () => {
 export const userRegister = (data) => (dispatch) => {
     dispatch(toggleRegFormInProcess(true));
     authAPI.userRegister(data).then(response => {
-        console.log(response)
         if(response.status === 201) {
             return <Redirect to={'/login'}/>
         }

@@ -1,3 +1,6 @@
+body {
+    margin: 0;
+}
 .wrapper {
     display: block;
     margin: auto;
@@ -19,10 +22,17 @@
     justify-content: center;
 }
 
+.fetchMoreMessagesProgress {
+    display: flex;
+    justify-content: center;
+    margin: 30px;
+}
+
+
 .messageItems {
     display: flex;
+    overflow: auto;
     height: 25vw;
-    scroll-margin-block: 20px;
     flex-direction: column;
     justify-self: center;
     padding: 10px;
@@ -31,6 +41,17 @@
     align-self: center;
     height: 40px;
     left: 2%;
+}
+
+
+.scrolldownBtn {
+    position: absolute;
+    bottom: 25%;
+    right: 15%;
+    color: white;
+    cursor: pointer;
+    border-radius: 30px;
+    background-color:rgb(98, 136, 211);
 }
 
 .iconsTab {
@@ -47,11 +68,23 @@
 }
 
 .emojiIcon {
+    margin-right: 10px;
     border-radius: 30px;
     cursor: pointer;
 }
 
 .emojiIcon:hover {
+    background-color:rgb(153, 182, 239);
+    color: whitesmoke;
+}
+
+.attachIcon {
+    transform: rotate(45deg);
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.attachIcon:hover {
     background-color:rgb(153, 182, 239);
     color: whitesmoke;
 }
