@@ -37,6 +37,7 @@
     "react-scripts": "3.4.3",
     "react-scroll": "^1.8.2",
     "react-scroll-to-bottom": "^4.1.0",
+    "react-scrollbars-custom": "^4.0.25",
     "react-swipeable-views": "^0.13.9",
     "react-uikit-form": "^2.0.3",
     "react-uikit-icons": "^2.0.3",

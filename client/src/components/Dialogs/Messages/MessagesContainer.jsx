@@ -55,18 +55,13 @@ class MessagesContainer extends React.Component {
     }
     toggleEmojiPicker = () => {
         if(this.state.emojiPicker){
-            setTimeout(() => {
-                this.setState({
-                    emojiPicker: false
-                })
-            }, 100);
-            
+            this.setState({
+                emojiPicker: false
+            })
         } else {
-            setTimeout(() => {
-                this.setState({
-                    emojiPicker: true
-                })
-            }, 0);
+            this.setState({
+                emojiPicker: true
+            })
         }
     }
     addEmoji = (emoji) => {
@@ -86,7 +81,9 @@ class MessagesContainer extends React.Component {
         }, 1000)
     }
     componentDidMount() {
+        
         let server = 'http://localhost:9000';
+        
         this.socket = io(server);
 
         this.socket.on('output-chat-message', msg => {

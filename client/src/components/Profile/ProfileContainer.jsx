@@ -15,6 +15,7 @@ class ProfileContainer extends React.Component {
             userId = this.props.auth.id
          }
         this.props.getProfilePage(userId);
+        
     }
     render() {
         return (
@@ -44,7 +45,7 @@ let mapDispatchToProps = (dispatch) => {
     
 
 export default compose(
-    withAuthRedirect,
     connect(mapStateToProps, { mapDispatchToProps, updateProfileStatus, getProfilePage }),
     withRouter,
+    withAuthRedirect
 )(ProfileContainer)

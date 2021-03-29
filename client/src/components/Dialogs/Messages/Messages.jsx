@@ -14,11 +14,12 @@ import 'emoji-mart/css/emoji-mart.css'
 import { Picker } from 'emoji-mart'
 import { Form } from 'react-bootstrap'
 import InfiniteScroll from "react-infinite-scroll-component";
+import { Scrollbar } from "react-scrollbars-custom";
+
 
 import { Link, animateScroll as scroll } from "react-scroll";
 
 const Messages = (props) => {
-    
 
     let messagesElements = props.messagesData.map(m => <Message 
         key={m.id}
@@ -34,14 +35,13 @@ const Messages = (props) => {
                 <div>
                     {props.messagesIsFetching ? <div class={styles.fetchProgress}><CircularProgress/></div>
                     : <div className={styles.messageItems}>
-                        <Scrollbars autoHide>
-                            <div id='scrollableComponent' style={{
+                        
+                        <div id='scrollableComponent' style={{
                                 height: 300,
                                 display: 'flex',
                                 overflow:'auto',
                                 flexDirection: 'column-reverse',}}>
-
-                                <InfiniteScroll
+                            <InfiniteScroll
                                     dataLength={messagesElements.length}
                                     style={{ display: 'flex', flexDirection: 'column-reverse', overflow:'auto' }}
                                     scrollableTarget='scrollableComponent'
@@ -57,11 +57,11 @@ const Messages = (props) => {
                                         
                                 { messagesElements }
                                 
-                                </InfiniteScroll>
-                            </div>
-                            </Scrollbars>
-                            { !props.displayDownButton ?
-                            <KeyboardArrowDownIcon className={styles.scrolldownBtn}/> : null }
+                            </InfiniteScroll>
+                        </div>
+                            
+                            { props.displayDownButton ?
+                            <KeyboardArrowDownIcon  className={styles.scrolldownBtn}/> : null }
                         </div>}
                     
                     <Form onSubmit={props.submitChatMessage}>

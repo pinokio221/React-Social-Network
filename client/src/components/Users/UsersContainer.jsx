@@ -103,11 +103,11 @@ let mapStateToProps = (state) => {
 }
 
 export default compose(
-    withAuthRedirect,
     connect(mapStateToProps, {
         getUsers, getUsersBySearchQuery, getMoreUsers,
         sendInvitation, cancelInvitation
     }),
+    withAuthRedirect
 
 )(UsersContainer)
 
