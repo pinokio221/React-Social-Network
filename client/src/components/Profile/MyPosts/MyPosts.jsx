@@ -1,28 +1,29 @@
 import React from 'react';
-import s from './MyPosts.module.css';
+import styles from './MyPosts.module.css';
 import Post from './Post/Post';
-import {Button, Form} from "react-bootstrap";
+import {Button, Form } from "react-bootstrap";
 import { Field, reduxForm } from "redux-form"
-import { required, maxLength } from "../../../validators/LoginFormValidator"
+import { required, maxLength } from "../../../validators/validator"
+import ErrorIcon from '@material-ui/icons/Error';
 
 const ReduxFormControl = ({input, meta, ...props}) => {
-    return <Form.Control as={'textarea'} {...props} {...input} />
+    let hasError = meta.touched && meta.error;
+    return <div className={styles.postForm + " " + (hasError ? styles.error : "")}>
+            <div><Form.Control as={'textarea'} {...props} {...input} /></div>
+            { hasError && <span><ErrorIcon/> { meta.error }</span> }
+        </div>  
 };
 
-
 const PostForm = (props) => {
-
     return (
         <form onSubmit={props.handleSubmit}>
             <Form >
-                <Form.Group controlId="exampleForm.ControlTextarea1">
+                <Form.Group controlId="postForm">
                     <Field component={ReduxFormControl} name='post' validate={[required, maxLength]}/>
                 </Form.Group>
             </Form>
         <Button type='submit' variant="info">Add Post</Button>
         </form>
-        
-    
     );
 }
 
@@ -49,10 +50,10 @@ const MyPosts = (props) => {
         props.addPost(values.post)
     }
     return (
-        <div className={s.postsBlock}>
+        <div className={styles.postsBlock}>
             <h3>My Posts</h3>
             <PostReduxForm onSubmit={addPost}/>
-            <div className={s.posts}>
+            <div className={styles.posts}>
                 {postsElements}
             </div>
       </div>

@@ -45,6 +45,10 @@ export const authAPI = {
     },
     userLogout() {
         let requestURL = `http://localhost:9000/api/user/logout`
-        return instance.get(requestURL, { withCredentials: true })
+        return instance.get(requestURL, { withCredentials: true }).then(response => {
+            return response;
+        }).catch((error) => {
+            return error.response
+        })
     }
 }

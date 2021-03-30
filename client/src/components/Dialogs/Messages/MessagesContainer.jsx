@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from './Messages.module.css'
 import Messages from './Messages'
 import { withAuthRedirect } from '../../../hoc/AuthRedirect';
 import { compose } from 'redux';
@@ -7,8 +6,6 @@ import connect from "react-redux/lib/connect/connect";
 import { getDialogMessages, resetDialogMessages, sendMessageActionCreator, fetchMoreMessages} from '../../../redux/dialogs-reducer';
 import withRouter from "react-router-dom/withRouter"
 import io from 'socket.io-client';
-import { animateScroll } from "react-scroll";
-
 
 
 class MessagesContainer extends React.Component {

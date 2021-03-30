@@ -114,7 +114,7 @@ const signOut = (req, res) => {
 
     if(isAuth) {
         res.cookie('jwt', '', {maxAge: 1});
-        res.status(201).json({
+        res.status(200).json({
         message: "You are succesfully logging out. Bye."
     })
     } else {

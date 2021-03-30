@@ -25,7 +25,6 @@ let mapStateToProps = (state) => {
         dialogsCount: state.dialogsPage.dialogsCount,
         dialogsIsFetching: state.dialogsPage.dialogsIsFetching
     }
-    
 }
 export default compose(
     withAuthRedirect,

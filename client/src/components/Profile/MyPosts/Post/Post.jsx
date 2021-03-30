@@ -32,7 +32,6 @@ const Post = (props) => {
     setAnchorEl(null);};
     return (
         <div className={styles.item}>
-            <Slide triggerOnce={true} direction="bottom">
             <Alert key='info' variant='info'>
                 <div>
                     <img src={props.userInfo.profile_image} alt=""/>
@@ -79,7 +78,6 @@ const Post = (props) => {
             </Alert>
             <div>
         </div>
-    </Slide>
 </div>
     );
 

@@ -6,10 +6,12 @@ import React from 'react'
 const SET_USER_DATA = 'SET-USER-DATA';
 const TOGGLE_REG_PROCESS = 'TOGGLE-REG-PROCESS'
 const TOGGLE_LOG_PROCESS = 'TOGGLE-LOG-PROCESS'
+const TOGGLE_SIGNOUT_PROCESS = 'TOGGLE-SIGNOUT-PROCESS'
 
 export const setUserData = (id, login, email, isAuth) => ({ type: SET_USER_DATA, data: { id, login, email }, isAuth})
 export const toggleRegFormInProcess = (inProcess) => ({ type: TOGGLE_REG_PROCESS, inProcess})
 export const toggleLogFormInProcess = (inProcess) => ({ type: TOGGLE_LOG_PROCESS, inProcess})
+export const toggleSignOutInProcess = (inProcess) => ({ type: TOGGLE_SIGNOUT_PROCESS, inProcess })
 
 let initialState = {
     id: null,
@@ -17,7 +19,8 @@ let initialState = {
     email: null,
     isAuth: false,
     regFormInProcess: false,
-    logFormInProcess: false
+    logFormInProcess: false,
+    signOutInProcess: false
 }
 
 export const authMe = () => {
@@ -25,6 +28,7 @@ export const authMe = () => {
         authAPI.authMe().then(data => {
             let {id, login, email} = data.user;
             dispatch(setUserData(id, login, email, true))
+            dispatch(toggleLogFormInProcess(false));
         })
     }
 }
@@ -54,12 +58,17 @@ export const userLogin = (data) => (dispatch) => {
     })
 }
 
-export const userLogout = () => {
-    return(dispatch) => {
-        authAPI.userLogout().then(() =>{
+export const userLogout = () => (dispatch) => {
+    dispatch(toggleSignOutInProcess(true))
+    authAPI.userLogout().then(response =>{
+        if(response.status === 200) {
             dispatch(setUserData(null, null, null, false))
-        })
-    }
+            dispatch(toggleSignOutInProcess(false))
+        }
+        if(response.status === 401) {
+            return response.message
+        }
+    })
 }
 
 
@@ -84,6 +93,12 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 logFormInProcess: action.inProcess
+            }
+        }
+        case TOGGLE_SIGNOUT_PROCESS: {
+            return {
+                ...state,
+                signOutInProcess: action.inProcess
             }
         }
         default: return state;

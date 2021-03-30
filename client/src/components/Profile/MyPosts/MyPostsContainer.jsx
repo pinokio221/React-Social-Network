@@ -6,9 +6,12 @@ import { getProfilePosts, addPost, deletePost } from "../../../redux/profile-red
 
 
 class MyPostsContainer extends React.Component {
+    
     componentDidMount() {
         let userId = this.props.match.params.userId;
-        if(!userId) { userId = 1; }
+        if(!userId) { 
+            userId = this.props.authData.id
+         }
         this.props.getProfilePosts(userId);
     }
 

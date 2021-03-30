@@ -5,7 +5,6 @@ import connect from "react-redux/lib/connect/connect";
 import { compose } from 'redux';
 import { withAuthRedirect } from '../../hoc/AuthRedirect';
 
-
 class LoginContainer extends React.Component {
     userLogin = (data) => {
         this.props.userLogin(data);
@@ -25,8 +24,4 @@ let mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, {userLogin})(LoginContainer)
-/*export default compose(
-    withAuthRedirect,
-    connect(null, {userLogin}),
 
-)(LoginContainer);*/

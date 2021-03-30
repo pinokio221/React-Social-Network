@@ -1,0 +1,52 @@
+.otherWrapper {
+    display: flex;
+    padding: 2%;
+    margin-left: 2%;
+    border-radius: 5px;
+    width: 30%;
+    flex-direction: column;
+}
+
+h5 {
+    margin-left: 3%;
+    color: gray;
+}
+
+.progress {
+    line-height: 10px;
+    margin-left: 3px;
+}
+
+.signOutButton {
+    display: flex;
+    margin-left: 20%;
+    box-shadow: 0px 18px 15px rgba(0, 0, 0, 0.1);
+    align-items: center;
+    width:max-content;
+    transition-duration: 0.3s;
+    background-color: rgb(76, 144, 196);
+    color: white;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.signOutButton:hover {
+    background-color: whitesmoke;
+    color: black;
+    transition-duration: 0.3s;
+    
+}
+.signOutButton:hover > .signOutIcon {
+    transition-duration: 0.3s;
+    color: red;
+}
+
+.signOutButton:active {
+    background-color: rgb(119, 172, 199);
+}
+
+.signOutIcon {
+    transition-duration: 0.3s;
+    margin-left: 3px;
+}

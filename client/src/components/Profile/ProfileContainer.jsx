@@ -15,7 +15,6 @@ class ProfileContainer extends React.Component {
             userId = this.props.auth.id
          }
         this.props.getProfilePage(userId);
-        
     }
     render() {
         return (
