@@ -35,23 +35,6 @@ ul {
   }
 
 
-
-.form_row > input:focus {
-    background-color: rgb(214, 214, 214);
-    transition-duration: 0.5s;
-    color: #000;
-    outline: none;
-}
-
-.form_row > input {
-    transition-duration: 0.5s;
-    background-color: whitesmoke;
-    border: 1px solid gray;
-    border-radius: 5px;
-    padding: 10px;
-    font-size: 14px;
-    flex: 2;
-}
 .form_row > img {
     align-self: center;
     width: 300px;

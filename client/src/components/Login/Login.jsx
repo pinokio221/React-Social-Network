@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Field, reduxForm } from "redux-form"
 import styles from './Login.module.css'
 import signin_icon from '../../assets/images/signin.png'
@@ -6,8 +6,14 @@ import { Redirect } from 'react-router-dom'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {NavLink} from "react-router-dom";
 import { Fade } from "react-awesome-reveal";
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import { required } from '../../validators/validator'
+import { LoginInputFormControl } from '../FormControls/FormControls'
 
-
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
 
 const LoginForm = (props) => {
     return (
@@ -20,10 +26,10 @@ const LoginForm = (props) => {
                         </li>
                         <hr/>
                     <li className={styles.form_row}>
-                        <label for="login">Login or email:</label><Field component={'input'} name={'login'} type="text"/>
+                        <label for="login">Login or email:</label><Field validate={[required]} component={LoginInputFormControl} name={'login'} type="text"/>
                     </li>
                     <li className={styles.form_row}>
-                        <label for="password">Password:</label><Field component={'input'} name={'password'} type="password"/>
+                        <label for="password">Password:</label><Field validate={[required]} component={LoginInputFormControl} name={'password'} type="password"/>
                     </li>
                     <li className={styles.form_row}>
                         {props.logFormInProcess ? <CircularProgress className={styles.process}/> : 
@@ -45,15 +51,38 @@ const LoginReduxForm = reduxForm({
 })(LoginForm);
 
 const Login = (props) => {
-    if(props.isAuth){
-        return <Redirect to={"/profile"}/>
+
+    let state = {
+        visible: true,
+        vertical: 'top',
+        horizontal: 'center'
     }
+
+    const { vertical, horizontal} = state;
     const onSubmit = (formData) => {
         props.userLogin(formData);
     }
+    const autoClose = () => {
+        props.resetError()
+    }
+    if(props.isAuth){
+        return <Redirect to={"/profile"}/>
+    }
+    
     return (
         <div>
-            <LoginReduxForm onSubmit={onSubmit} logFormInProcess={props.logFormInProcess}/>
+            { props.authError ? 
+            <Snackbar
+                open={state.visible}
+                onClose={autoClose}
+                autoHideDuration={6000}
+                anchorOrigin={{ vertical, horizontal }}
+                key={vertical + horizontal}>
+                    <Alert severity="error">
+                        {props.authError}
+                    </Alert>
+            </Snackbar> : null }
+            <div><LoginReduxForm onSubmit={onSubmit} logFormInProcess={props.logFormInProcess}/></div>
         </div>
     );
 }

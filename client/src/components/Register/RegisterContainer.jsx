@@ -16,6 +16,7 @@ class RegisterContainer extends React.Component{
 
 let mapStateToProps = (state) => {
     return {
+        isAuth: state.auth.isAuth,
         regFormInProcess: state.auth.regFormInProcess
     }
 }

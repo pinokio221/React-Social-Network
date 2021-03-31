@@ -1,14 +1,19 @@
 import { authAPI } from "../api/auth-api"
 import { Redirect } from "react-router"
 import React from 'react'
+import { stopSubmit } from "redux-form";
 
 
 const SET_USER_DATA = 'SET-USER-DATA';
 const TOGGLE_REG_PROCESS = 'TOGGLE-REG-PROCESS'
 const TOGGLE_LOG_PROCESS = 'TOGGLE-LOG-PROCESS'
 const TOGGLE_SIGNOUT_PROCESS = 'TOGGLE-SIGNOUT-PROCESS'
+const DISPLAY_AUTH_ERROR = 'DISPLAY-AUTH-ERROR'
+const RESET_ERROR = 'RESET-ERROR'
 
 export const setUserData = (id, login, email, isAuth) => ({ type: SET_USER_DATA, data: { id, login, email }, isAuth})
+export const displayAuthError = (error_msg) => ({ type: DISPLAY_AUTH_ERROR, error_msg })
+export const resetError = () => ({ type: RESET_ERROR })
 export const toggleRegFormInProcess = (inProcess) => ({ type: TOGGLE_REG_PROCESS, inProcess})
 export const toggleLogFormInProcess = (inProcess) => ({ type: TOGGLE_LOG_PROCESS, inProcess})
 export const toggleSignOutInProcess = (inProcess) => ({ type: TOGGLE_SIGNOUT_PROCESS, inProcess })
@@ -18,6 +23,7 @@ let initialState = {
     login: null,
     email: null,
     isAuth: false,
+    authError: false,
     regFormInProcess: false,
     logFormInProcess: false,
     signOutInProcess: false
@@ -52,8 +58,8 @@ export const userLogin = (data) => (dispatch) => {
         if(response.status === 200) {
             dispatch(authMe())
         }
-        if(response.status === 405){
-            
+        if(response.status === 401){
+            dispatch(displayAuthError(response.data.message))
         }
     })
 }
@@ -64,9 +70,6 @@ export const userLogout = () => (dispatch) => {
         if(response.status === 200) {
             dispatch(setUserData(null, null, null, false))
             dispatch(toggleSignOutInProcess(false))
-        }
-        if(response.status === 401) {
-            return response.message
         }
     })
 }
@@ -99,6 +102,19 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 signOutInProcess: action.inProcess
+            }
+        }
+        case DISPLAY_AUTH_ERROR: {
+            return {
+                ...state,
+                authError: action.error_msg,
+                logFormInProcess: false
+            }
+        }
+        case RESET_ERROR: {
+            return {
+                ...state,
+                authError: false
             }
         }
         default: return state;

@@ -63,7 +63,9 @@ const signUp = (req, res) => {
     
 const signIn = (req, res) => {
     const { error } = loginValidation(req.body);
-    if(error) { return res.status(400).json(error.details[0].message) }
+    if(error) { return res.status(401).json({
+        "message": error.details[0].message
+    }) }
 
     let isAuth = req.cookies.jwt;
 
@@ -74,7 +76,7 @@ const signIn = (req, res) => {
         .first().then(async function(user){
             if(!user) {
                 res.status(401).json({
-                    message: "Login not found. Access denied",
+                    message: "Wrong login or password. Please try again",
                 })
             }
             else {
@@ -90,7 +92,7 @@ const signIn = (req, res) => {
                     }
                     else {  
                         res.status(401).json({
-                            message: "Wrong password. Access denied",
+                            message: "Wrong login or password. Please try again",
                         })
                     }
                 })

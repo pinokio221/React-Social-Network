@@ -3,23 +3,18 @@ import styles from './MyPosts.module.css';
 import Post from './Post/Post';
 import {Button, Form } from "react-bootstrap";
 import { Field, reduxForm } from "redux-form"
-import { required, maxLength } from "../../../validators/validator"
-import ErrorIcon from '@material-ui/icons/Error';
+import { required, maxLengthCreator } from "../../../validators/validator"
+import { ReduxTextArea } from '../../FormControls/ReduxFormControls'
 
-const ReduxFormControl = ({input, meta, ...props}) => {
-    let hasError = meta.touched && meta.error;
-    return <div className={styles.postForm + " " + (hasError ? styles.error : "")}>
-            <div><Form.Control as={'textarea'} {...props} {...input} /></div>
-            { hasError && <span><ErrorIcon/> { meta.error }</span> }
-        </div>  
-};
+
+const fieldMaxLength = maxLengthCreator(5000);
 
 const PostForm = (props) => {
     return (
         <form onSubmit={props.handleSubmit}>
             <Form >
                 <Form.Group controlId="postForm">
-                    <Field component={ReduxFormControl} name='post' validate={[required, maxLength]}/>
+                    <Field component={ReduxTextArea} name='post' validate={[required, fieldMaxLength]}/>
                 </Form.Group>
             </Form>
         <Button type='submit' variant="info">Add Post</Button>

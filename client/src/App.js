@@ -1,4 +1,7 @@
 import React from 'react';
+import connect from "react-redux/lib/connect/connect";
+import { compose } from 'redux';
+import { authMe } from '../src/redux/auth-reducer'
 import './App.css';
 import Navigate from './components/Navigate/Navigate'
 import News from './components/News/News'
@@ -15,19 +18,23 @@ import RegisterContainer from './components/Register/RegisterContainer';
 import MessagesContainer from './components/Dialogs/Messages/MessagesContainer';
 import SuccessRegistrationAlert from "../src/components/Alerts/SuccessRegistrationAlert"
 
-
-const App = () => {
-  return(
-  <BrowserRouter>
-    <Switch>
-    <Route exact path='/login' component={LoginPage}/>
-    <Route exact path='/signup' component={RegisterPage}/>
-      <div className="App">
-        <Route component={DefaultContainer}/>
-      </div>
-    </Switch>
-  </BrowserRouter>
-  )
+class App extends React.Component {
+  componentDidMount() {
+    this.props.authMe();
+  }
+  render() {
+    return(
+      <BrowserRouter>
+        <Switch>
+        <Route exact path='/login' component={LoginPage}/>
+        <Route exact path='/signup' component={RegisterPage}/>
+          <div className="App">
+            <Route component={DefaultContainer}/>
+          </div>
+        </Switch>
+      </BrowserRouter>
+      )
+  }
 }
 
 
@@ -74,4 +81,12 @@ const DefaultContainer = () => {
   
 }
 
-export default App;
+let mapStateToProps = (state) => {
+    return {
+      authData: state.auth
+    }
+}
+
+export default compose(
+  connect(mapStateToProps, { authMe })
+)(App)

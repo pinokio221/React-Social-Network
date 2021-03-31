@@ -41,6 +41,8 @@ export const authAPI = {
             password: data.password
         },{ withCredentials: true }).then(response => {
             return response;
+        }).catch((error) => {
+            return error.response
         })
     },
     userLogout() {

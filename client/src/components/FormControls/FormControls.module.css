@@ -1,0 +1,37 @@
+.loginInputField:focus {
+    background-color: rgb(214, 214, 214);
+    transition-duration: 0.5s;
+    color: #000;
+    outline: none;
+}
+
+.loginInputField {
+    width: 100%;
+    transition-duration: 0.5s;
+    background-color: whitesmoke;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+    flex: 2;
+}
+
+.loginFormWrapper.error input{
+    background-color: rgba(252, 118, 118, 0.7);
+    -webkit-transition: background-color 1000ms linear;
+    -moz-transition: background-color 1000ms linear;
+    -o-transition: background-color 1000ms linear;
+    -ms-transition: background-color 1000ms linear;
+    transition: background-color 1000ms linear;
+}
+
+.loginFormWrapper.error span {
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    color: red;
+}
+
+.loginErrorIcon {
+    margin-left: 5px;
+}

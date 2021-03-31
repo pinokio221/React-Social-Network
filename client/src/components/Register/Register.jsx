@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Redirect } from 'react-router-dom'
 import { Field, reduxForm } from 'redux-form'
 import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -15,8 +16,6 @@ import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns';
 import moment from 'moment'
 import { Fade } from "react-awesome-reveal";
-
-
 
 
 const RenderTextField = ({label, input, meta: { touched, invalid, error }, ...custom}) => (
@@ -149,6 +148,9 @@ const ReduxRegisterForm = reduxForm({
 })(RegisterForm);
 
 const Register = (props) => {
+    if(props.isAuth){
+      return <Redirect to={"/profile"}/>
+    }
 
     const generateForm = (formData) => {
       let format_birthday = moment(formData.birthday).format('YYYY-MM-DD');

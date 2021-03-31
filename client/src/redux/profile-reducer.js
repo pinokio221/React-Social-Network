@@ -4,6 +4,7 @@ import { profileAPI } from "../api/profile-api"
 const ADD_POST = "ADD-POST";
 const DELETE_POST = "DELETE-POST";
 const SET_PROFILE_PAGE = "SET-PROFILE-PAGE"
+const RESET_PROFILE_PAGE = 'RESET-PROFILE-PAGE'
 const SET_PROFILE_POSTS = "SET-PROFILE-POSTS"
 const SET_PROFILE_FRIENDS = "SET-PROFILE-FRIENDS"
 const UPDATE_PROFILE_STATUS = "UPDATE-PROFILE-STATUS"
@@ -11,6 +12,7 @@ const UPDATE_PROFILE_STATUS = "UPDATE-PROFILE-STATUS"
 export const addPostAction = (post) => ({ type: ADD_POST, post })
 export const deletePostAction = (post_id) => ({ type: DELETE_POST, post_id })
 export const setProfilePageAction = (userInfo) => ({ type: SET_PROFILE_PAGE, userInfo })
+export const resetProfilePageAction = () => ({ type: RESET_PROFILE_PAGE })
 export const setProfilePostsAction = (posts) => ({ type: SET_PROFILE_POSTS, posts })
 export const setProfileFriendsAction = (friends, totalFriends) => ({ type: SET_PROFILE_FRIENDS, friends, totalFriends })
 export const updateStatusAction = (status) => ({type: UPDATE_PROFILE_STATUS, status})
@@ -20,6 +22,7 @@ let initialState = {
     userFriends: [],
     totalFriends: 0,
     postsData: [],
+    pageFetching: true,
     friendsFetching: true,
 }
 
@@ -101,7 +104,15 @@ const profileReducer = (state = initialState, action) => {
         case SET_PROFILE_PAGE: {
             return {
                 ...state,
-                userInfo: action.userInfo
+                userInfo: action.userInfo,
+                pageFetching: false
+            }
+        }
+        case RESET_PROFILE_PAGE: {
+            return {
+                ...state,
+                userInfo: {},
+                pageFetching: true
             }
         }
         case SET_PROFILE_POSTS: {

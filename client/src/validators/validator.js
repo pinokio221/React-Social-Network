@@ -6,9 +6,9 @@ export const required = value => {
     }
 }
 
-export const maxLength = value => {
-    if(value.length > 5000) {
-        return "Max length of post is 1000 symbols!"
+export const maxLengthCreator = (maxLength) => (value) => {
+    if(value.length > maxLength) {
+        return `Max length of post is ${maxLength} symbols!`
     }
     return undefined;
 }

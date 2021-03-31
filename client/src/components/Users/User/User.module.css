@@ -49,6 +49,10 @@ a:hover {
     transition-duration: 0.3s;
 }
 
+.profile_name:hover{
+    text-decoration: underline;
+}
+
 .profile_block span, a {
     position: sticky;
     overflow: hidden;

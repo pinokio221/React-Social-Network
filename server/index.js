@@ -5,6 +5,7 @@ const server = http.createServer(app);
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const port = 9000;
+require('dotenv').config()
 
 let cors = require("cors");
 var corsOptions = {
