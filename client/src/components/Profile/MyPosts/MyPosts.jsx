@@ -6,7 +6,6 @@ import { Field, reduxForm } from "redux-form"
 import { required, maxLengthCreator } from "../../../validators/validator"
 import { ReduxTextArea } from '../../FormControls/ReduxFormControls'
 
-
 const fieldMaxLength = maxLengthCreator(5000);
 
 const PostForm = (props) => {
@@ -46,7 +45,7 @@ const MyPosts = (props) => {
     }
     return (
         <div className={styles.postsBlock}>
-            <h3>My Posts</h3>
+            <div className={styles.postsTitle}><h3>My Posts</h3></div>
             <PostReduxForm onSubmit={addPost}/>
             <div className={styles.posts}>
                 {postsElements}

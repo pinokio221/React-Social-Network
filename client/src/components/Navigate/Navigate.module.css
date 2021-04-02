@@ -1,37 +1,54 @@
 @import url('https://fonts.googleapis.com/css2?family=Signika:wght@300&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+
 .nav {
+    display: flex;
+    flex-direction: column;
     grid-area: n;
     background-color: rgba(0, 98, 171 , 0.70);
-    padding: 20px;
-    font-family: 'Signika', sans-serif;
-    font-size: 20px;
   }
 
 .item
 {
-    padding: 5px;
+    text-indent: 20px;
+    transition-duration: 0.5s;
+    padding: 10px;
 }
-.item a
-  {
-      color: white;
-      text-decoration: none;
-  }
 
-.item a.activeLink
+.itemName{
+  font-size: 17px;
+  font-family: 'Nanum Gothic', sans-serif;
+  color: white;
+}
+
+.item:hover {
+    transition-duration: 0.5s;
+    background-color: rgba(0, 95, 168, 0.7);
+}
+
+a {
+  color:white;
+}
+
+a.activeLink
   {
-      color: rgb(0, 6, 7 );
-      font-weight: bold;
+    background-color:rgba(1, 68, 119, 0.7);
+    
   }
+a.activeLink > .item > .icon {
+  color: rgb(182, 182, 182);
+}
 
 .icon
   {
+      font-size: 27px;
       padding-right: 10px;
-      color: rgb(83, 104, 119);
+      color: rgb(115, 118, 119);
   }
 
-.item a.activeLink span
-  {
-      color: rgb(2, 136, 152);
-      text-decoration: underline;
-  }
+
+
+
+
 

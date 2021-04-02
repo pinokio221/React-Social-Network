@@ -12,7 +12,8 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-
+import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import { Redirect } from 'react-router-dom'
 import { NavLink } from 'react-router-dom'
 
@@ -81,8 +82,8 @@ const Dialogs = (props) => {
                     textColor="primary"
                     variant="fullWidth"
                     aria-label="full width tabs example">
-                    <Tab label="Recent dialogs" {...a11yProps(0)} />
-                    <Tab label="Contacts" {...a11yProps(1)} />
+                    <Tab icon={<QuestionAnswerIcon/>} label="Recent Dialogs" {...a11yProps(0)}/>
+                    <Tab icon={<RecentActorsIcon/>} label="Contacts" {...a11yProps(1)} />
                     </Tabs>
                 </AppBar>
                 <SwipeableViews

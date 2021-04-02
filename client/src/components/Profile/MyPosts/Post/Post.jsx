@@ -10,6 +10,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { Slide } from "react-awesome-reveal";
+import Box from '@material-ui/core/Box';
+
 
 const options = [
     'Edit',
@@ -32,6 +34,7 @@ const Post = (props) => {
     setAnchorEl(null);};
     return (
         <div className={styles.item}>
+            <Box boxShadow={3}>
             <Alert key='info' variant='info'>
                 <div>
                     <img src={props.userInfo.profile_image} alt=""/>
@@ -67,10 +70,10 @@ const Post = (props) => {
                 <div>
                     <table>
                         <tr>
-                                <td><span className={styles.like_icon}><FontAwesomeIcon icon={faHeart}/> <span>{props.likesCount}</span></span></td>
-                                <td><span className={styles.comment_icon}><FontAwesomeIcon icon={faCommentAlt}/> <span>{props.commentsCount}</span></span></td>
-                                <td><span className={styles.share_icon}><FontAwesomeIcon icon={faShare}/><span>{props.repostsCount}</span></span></td>
-                                <td><span className={styles.posted_info}>Posted 26, November at 03:24 AM</span></td>
+                            <td><span className={styles.like_icon}><FontAwesomeIcon icon={faHeart}/> <span>{props.likesCount}</span></span></td>
+                            <td><span className={styles.comment_icon}><FontAwesomeIcon icon={faCommentAlt}/> <span>{props.commentsCount}</span></span></td>
+                            <td><span className={styles.share_icon}><FontAwesomeIcon icon={faShare}/><span>{props.repostsCount}</span></span></td>
+                            <td><span className={styles.posted_info}>Posted 26, November at 03:24 AM</span></td>
                         </tr>
 
                     </table>
@@ -78,7 +81,7 @@ const Post = (props) => {
             </Alert>
             <div>
         </div>
-</div>
+        </Box></div>
     );
 
 }

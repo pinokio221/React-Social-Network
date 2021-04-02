@@ -5,7 +5,16 @@
 
 .posts
 {
+    margin-left: 5%;
     margin-top: 30px;
+}
+
+.postsTitle {
+    display: flex;
+    font-size: 30px;
+    color: rgb(155, 155, 155);
+    margin-bottom: 2%;
+    justify-content: center;
 }
 
 

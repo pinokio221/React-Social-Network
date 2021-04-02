@@ -9,17 +9,24 @@ import {
     faCog, faSearch
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { CgProfile } from 'react-icons/cg'
+import { BiNews } from 'react-icons/bi'
+import { RiSettings5Line } from 'react-icons/ri'
+import { FiHeadphones } from 'react-icons/fi'
+import { GoSearch } from 'react-icons/go'
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
+
 
 const Navigate = () => {
     return (
         <nav className = {styles.nav}>
-            <div className = {styles.item}><NavLink to = '/profile' activeClassName={styles.activeLink}><span className={styles.icon}><FontAwesomeIcon icon={faUser}/></span>Profile</NavLink></div>
-            <div className = {styles.item}><NavLink to = '/dialogs' activeClassName={styles.activeLink}><span className={styles.icon}><FontAwesomeIcon icon={faEnvelope}/></span>Messages</NavLink></div>
-            <div className = {styles.item}><NavLink to = '/news' activeClassName={styles.activeLink}><span className={styles.icon}><FontAwesomeIcon icon={faNewspaper}/></span>News</NavLink></div>
-            <div className = {styles.item}><NavLink to = '/music' activeClassName={styles.activeLink}><span className={styles.icon}><FontAwesomeIcon icon={faHeadphones}/></span>Music</NavLink></div>
-            <div className = {styles.item}><NavLink to = '/settings' activeClassName={styles.activeLink}><span className={styles.icon}><FontAwesomeIcon icon={faCog}/></span>Settings</NavLink></div>
-            <hr/>
-            <div className = {styles.item}><NavLink to = '/users' activeClassName={styles.activeLink}><span className={styles.icon}><FontAwesomeIcon icon={faSearch}/></span>Find friends</NavLink></div>
+            <NavLink to = '/profile' activeClassName={styles.activeLink}><div className = {styles.item}><span className={styles.icon}><CgProfile/></span><span className={styles.itemName}>PROFILE</span></div></NavLink>
+            <NavLink to = '/dialogs' activeClassName={styles.activeLink}><div className = {styles.item}><span className={styles.icon}><MailOutlineIcon style={{fontSize: '27px'}}/></span><span className={styles.itemName}>MESSAGES</span></div></NavLink>
+            <NavLink to = '/news' activeClassName={styles.activeLink}><div className = {styles.item}><span className={styles.icon}><BiNews/></span><span className={styles.itemName}>NEWS</span></div></NavLink>
+            <NavLink to = '/music' activeClassName={styles.activeLink}><div className = {styles.item}><span className={styles.icon}><FiHeadphones/></span><span className={styles.itemName}>MUSIC</span></div></NavLink>
+            <NavLink to = '/settings' activeClassName={styles.activeLink}><div className = {styles.item}><span className={styles.icon}><RiSettings5Line/></span><span className={styles.itemName}>SETTINGS</span></div></NavLink>
+            <span><hr/></span>
+            <NavLink to = '/users' activeClassName={styles.activeLink}><div className = {styles.item}><span className={styles.icon}><GoSearch/></span><span className={styles.itemName}>FIND FRIENDS</span></div></NavLink>
     </nav>
     );
 }

@@ -1,12 +1,10 @@
 .header {
+    display: flex;
+    align-items: center;
     grid-area: h;
     background-color: rgb(201, 201, 199)
   }
   
 .header img {
-    width: 250px;
-  }
-
-  .loginBlock {
-    float: right;
+    width: 350px;
   }

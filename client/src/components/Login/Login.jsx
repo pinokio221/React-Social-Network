@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Field, reduxForm } from "redux-form"
 import styles from './Login.module.css'
 import signin_icon from '../../assets/images/signin.png'
+import logo_icon from '../../assets/images/logo.png'
 import { Redirect } from 'react-router-dom'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {NavLink} from "react-router-dom";
@@ -21,8 +22,8 @@ const LoginForm = (props) => {
         <Fade direction='left'>
             <form onSubmit = { props.handleSubmit }>
                 <ul className={styles.wrapper}>
-                    <li className={styles.form_row}
-                        ><img src="https://static.chilltime.com/v1/interface/media/chilltime/chilltime_logo_1200x750_default.png" alt=""/>
+                    <li className={styles.form_row}>
+                        <img src={logo_icon} alt=""/>
                         </li>
                         <hr/>
                     <li className={styles.form_row}>

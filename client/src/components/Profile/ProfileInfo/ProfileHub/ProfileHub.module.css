@@ -5,6 +5,9 @@
     border-radius: 50%;
 }
 
+.friendName:hover {
+    text-decoration: underline;
+}
 a{
     white-space: pre-wrap;
 }
@@ -23,5 +26,19 @@ a{
     font-size: 12px;
     color:rgb(0, 108, 129);
     left: 100%;
+}
+
+.hubTitle {
+    display: inline-flex;
+    align-items: center;
+}
+
+.hubIcon {
+    margin-right: 6px;
+    color: rgb(63, 81, 181);
+}
+
+.cardElement {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
