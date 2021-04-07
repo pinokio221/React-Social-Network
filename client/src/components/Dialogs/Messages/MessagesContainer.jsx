@@ -9,7 +9,6 @@ import io from 'socket.io-client';
 
 
 class MessagesContainer extends React.Component {
-    
     state = {
         chatMessage: "",
         emojiPicker: false,
@@ -65,7 +64,6 @@ class MessagesContainer extends React.Component {
         this.setState({ chatMessage: this.state.chatMessage+emoji.native });
     }
     fetchMoreMessages = () => {
-        console.log('1')
         if(this.props.messagesData.length >= this.props.messagesCount) {
             this.setState({ hasMore: false });
             return;

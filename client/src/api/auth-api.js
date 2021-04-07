@@ -11,9 +11,9 @@ export const authAPI = {
         let requestURL = `http://localhost:9000/api/user/me`
         return instance.get(requestURL,{ withCredentials: true })
         .then(response => {
-            if(response.status === 200){
-                return response.data;
-            }
+            return response;
+        }).catch((error) => {
+            return error.response
         })
     },
     userRegister(data) {

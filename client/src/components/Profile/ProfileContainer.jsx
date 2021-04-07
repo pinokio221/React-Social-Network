@@ -3,7 +3,7 @@ import Profile from "./Profile"
 import styles from './Profile.module.css'
 import connect from "react-redux/lib/connect/connect";
 import withRouter from "react-router-dom/withRouter"
-import { getProfilePage, resetProfilePageAction, updateProfileStatus } from "../../redux/profile-reducer"
+import { getProfilePage, resetProfilePageAction, updateProfileStatus, sendInvitation } from "../../redux/profile-reducer"
 import { toggleLogFormInProcess } from "../../redux/auth-reducer"
 import { compose } from 'redux';
 import { withAuthRedirect } from '../../hoc/AuthRedirect';
@@ -22,10 +22,21 @@ class ProfileContainer extends React.Component {
     componentWillUnmount() {
         this.props.resetProfilePageAction();
     }
+
+    sendInvitation = (userId) => {
+        this.props.sendInvitation(userId);
+    }
+    
     render() {
         return (
             <div>
-                { this.props.pageFetching ? <div className={styles.pageProgress}><CircularProgress size={80}/></div> : <Profile {...this.props}/>}
+                { this.props.pageFetching ? 
+                    <div className={styles.pageProgress}><CircularProgress size={80}/></div> 
+                    : 
+                    <Profile 
+                        {...this.props} 
+                        friendshipStatus={this.props.userInfo.friendshipStatus} 
+                        sendInvitation={this.sendInvitation}/>}
 
         </div>
         );
@@ -54,7 +65,8 @@ let mapDispatchToProps = (dispatch) => {
 export default compose(
     connect(mapStateToProps, { 
         mapDispatchToProps, 
-        updateProfileStatus, 
+        updateProfileStatus,
+        sendInvitation,
         getProfilePage, 
         resetProfilePageAction }),
     withRouter,

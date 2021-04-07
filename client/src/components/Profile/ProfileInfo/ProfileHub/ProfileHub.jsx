@@ -22,7 +22,9 @@ const ProfileHub = (props) => {
                 <Col xs={6} md={4}>
                         <Card className={styles.cardElement} border="light" style={{width: '20rem'}}>
                             <Card.Header>
-                            <div className={styles.hubTitle}><span className={styles.hubIcon}><PermMediaIcon style={{fontSize: '30px'}}/></span><span>My social media</span></div>
+                            <div className={styles.hubTitle}><span className={styles.hubIcon}><PermMediaIcon style={{fontSize: '30px'}}/></span>
+                                {props.isAuthUserPage ? <span>My social media</span> : <span>{props.userInfo.first_name}'s social media</span>}
+                            </div>
                                 <a className={styles.showAll} href=''>Show all</a>
                             </Card.Header>
                             <Card.Body className={styles.user_friends}>
@@ -33,7 +35,9 @@ const ProfileHub = (props) => {
                     <Col xs={6} md={4}>
                         <Card className={styles.cardElement} border="light" style={{width: '20rem'}}>
                         <Card.Header>
-                                <div className={styles.hubTitle}><span className={styles.hubIcon}><PeopleIcon style={{fontSize: '30px'}}/></span><span>My friends</span></div>
+                            <div className={styles.hubTitle}><span className={styles.hubIcon}><PeopleIcon style={{fontSize: '30px'}}/></span>
+                                {props.isAuthUserPage ? <span>My friends</span> : <span>{props.userInfo.first_name}'s friends</span>}
+                            </div>
                                 <a className={styles.showAll} href=''>Show all</a>
                             </Card.Header>
                             <Card.Body className={styles.user_friends}>
@@ -44,7 +48,9 @@ const ProfileHub = (props) => {
                     <Col xs={6} md={4}>
                         <Card className={styles.cardElement} border="light" style={{width: '20rem'}}>
                         <Card.Header>
-                                <div className={styles.hubTitle}><span className={styles.hubIcon}><IoIosPeople style={{fontSize: '30px'}}/></span><span>My communities</span></div>
+                            <div className={styles.hubTitle}><span className={styles.hubIcon}><IoIosPeople style={{fontSize: '30px'}}/></span>
+                                {props.isAuthUserPage ? <span>My communities</span> : <span>{props.userInfo.first_name}'s communities</span>}
+                            </div>
                                 <a className={styles.showAll} href=''>Show all</a>
                             </Card.Header>
                             <Card.Body className={styles.user_friends}>

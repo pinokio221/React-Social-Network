@@ -1,13 +1,14 @@
 import React from 'react';
 import connect from "react-redux/lib/connect/connect";
 import { compose } from 'redux';
-import { authMe } from '../src/redux/auth-reducer'
+import { initialize } from '../src/redux/auth-reducer'
+import withRouter from "react-router-dom/withRouter"
 import './App.css';
 import Navigate from './components/Navigate/Navigate'
 import News from './components/News/News'
 import Music from './components/Music/Music'
 import SettingsContainer from './components/Settings/SettingsContainer'
-import {Route, Switch, BrowserRouter, Redirect} from 'react-router-dom'
+import {Route, Switch, Redirect} from 'react-router-dom'
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
 import store from './redux/redux-store'
 import UsersContainer from "./components/Users/UsersContainer";
@@ -17,14 +18,15 @@ import LoginContainer from './components/Login/LoginContainer';
 import RegisterContainer from './components/Register/RegisterContainer';
 import MessagesContainer from './components/Dialogs/Messages/MessagesContainer';
 import SuccessRegistrationAlert from "../src/components/Alerts/SuccessRegistrationAlert"
+import { CircularProgress } from '@material-ui/core';
 
 class App extends React.Component {
   componentDidMount() {
-    this.props.authMe();
+    this.props.initialize();
   }
   render() {
-    return(
-      <BrowserRouter>
+    if(this.props.initialized) {
+      return(
         <Switch>
         <Route exact path='/login' component={LoginPage}/>
         <Route exact path='/signup' component={RegisterPage}/>
@@ -32,8 +34,15 @@ class App extends React.Component {
             <Route component={DefaultContainer}/>
           </div>
         </Switch>
-      </BrowserRouter>
+        )
+      }
+    else {
+      return(
+        <div className='loader'>
+          <CircularProgress size={100}/>
+        </div>
       )
+    }
   }
 }
 
@@ -83,10 +92,12 @@ const DefaultContainer = () => {
 
 let mapStateToProps = (state) => {
     return {
-      authData: state.auth
+      authData: state.auth,
+      initialized: state.auth.initialized
     }
 }
 
 export default compose(
-  connect(mapStateToProps, { authMe })
+  connect(mapStateToProps, { initialize }),
+  withRouter
 )(App)

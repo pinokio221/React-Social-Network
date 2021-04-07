@@ -44,14 +44,23 @@ class ProfileStatus extends React.Component {
     render() {
         return (
             <div>
-                {this.state.editMode ?
-                <div><Form.Control autoFocus onChange={this.onStatusChange} onBlur={this.toggleEditMode} value={this.state.status} className={styles.status_input} /></div> : 
-                this.state.status ?
-                    <div onClick = { this.toggleEditMode } className={styles.user_status}>
-                    <span>{this.state.status}</span>
-                    <FontAwesomeIcon className={styles.pencil_icon} icon={faPencilAlt}/></div> :
-                    <span onClick = { this.toggleEditMode } className={styles.no_status}>change status</span>}
-                      
+                { this.props.isAuthUserPage ?
+                    <div>
+                        {this.state.editMode ?
+                        <div><Form.Control autoFocus onChange={this.onStatusChange} onBlur={this.toggleEditMode} value={this.state.status} className={styles.status_input} /></div> : 
+                        this.state.status ?
+                            <div onClick = { this.toggleEditMode } className={styles.user_status}>
+                            <span>{this.state.status}</span>
+                            <FontAwesomeIcon className={styles.pencil_icon} icon={faPencilAlt}/></div> :
+                            <span onClick = { this.toggleEditMode } className={styles.no_status}>change status</span>}
+                    </div>
+                    :
+                    <div>
+                        <div className={styles.user_status} style={{ cursor:'text' }}>
+                            <span>{this.state.status}</span>
+                        </div>
+                    </div>
+                }
             </div>
                 
         );

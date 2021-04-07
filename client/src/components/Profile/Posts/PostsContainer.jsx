@@ -1,11 +1,11 @@
 import React from 'react';
-import MyPosts from "./MyPosts";
+import Posts from "./Posts";
 import connect from "react-redux/lib/connect/connect";
 import withRouter from "react-router-dom/withRouter"
 import { getProfilePosts, addPost, deletePost } from "../../../redux/profile-reducer"
 
 
-class MyPostsContainer extends React.Component {
+class PostsContainer extends React.Component {
     
     componentDidMount() {
         let userId = this.props.match.params.userId;
@@ -26,7 +26,7 @@ class MyPostsContainer extends React.Component {
     render() {
         return (
             <div>
-                <MyPosts {...this.props} addPost={this.addPost} deletePost={this.deletePost}/>
+                <Posts {...this.props} addPost={this.addPost} deletePost={this.deletePost}/>
         </div>
         );
     }
@@ -41,7 +41,7 @@ let mapStateToProps = (state) => {
     }
 }
 
-let urlDataComponent = withRouter(MyPostsContainer);
+let urlDataComponent = withRouter(PostsContainer);
 
 
 export default connect(mapStateToProps, 

@@ -7,6 +7,10 @@
     color: rgb(16, 125, 146);
 }
 
+.item a:hover {
+    text-decoration: underline;
+}
+
 .item img 
 {
   width: 50px;
@@ -38,8 +42,8 @@
 }*/
 
 table {
-    table-layout: fixed; /* Фиксированная ширина ячеек */
-    width: 100%; /* Ширина таблицы */
+    table-layout: fixed; 
+    width: 100%; 
 }
 
 td {

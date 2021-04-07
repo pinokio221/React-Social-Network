@@ -48,7 +48,6 @@ const ChatMessageForm = (props) => {
     )
 }
 const Messages = (props) => {
-
     let messagesElements = props.messagesData.map(m => <Message 
         key={m.id}
         author={m.author}
@@ -74,11 +73,14 @@ const Messages = (props) => {
                                     style={{ display: 'flex', flexDirection: 'column-reverse', overflow:'auto' }}
                                     scrollableTarget='scrollableComponent'
                                     next={props.fetchMoreMessages}
-                                    hasMore={props.hasMore}
+                                    hasMore={ messagesElements.length > 0 ? props.hasMore : false }
                                     inverse={true}
                                     endMessage={
                                         <p style={{ textAlign: 'center' }}>
-                                          <b>Yay! You have seen it all</b>
+                                            { messagesElements.length === 0 ? <b>Nothing here</b>
+                                            :
+                                            <b>START MESSAGING</b>
+                                            }
                                         </p>
                                       }
                                     loader={<div className={styles.fetchMoreMessagesProgress}><CircularProgress /></div>}>

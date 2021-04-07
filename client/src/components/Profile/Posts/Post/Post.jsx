@@ -41,28 +41,32 @@ const Post = (props) => {
                     <span className={styles.user_name}>
                         <NavLink to = {'/profile/' + props.userInfo.id} activeClassName={styles.activeLink}>{props.userInfo.fullname}</NavLink>{" added a new post:"}</span>
                         <div className={styles.post_option}>
-                        <IconButton
-                            aria-label="more"
-                            aria-controls="long-menu"
-                            aria-haspopup="true"
-                            onClick={handleClick}>
-                            <MoreVertIcon />
-                        </IconButton>
-                        <Menu
-                            id="long-menu"
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={open}
-                            onClose={handleClose}
-                            PaperProps={{
-                            style: {
-                                width: '20ch',},}}>
-                            {options.map((option) => (
-                            <MenuItem key={option} onClick={() => {handleClose(option, props.id)}}>
-                                {option}
-                            </MenuItem>
-                            ))}
-                        </Menu>
+                        { props.isAuthUserPage ?
+                            <div>
+                                <IconButton
+                                    aria-label="more"
+                                    aria-controls="long-menu"
+                                    aria-haspopup="true"
+                                    onClick={handleClick}>
+                                    <MoreVertIcon />
+                                </IconButton>
+                                <Menu
+                                    id="long-menu"
+                                    anchorEl={anchorEl}
+                                    keepMounted
+                                    open={open}
+                                    onClose={handleClose}
+                                    PaperProps={{
+                                    style: {
+                                        width: '20ch',},}}>
+                                    {options.map((option) => (
+                                    <MenuItem key={option} onClick={() => {handleClose(option, props.id)}}>
+                                        {option}
+                                    </MenuItem>
+                                    ))}
+                                </Menu>
+                            </div> : null
+                        }
                         </div>
                         </div>
                 <div className={styles.post_content}>{props.content}</div>

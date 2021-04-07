@@ -1,8 +1,6 @@
 import { authAPI } from "../api/auth-api"
 import { Redirect } from "react-router"
 import React from 'react'
-import { stopSubmit } from "redux-form";
-
 
 const SET_USER_DATA = 'SET-USER-DATA';
 const TOGGLE_REG_PROCESS = 'TOGGLE-REG-PROCESS'
@@ -10,13 +8,15 @@ const TOGGLE_LOG_PROCESS = 'TOGGLE-LOG-PROCESS'
 const TOGGLE_SIGNOUT_PROCESS = 'TOGGLE-SIGNOUT-PROCESS'
 const DISPLAY_AUTH_ERROR = 'DISPLAY-AUTH-ERROR'
 const RESET_ERROR = 'RESET-ERROR'
+const SET_INITIALIZED = 'SET-INITIALIZED'
 
-export const setUserData = (id, login, email, isAuth) => ({ type: SET_USER_DATA, data: { id, login, email }, isAuth})
-export const displayAuthError = (error_msg) => ({ type: DISPLAY_AUTH_ERROR, error_msg })
-export const resetError = () => ({ type: RESET_ERROR })
-export const toggleRegFormInProcess = (inProcess) => ({ type: TOGGLE_REG_PROCESS, inProcess})
-export const toggleLogFormInProcess = (inProcess) => ({ type: TOGGLE_LOG_PROCESS, inProcess})
-export const toggleSignOutInProcess = (inProcess) => ({ type: TOGGLE_SIGNOUT_PROCESS, inProcess })
+export const setUserData = (id, login, email, isAuth) => ({ type: SET_USER_DATA, data: { id, login, email }, isAuth});
+export const displayAuthError = (error_msg) => ({ type: DISPLAY_AUTH_ERROR, error_msg });
+export const resetError = () => ({ type: RESET_ERROR });
+export const toggleRegFormInProcess = (inProcess) => ({ type: TOGGLE_REG_PROCESS, inProcess});
+export const toggleLogFormInProcess = (inProcess) => ({ type: TOGGLE_LOG_PROCESS, inProcess});
+export const toggleSignOutInProcess = (inProcess) => ({ type: TOGGLE_SIGNOUT_PROCESS, inProcess });
+export const setInitializedAction = () => ({ type: SET_INITIALIZED });
 
 let initialState = {
     id: null,
@@ -24,19 +24,24 @@ let initialState = {
     email: null,
     isAuth: false,
     authError: false,
+    initialized: false,
     regFormInProcess: false,
     logFormInProcess: false,
     signOutInProcess: false
 }
 
-export const authMe = () => {
-    return(dispatch) => {
-        authAPI.authMe().then(data => {
-            let {id, login, email} = data.user;
+export const authMe = () => (dispatch) => {
+    return authAPI.authMe().then(response => {
+        if(response.status === 200) {
+            let {id, login, email} = response.data.user;
             dispatch(setUserData(id, login, email, true))
             dispatch(toggleLogFormInProcess(false));
-        })
-    }
+        }
+        if(response.status === 401) {
+            return false;
+        }
+        
+    })
 }
 
 export const userRegister = (data) => (dispatch) => {
@@ -74,6 +79,13 @@ export const userLogout = () => (dispatch) => {
     })
 }
 
+export const initialize = () => (dispatch) => {
+    let initData = dispatch(authMe());
+    initData.then(() => {
+        dispatch(setInitializedAction());
+    })
+}
+
 
 const authReducer = (state = initialState, action) => {
 
@@ -84,6 +96,12 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 ...action.data,
                 isAuth: action.isAuth
+            }
+        }
+        case SET_INITIALIZED: {
+            return {
+                ...state,
+                initialized: true
             }
         }
         case TOGGLE_REG_PROCESS: {

@@ -1,6 +1,7 @@
 import { postsAPI } from "../api/posts-api"
 import { profileAPI } from "../api/profile-api"
- 
+import { friendshipAPI } from "../api/friendship-api"
+
 const ADD_POST = "ADD-POST";
 const DELETE_POST = "DELETE-POST";
 const SET_PROFILE_PAGE = "SET-PROFILE-PAGE"
@@ -8,6 +9,7 @@ const RESET_PROFILE_PAGE = 'RESET-PROFILE-PAGE'
 const SET_PROFILE_POSTS = "SET-PROFILE-POSTS"
 const SET_PROFILE_FRIENDS = "SET-PROFILE-FRIENDS"
 const UPDATE_PROFILE_STATUS = "UPDATE-PROFILE-STATUS"
+const SEND_INVITATION = 'SEND-INVITATION'
 
 export const addPostAction = (post) => ({ type: ADD_POST, post })
 export const deletePostAction = (post_id) => ({ type: DELETE_POST, post_id })
@@ -16,6 +18,7 @@ export const resetProfilePageAction = () => ({ type: RESET_PROFILE_PAGE })
 export const setProfilePostsAction = (posts) => ({ type: SET_PROFILE_POSTS, posts })
 export const setProfileFriendsAction = (friends, totalFriends) => ({ type: SET_PROFILE_FRIENDS, friends, totalFriends })
 export const updateStatusAction = (status) => ({type: UPDATE_PROFILE_STATUS, status})
+export const sendInvitationAction = (userId, status) => ({ type: SEND_INVITATION, userId, status })
 
 let initialState = {
     userInfo: {},
@@ -75,7 +78,14 @@ export const updateProfileStatus = (user_status) => {
             } 
         })
     }
+}
 
+export const sendInvitation = (userId) => {
+    return(dispatch) => {
+        friendshipAPI.sendInvitation(userId).then(data => {
+            dispatch(sendInvitationAction(userId, data.friendshipStatus));
+        })
+    }
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -134,6 +144,16 @@ const profileReducer = (state = initialState, action) => {
                 status: action.status // doesnt work
             }
 
+        }
+        case SEND_INVITATION: {
+            let returnedInfo = {...state.userInfo};
+            returnedInfo.friendshipStatus = action.status;
+            console.log(returnedInfo);
+            console.log(state.userInfo);
+            return {
+                ...state,
+                userInfo: returnedInfo
+            }
         }
 
         default: return state;

@@ -6,6 +6,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import './index.css';
 import App from './App';
 import {Provider} from "react-redux";
+import { BrowserRouter } from 'react-router-dom'
 
 class Title extends React.Component {
     render() {
@@ -14,10 +15,12 @@ class Title extends React.Component {
     }
 }
 ReactDOM.render(
+    <BrowserRouter>
     <Provider store={store}>
         <App store={store}/>
         <Title />
-    </Provider>, document.getElementById('root')
+    </Provider>
+    </BrowserRouter>, document.getElementById('root')
 );
 
 
