@@ -7,6 +7,7 @@ import loader from "../../assets/images/loader.gif"
 
 const Users = (props) => {
 
+
     let searchFieldValue = React.createRef();
     let pagesCount = Math.ceil(props.filteredUsersCount / props.pageSize);
     let pages = [];

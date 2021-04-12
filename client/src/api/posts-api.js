@@ -1,9 +1,10 @@
 import axios from 'axios'
+import rateLimit from 'axios-rate-limit';
 
-const instance = axios.create({
+const instance = rateLimit(axios.create({
     baseURL: 'http://localhost:9000/api/',
     withCredentials: true
-})
+}), { maxRequests: 2, perMilliseconds: 1000, maxRPS: 2 })
 
 export const postsAPI = {
     getProfilePosts(userId) {

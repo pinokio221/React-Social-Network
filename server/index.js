@@ -5,6 +5,7 @@ const server = http.createServer(app);
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const port = 9000;
+const rateLimit = require('express-rate-limit');
 require('dotenv').config()
 
 let cors = require("cors");
@@ -12,6 +13,15 @@ var corsOptions = {
     origin: 'http://localhost:3000',
     optionsSuccessStatus: 200, 
     credentials: true };
+
+app.use(rateLimit({
+  windowMs: 5 * 60 * 1000, // 5 minutes
+  max: 500,
+  message: ({
+    code: 429,
+    message: "Too many requests from this IP adress"
+  })
+}));
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
@@ -26,6 +36,7 @@ app.use(function(req, res, next) {
     next()
   })
 
+
 require('./sockets/chat').listen(server);
 
 //Import Routes
@@ -38,7 +49,6 @@ const chatRoute = require('./routes/chat')
 
 
 app.use(express.json());
-
 app.use('/api/users', usersRoute);
 app.use('/api/posts', postsRoute);
 app.use('/api/user', authRoute);
@@ -46,7 +56,6 @@ app.use('/api/profile', profileRoute);
 app.use('/api/friendship', friendshipRoute);
 app.use('/api/chat', chatRoute);
 
-//Routes
 
 app.get('/', (req, res) => {
     res.send("We are on home");
