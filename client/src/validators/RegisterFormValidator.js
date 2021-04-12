@@ -40,6 +40,9 @@ export const validate = values => {
     if(values.password && values.password.length < 8){
       errors.password = "Password length cannot be less than 8 characters"
     }
+    if(values.password && !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(values.password)) {
+      errors.password = "This password is not strong. Please use special characters, numbers, upper and lower case characters"
+    }
     if(values.repeat_password && values.repeat_password !== values.password) {
       errors.repeat_password = "Password mismatch"
     }
