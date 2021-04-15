@@ -14,13 +14,6 @@ export const profileAPI = {
                 return response.data;
             })
     },
-    getProfileFriends(userId) {
-        let requestURL = `http://localhost:9000/api/friendship/friends/${userId}`
-        return instance.get(requestURL, { withCredentials: true })
-            .then(response => {
-                return response;
-            })
-    },
     updateProfileStatus(user_status){
         let requestURL = `http://localhost:9000/api/profile/status`
         return instance.put(requestURL,

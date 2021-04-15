@@ -139,6 +139,7 @@ function returnUsers(req, res, next) {
         const endIndex = page * limit;
         items.items = users.slice(startIndex, endIndex);
         let count = users.length;
+        items.page = page;
         items.totalUsers = count;
         items.usersDisplayed = items.items.length
         res.send(items)

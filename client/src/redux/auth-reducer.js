@@ -32,7 +32,6 @@ let initialState = {
 
 export const authMe = () => (dispatch) => {
     return authAPI.authMe().then(response => {
-        console.log(response)
         if(response.status === 200) {
             let {id, login, email} = response.data.user;
             dispatch(setUserData(id, login, email, true))

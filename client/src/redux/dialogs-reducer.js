@@ -1,5 +1,5 @@
 import { chatAPI } from "../api/chat-api"
-import { profileAPI } from "../api/profile-api"
+import { friendshipAPI } from "../api/friendship-api"
 
 const UPDATE_MESSAGE_BODY = "UPDATE-MESSAGE-BODY"
 const SEND_MESSAGE = "SEND-MESSAGE"
@@ -49,7 +49,7 @@ export const getProfileDialogs = () => {
 
 export const getProfileContacts = (userId) => {
     return (dispatch) => {
-        profileAPI.getProfileFriends(userId).then(data => {
+        friendshipAPI.getProfileFriends(userId).then(data => {
             dispatch(setProfileContactsAction(data.data.items, data.data.totalFriends))
         })
     }

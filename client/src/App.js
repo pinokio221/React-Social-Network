@@ -6,7 +6,7 @@ import withRouter from "react-router-dom/withRouter"
 import './App.css';
 import Navigate from './components/Navigate/Navigate'
 import News from './components/News/News'
-import Music from './components/Music/Music'
+import FriendsContainer from './components/Friends/FriendsContainer'
 import SettingsContainer from './components/Settings/SettingsContainer'
 import {Route, Switch, Redirect} from 'react-router-dom'
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
@@ -80,7 +80,8 @@ const DefaultContainer = () => {
           <Route exact path='/dialogs/:receiveId' render={ () =>
               <MessagesContainer store={store}/> } />
           <Route path='/news' render={ () => <News /> } />
-          <Route path='/music' render={ () => <Music /> } />
+          <Route exact path='/friends/:userId?' render={ () => 
+              <FriendsContainer store={store}/> } />
           <Route path='/settings' render={ () => <SettingsContainer store={store} /> } />
           <Route path='/users' render={ () => <UsersContainer store={store}/> } />
       </div>

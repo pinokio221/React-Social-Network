@@ -31,7 +31,7 @@ let initialState = {
 
 export const getProfileFriends = (userId) => {
     return (dispatch) => {
-        profileAPI.getProfileFriends(userId).then(data => {
+        friendshipAPI.getProfileFriends(userId).then(data => {
             dispatch(setProfileFriendsAction(data.data.items, data.data.totalFriends))
         })
     }
@@ -148,8 +148,6 @@ const profileReducer = (state = initialState, action) => {
         case SEND_INVITATION: {
             let returnedInfo = {...state.userInfo};
             returnedInfo.friendshipStatus = action.status;
-            console.log(returnedInfo);
-            console.log(state.userInfo);
             return {
                 ...state,
                 userInfo: returnedInfo

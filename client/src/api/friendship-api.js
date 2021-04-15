@@ -9,6 +9,26 @@ const instance = rateLimit(axios.create({
 instance.getMaxRPS();
 
 export const friendshipAPI = {
+    getProfileFriends(userId) {
+        let requestURL = `http://localhost:9000/api/friendship/friends/${userId}`
+        return instance.get(requestURL, { withCredentials: true })
+            .then(response => {
+                return response;
+            })
+    },
+    getProfileInvitations() {
+        let requestURL = `http://localhost:9000/api/friendship/invitations/received`
+        return instance.get(requestURL, { withCredentials: true })
+            .then(response => {
+                return response;
+            })
+    },
+    removeFriend(userId) {
+        let requestURL = `http://localhost:9000/api/friendship/remove/${userId}`
+        return instance.delete(requestURL).then(response => {
+            return response;
+        })
+    },
     sendInvitation(userId) {
         let requestURL = `http://localhost:9000/api/friendship/send/${userId}`
         return instance.post(requestURL,
@@ -28,5 +48,17 @@ export const friendshipAPI = {
             .then(response => {
                 return response.data;
             })
+    },
+    acceptInvitation(userId) {
+        let requestURL = `http://localhost:9000/api/friendship/accept/${userId}`
+        return instance.put(requestURL).then((response) => {
+            return response;
+        })
+    },
+    rejectInvitation(userId) {
+        let requestURL = `http://localhost:9000/api/friendship/reject/${userId}`
+        return instance.put(requestURL).then((response) => {
+            return response;
+        })
     }
 }

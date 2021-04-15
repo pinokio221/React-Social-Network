@@ -69,7 +69,7 @@ const Dialogs = (props) => {
         setValue(index);
     };
 
-    let dialogsElements = props.dialogsData.map(d => <Dialog key = {d.id} receiveId = {d.id} name={d.first_name} profile_image={d.profile_image}/>)
+    let dialogsElements = props.dialogsData.map(d => <Dialog key = {d.id} receiveId = {d.id} name={d.first_name} profile_image={d.profile_image}/>).reverse() // temporary
     let contactsElements = props.contactsData.map(f => <Contact key = {f.id} receiveId = {f.id} name={f.first_name} fullname={f.fullname} profile_image={f.profile_image}/>)
     return (
         <div>
