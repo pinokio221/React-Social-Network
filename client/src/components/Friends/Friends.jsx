@@ -90,7 +90,25 @@ const Friends = (props) => {
                       </TabPanel>
                     </div>
                 </div>
-              : null }
+              : 
+                <div>
+                  <div>
+                    <AppBar position="static">
+                      <Tabs variant='fullWidth' centered value={value} onChange={handleChange} aria-label="simple tabs example">
+                      <Tab icon={<FaUserFriends/>} label={`${props.userInfo.first_name}'s Friends(${props.friendsPage.totalFriends})`} {...a11yProps(0)} />
+                      </Tabs>
+                    </AppBar>
+                  </div>
+                  <div>
+                    <TabPanel value={value} index={0}>
+                    <div className={styles.contentBlock}>
+                      {props.friends}
+                    </div>
+                    </TabPanel>
+                  </div>
+                </div>
+              
+              }
                 
             </div>
     )

@@ -8,7 +8,9 @@ import withRouter from "react-router-dom/withRouter"
 
 import { 
     getFriendsPage, 
-    resetFriendsPageAction, 
+    resetFriendsPageAction,
+    sendInvitation,
+    cancelInvitation, 
     acceptInvitation,
     rejectInvitation,
     removeFriend
@@ -19,19 +21,29 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 class FriendsContainer extends React.Component {
     componentDidMount(){
-        this.props.getFriendsPage(this.props.authData.id)
+        let userId = this.props.match.params.userId;
+        if(!this.props.match.params.userId) { 
+            userId = this.props.authData.id
+         }
+        this.props.getFriendsPage(userId)
     }
     componentWillUnmount() {
         this.props.resetFriendsPageAction();
     }
-    removeFriend = (userId) => {
-        this.props.removeFriend(userId);
+    sendInvitation = (userId) => {
+        this.props.sendInvitation(userId);
+    }
+    cancelInvitation = (userId) => {
+        this.props.cancelInvitation(userId);
     }
     acceptRequest = (userId) => {
         this.props.acceptInvitation(userId);
     }
     rejectRequest = (userId) => {
         this.props.rejectInvitation(userId);
+    }
+    removeFriend = (userId) => {
+        this.props.removeFriend(userId);
     }
     render() {
         let friends = this.props.friendsPage.friends
@@ -41,7 +53,12 @@ class FriendsContainer extends React.Component {
                 id = {f.id}
                 age={f.age} city={f.city}
                 image={f.profile_image}
+                friendshipStatus = {f.friendshipStatus}
+                sendInvitation={this.sendInvitation}
+                cancelInvitation={this.cancelInvitation}
                 removeFriend={this.removeFriend}
+                profilePageId={this.props.match.params.userId}
+                authData={this.props.authData}
                 />)
 
         let invitations = this.props.friendsPage.invitations
@@ -75,6 +92,7 @@ class FriendsContainer extends React.Component {
 
 let mapStateToProps = (state) => {
     return {
+        userInfo: state.friendsPage.userInfo,
         authData: state.auth,
         friendsPage: state.friendsPage,
         pageFetching: state.friendsPage.pageFetching
@@ -87,6 +105,8 @@ export default compose(
     connect(mapStateToProps, { 
         getFriendsPage, 
         resetFriendsPageAction,
+        sendInvitation,
+        cancelInvitation,
         acceptInvitation,
         rejectInvitation,
         removeFriend

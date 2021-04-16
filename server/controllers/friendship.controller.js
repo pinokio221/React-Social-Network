@@ -22,7 +22,6 @@ const returnUserFriends = (req, res, next) => {
                 if(value.userId1 == req.params.userId) { friendId = value.userId2 }
                 else { friendId = value.userId1 }
                 let friend = await usersController.getUserById(req, res, next, friendId);
-                delete friend.friendshipStatus;
                 users.push(friend)
             }
             const startIndex = (page-1) * limit;

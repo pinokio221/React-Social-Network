@@ -38,7 +38,7 @@ const ProfileHub = (props) => {
                             <div className={styles.hubTitle}><span className={styles.hubIcon}><PeopleIcon style={{fontSize: '30px'}}/></span>
                                 {props.isAuthUserPage ? <span>My friends</span> : <span>{props.userInfo.first_name}'s friends</span>}
                             </div>
-                                <a className={styles.showAll} href=''>Show all</a>
+                                <NavLink className={styles.showAll} to={ "/friends/" + props.userInfo.id }><span  href=''>Show all</span></NavLink>
                             </Card.Header>
                             <Card.Body className={styles.user_friends}>
                                 { friendsList }
