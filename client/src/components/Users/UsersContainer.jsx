@@ -16,7 +16,7 @@ import { compose } from 'redux';
 class UsersContainer extends React.Component {
     
     componentDidMount() {
-        this.props.getUsers(this.props.currentPage, this.props.pageSize); // redux-thunk
+        this.props.getUsers(1,6); // redux-thunk, tmp
     }
     componentWillUnmount() {
         this.props.getMoreUsers(1, 6); // reflesh

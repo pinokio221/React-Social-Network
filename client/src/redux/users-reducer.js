@@ -17,7 +17,6 @@ export const showMoreAction = (users, pagination) => ({ type: SHOW_MORE, users, 
 export const setCurrentPageAction = (page) => ({type: SET_PAGE, page})
 export const toggleIsFetchingAction = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFetching})
 
-
 export const getUsers = (currentPage, pageSize) => {
     return (dispatch) => {
         dispatch(toggleIsFetchingAction(true));
@@ -155,8 +154,6 @@ const usersReducer = (state = initialState, action) => {
             }
         case TOGGLE_IS_FETCHING:
             return {...state, isFetching: action.isFetching}
-
-
         default: return state;
     }
 }

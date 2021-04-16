@@ -11,7 +11,7 @@ export const profileAPI = {
         let requestURL = `http://localhost:9000/api/users?userId=${userId}`
         return instance.get(requestURL, { withCredentials: true })
             .then(response => {
-                return response.data;
+                return response;
             })
     },
     updateProfileStatus(user_status){

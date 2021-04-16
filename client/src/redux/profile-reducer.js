@@ -38,9 +38,10 @@ export const getProfileFriends = (userId) => {
 }
 
 export const getProfilePage = (userId) => (dispatch) => {
-    
-    profileAPI.getProfilePage(userId).then(data => {
-        dispatch(setProfilePageAction(data));
+    profileAPI.getProfilePage(userId).then(response => {
+        if(response.status === 200) {
+            dispatch(setProfilePageAction(response.data));
+        }
     })
     dispatch(getProfileFriends(userId));
     

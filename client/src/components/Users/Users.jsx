@@ -38,7 +38,7 @@ const Users = (props) => {
             {props.isFetching && props.filter ? <img className={styles.loader} src={loader} alt=""/> : null}                         
             <hr/>
             <div className={styles.profile_wrapper}>
-                { props.usersElements.length == 0 && !props.isFetching ? <div className={styles.not_found}>Users not found</div>
+                { props.usersElements.length === 0  ? <div className={styles.not_found}>Users not found</div>
                 : props.searchInput == "" ? props.usersElements : props.filteredElements.length == 0 ? 
                 <div className={styles.not_found}>Users not found</div> : props.filteredElements}
                 
