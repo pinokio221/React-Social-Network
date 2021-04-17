@@ -11,6 +11,8 @@ const CANCEL_INVITATION = 'CANCEL-INVITATION'
 const ACCEPT_INVITATION = 'ACCEPT-INVITATION'
 const REJECT_INVITATION = 'REJECT-INVITATION'
 const REMOVE_FRIEND = 'REMOVE-FRIEND'
+const FETCH_FRIENDS = 'FETCH-FRIENDS'
+const FETCH_INVITATIONS = 'FETCH-INVITATIONS'
 
 export const setProfileInfoAction = (userInfo) => ({ type: SET_PROFILE_INFO, userInfo })
 export const setProfileFriendsAction = (friends, totalFriends) => ({ type: SET_FRIENDS, friends, totalFriends })
@@ -22,6 +24,8 @@ export const cancelInvitationAction = (userId) => ({ type: CANCEL_INVITATION, us
 export const acceptInvitationAction = (userId) => ({ type: ACCEPT_INVITATION, userId });
 export const rejectInvitationAction = (userId) => ({ type: REJECT_INVITATION, userId });
 export const removeFriendAction = (userId) => ({ type: REMOVE_FRIEND, userId });
+export const fetchMoreFriendsAction = (friends, page) => ({ type: FETCH_FRIENDS, friends, page })
+export const fetchMoreInvitationsAction = (invitations, page) => ({ type: FETCH_INVITATIONS, invitations, page })
 
 let initialState = {
     pageFetching: true,
@@ -29,12 +33,14 @@ let initialState = {
     userInfo: null,
     invitations: [],
     totalFriends: null,
-    totalInvitations: null
+    totalInvitations: null,
+    friendsPagination: 1,
+    invitationsPagination: 1
 }
 
-export const getFriendsPage = (userId) => (dispatch) => {
-    let friendsPromise = dispatch(getProfileFriends(userId));
-    let invitationsPromise = dispatch(getProfileInvitations());
+export const getFriendsPage = (userId, friendsPagination, invitationsPagination) => (dispatch) => {
+    let friendsPromise = dispatch(getProfileFriends(userId, friendsPagination));
+    let invitationsPromise = dispatch(getProfileInvitations(invitationsPagination));
     let profilePromise = dispatch(getProfileInfo(userId));
 
     Promise.all([profilePromise, friendsPromise, invitationsPromise]).then(() => {
@@ -50,16 +56,16 @@ export const getProfileInfo = (userId) => (dispatch) => {
         }
     })
 }
-export const getProfileFriends = (userId) => (dispatch) => {
-    return friendshipAPI.getProfileFriends(userId).then(response => {
+export const getProfileFriends = (userId, pagination) => (dispatch) => {
+    return friendshipAPI.getProfileFriends(userId, pagination).then(response => {
             if(response.status === 200) {
                 dispatch(setProfileFriendsAction(response.data.items, response.data.totalFriends))
             }
         })
 }
 
-export const getProfileInvitations = () => (dispatch) => {
-    return friendshipAPI.getProfileInvitations().then(response => {
+export const getProfileInvitations = (pagination) => (dispatch) => {
+    return friendshipAPI.getProfileInvitations(pagination).then(response => {
             if(response.status === 200) {
                 dispatch(setProfileInvitationsAction(response.data.items, response.data.receivedInvitations))
             }
@@ -110,6 +116,26 @@ export const removeFriend = (userId) => {
     }
 }
 
+export const fetchMoreFriends = (userId, pagination) => {
+    return(dispatch) => {
+        friendshipAPI.getProfileFriends(userId, pagination).then(response => {
+            if(response.status === 200) {
+                dispatch(fetchMoreFriendsAction(response.data.items, response.data.page))
+                
+            }
+        })
+    }
+}
+export const fetchMoreInvitations = (pagination) => {
+    return(dispatch) => {
+        friendshipAPI.getProfileInvitations(pagination).then(response => {
+            if(response.status === 200) {
+                dispatch(fetchMoreInvitationsAction(response.data.items, response.data.page))
+            }
+        })
+    }
+}
+
 
 const friendsReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -133,7 +159,9 @@ const friendsReducer = (state = initialState, action) => {
                 invitations: [],
                 totalFriends: null,
                 totalInvitations: null,
-                pageFetching: true
+                pageFetching: true,
+                friendsPagination: 1,
+                invitationsPagination: 1
             }
         }
         case SET_FRIENDS: {
@@ -206,6 +234,18 @@ const friendsReducer = (state = initialState, action) => {
                 
             }
         }
+        case FETCH_FRIENDS:
+            return {
+                ...state,
+                friends: [...state.friends, ...action.friends],
+                friendsPagination: action.page
+            }
+        case FETCH_INVITATIONS:
+            return {
+                ...state,
+                invitations: [...state.invitations, ...action.invitations],
+                invitationsPagination: action.page
+            }
         default: return state;
     }
 }

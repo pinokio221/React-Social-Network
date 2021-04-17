@@ -9,15 +9,15 @@ const instance = rateLimit(axios.create({
 instance.getMaxRPS();
 
 export const friendshipAPI = {
-    getProfileFriends(userId) {
-        let requestURL = `http://localhost:9000/api/friendship/friends/${userId}`
+    getProfileFriends(userId, pagination) {
+        let requestURL = `http://localhost:9000/api/friendship/friends/${userId}?page=${pagination}`
         return instance.get(requestURL, { withCredentials: true })
             .then(response => {
                 return response;
             })
     },
-    getProfileInvitations() {
-        let requestURL = `http://localhost:9000/api/friendship/invitations/received`
+    getProfileInvitations(pagination) {
+        let requestURL = `http://localhost:9000/api/friendship/invitations/received?page=${pagination}`
         return instance.get(requestURL, { withCredentials: true })
             .then(response => {
                 return response;
