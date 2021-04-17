@@ -9,6 +9,9 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { BiMessageSquareAdd } from 'react-icons/bi'
 import { FaUserFriends } from 'react-icons/fa'
+import InfiniteScroll from "react-infinite-scroll-component";
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -56,14 +59,12 @@ const Friends = (props) => {
     if(props.profilePageId === undefined || props.profilePageId == props.authData.id) {
         isAuthUserPage = true;
     }
-
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-
 
     return (
             <div className={classes.root}>
@@ -79,14 +80,24 @@ const Friends = (props) => {
                     </div>
                     <div>
                       <TabPanel value={value} index={0}>
-                      <div className={styles.contentBlock}>
-                        {props.friends}
-                      </div>
+                        <InfiniteScroll
+                            dataLength={props.friends.length}
+                            next={props.fetchMoreFriends}
+                            style={{ overflow:'auto' }}
+                            hasMore={ props.friends.length > 0 ? props.hasMoreFriends : false }
+                            loader={<div className={styles.fetchMoreProgress}><CircularProgress/></div>}>
+                          <div className={styles.contentBlock}>{props.friends}</div>      
+                        </InfiniteScroll>
                       </TabPanel>
                       <TabPanel value={value} index={1}>
-                        <div className={styles.contentBlock}>
-                          {props.invitations}
-                        </div>
+                        <InfiniteScroll
+                            dataLength={props.invitations.length}
+                            next={props.fetchMoreInvitations}
+                            style={{ overflow:'hidden' }}
+                            hasMore={ props.invitations.length > 0 ? props.hasMoreInvitations : false }
+                            loader={<div className={styles.fetchMoreProgress}><CircularProgress/></div>}>
+                          <div className={styles.contentBlock}>{props.invitations}</div>      
+                        </InfiniteScroll>
                       </TabPanel>
                     </div>
                 </div>

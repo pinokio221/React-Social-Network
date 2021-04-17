@@ -13,19 +13,33 @@ import {
     cancelInvitation, 
     acceptInvitation,
     rejectInvitation,
-    removeFriend
+    removeFriend,
+    fetchMoreFriends,
+    fetchMoreInvitations
 } from '../../redux/friends-reducer'
 import Friend from './Friend/Friend'
 import Invitation from './Invitation/Invitation'
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 class FriendsContainer extends React.Component {
+    state = {
+        friendsPagination: 1,
+        invitationsPagination: 1,
+        hasMoreFriends: true,
+        hasMoreInvitations: true,
+        userId: this.props.match.params.userId
+    }
+    
     componentDidMount(){
         let userId = this.props.match.params.userId;
         if(!this.props.match.params.userId) { 
             userId = this.props.authData.id
          }
-        this.props.getFriendsPage(userId)
+        this.props.getFriendsPage(userId, this.props.friendsPagination, this.props.invitationsPagination)
+        this.setState({
+            userId: userId
+        })
+        
     }
     componentWillUnmount() {
         this.props.resetFriendsPageAction();
@@ -44,6 +58,30 @@ class FriendsContainer extends React.Component {
     }
     removeFriend = (userId) => {
         this.props.removeFriend(userId);
+    }
+    fetchMoreFriends = () => {
+        if(this.props.friendsPage.friends.length >= this.props.friendsPage.totalFriends) {
+            this.setState({ hasMoreFriends: false });
+            return;
+        }
+        setTimeout(() => {
+            this.setState({
+                friendsPagination: this.state.friendsPagination+=1
+            })
+            this.props.fetchMoreFriends(this.state.userId, this.state.friendsPagination);
+        }, 1000)
+    }
+    fetchMoreInvitations = () => {
+        if(this.props.friendsPage.invitations.length >= this.props.friendsPage.totalInvitations) {
+            this.setState({ hasMoreInvitations: false });
+            return;
+        }
+        setTimeout(() => {
+            this.setState({
+                invitationsPagination: this.state.invitationsPagination+=1
+            })
+            this.props.fetchMoreInvitations(this.state.invitationsPagination);
+        }, 1000)
     }
     render() {
         let friends = this.props.friendsPage.friends
@@ -84,6 +122,10 @@ class FriendsContainer extends React.Component {
                         friends={friends} 
                         invitations={invitations} 
                         profilePageId={this.props.match.params.userId}
+                        fetchMoreFriends={this.fetchMoreFriends}
+                        fetchMoreInvitations={this.fetchMoreInvitations}
+                        hasMoreFriends={this.state.hasMoreFriends}
+                        hasMoreInvitations={this.state.hasMoreInvitations}
                         />}
             </div>
         )
@@ -95,7 +137,9 @@ let mapStateToProps = (state) => {
         userInfo: state.friendsPage.userInfo,
         authData: state.auth,
         friendsPage: state.friendsPage,
-        pageFetching: state.friendsPage.pageFetching
+        pageFetching: state.friendsPage.pageFetching,
+        friendsPagination: state.friendsPage.friendsPagination,
+        invitationsPagination: state.friendsPage.invitationsPagination
     }
 }
 
@@ -109,6 +153,8 @@ export default compose(
         cancelInvitation,
         acceptInvitation,
         rejectInvitation,
-        removeFriend
+        removeFriend,
+        fetchMoreFriends,
+        fetchMoreInvitations
      })
 )(FriendsContainer)

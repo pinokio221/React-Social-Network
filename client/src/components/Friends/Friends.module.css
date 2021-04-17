@@ -2,9 +2,18 @@
     display: grid;
     grid-template-columns: 1fr 1fr 4fr;
     grid-gap: 20px;
-    margin-left: 10%;
+    margin-left: 13%;
+    margin-top: 5%;
+    margin-bottom: 20%;
 }
 
+
+.fetchMoreProgress {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 5%;
+    overflow:hidden;
+}
 
 .fetchProgress {
     display: flex;
