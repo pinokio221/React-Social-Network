@@ -64,7 +64,7 @@ const Login = (props) => {
         props.userLogin(formData);
     }
     const autoClose = () => {
-        props.resetError()
+        props.resetAuthError()
     }
     if(props.isAuth){
         return <Redirect to={"/profile"}/>

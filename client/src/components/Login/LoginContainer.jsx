@@ -1,6 +1,6 @@
 import React from 'react';
 import Login from "./Login"
-import { userLogin, resetError } from "../../redux/auth-reducer"
+import { userLogin, resetAuthError } from "../../redux/auth-reducer"
 import connect from "react-redux/lib/connect/connect";
 import { compose } from 'redux';
 import { withAuthRedirect } from '../../hoc/AuthRedirect';
@@ -9,14 +9,14 @@ class LoginContainer extends React.Component {
     userLogin = (data) => {
         this.props.userLogin(data)
     }
-    resetError = () => {
+    resetAuthError = () => {
         this.props.resetError();
     }
     render(){
         return (
             <Login 
                 {...this.props} 
-                resetError={this.resetError} 
+                resetAuthError={this.resetAuthError} 
                 logFormInProcess={this.props.logFormInProcess} 
                 isAuth={this.props.isAuth} 
                 userLogin={this.userLogin}/>
@@ -32,5 +32,5 @@ let mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, {userLogin, resetError})(LoginContainer)
+export default connect(mapStateToProps, {userLogin, resetAuthError})(LoginContainer)
 

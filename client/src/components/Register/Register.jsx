@@ -16,7 +16,12 @@ import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns';
 import moment from 'moment'
 import { Fade } from "react-awesome-reveal";
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const RenderTextField = ({label, input, meta: { touched, invalid, error }, ...custom}) => (
   <TextField
@@ -52,14 +57,6 @@ const RenderRadioButton = ({ input, ...rest },) => (
     </RadioGroup>
   </FormControl>
 )
-  
-/*const renderFromHelper = ({ touched, error }) => {
-  if (!(touched && error)) {
-    return
-  } else {
-    return <FormHelperText>{touched && error}</FormHelperText>
-  }
-}*/
 
 const RenderDatePicker = ({ input: { onChange, value }, meta: {touched, invalid, error} }) => {
   let date = new Date();
@@ -147,40 +144,61 @@ const ReduxRegisterForm = reduxForm({
     asyncValidate
 })(RegisterForm);
 
-const Register = (props) => {
-    if(props.isAuth){
+class Register extends React.Component {
+  componentDidMount() {
+    if(this.props.isAuth){
       return <Redirect to={"/profile"}/>
     }
-
-    const generateForm = (formData) => {
-      let format_birthday = moment(formData.birthday).format('YYYY-MM-DD');
-
-      const getUserAge = (birthday) => {
-        let userBirthdayDate = new Date(birthday);
-        let ageDifMs = Date.now() - userBirthdayDate.getTime();
-        let ageDate = new Date(ageDifMs);
-        return Math.abs(ageDate.getUTCFullYear() - 1970);
-      }
-      let finalForm = {
-        firstname: formData.firstname,
-        lastname: formData.lastname,
-        fullname: formData.firstname + " " + formData.lastname,
-        email: formData.email,
-        login: formData.login.toLowerCase(),
-        gender: formData.gender,
-        birthday: format_birthday,
-        age: getUserAge(format_birthday),
-        password: formData.password
-      }
-        return finalForm;
-    }
-    const signUp = (formData) => {
-      props.userRegister(generateForm(formData));
   }
+  state = {
+      visible: true,
+  }
+  autoClose = () => {
+      this.props.resetRegError()
+  }
+  generateForm = (formData) => {
+    let format_birthday = moment(formData.birthday).format('YYYY-MM-DD');
+
+    const getUserAge = (birthday) => {
+      let userBirthdayDate = new Date(birthday);
+      let ageDifMs = Date.now() - userBirthdayDate.getTime();
+      let ageDate = new Date(ageDifMs);
+      return Math.abs(ageDate.getUTCFullYear() - 1970);
+    }
+    let finalForm = {
+      firstname: formData.firstname,
+      lastname: formData.lastname,
+      fullname: formData.firstname + " " + formData.lastname,
+      email: formData.email,
+      login: formData.login.toLowerCase(),
+      gender: formData.gender,
+      birthday: format_birthday,
+      age: getUserAge(format_birthday),
+      password: formData.password
+    }
+      return finalForm;
+  }
+  signUp = (formData) => {
+    this.props.userRegister(this.generateForm(formData));
+  }
+  render() {
+    
     return (
-      
-            <ReduxRegisterForm onSubmit={signUp} regFormInProcess={props.regFormInProcess}/>
+      <div>
+          { this.props.regError ? 
+            <Snackbar
+                open={this.state.visible}
+                onClose={this.autoClose}
+                autoHideDuration={6000}
+                anchorOrigin={{ horizontal: 'top', vertical: 'center' } }>
+                    <Alert severity="error">
+                        {this.props.regError}
+                    </Alert>
+            </Snackbar> : null }
+            <div><ReduxRegisterForm onSubmit={this.signUp} regFormInProcess={this.props.regFormInProcess}/></div>
+      </div>
     );
+  }
 }
 
 export default Register;

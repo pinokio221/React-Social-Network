@@ -7,12 +7,16 @@ const TOGGLE_REG_PROCESS = 'TOGGLE-REG-PROCESS'
 const TOGGLE_LOG_PROCESS = 'TOGGLE-LOG-PROCESS'
 const TOGGLE_SIGNOUT_PROCESS = 'TOGGLE-SIGNOUT-PROCESS'
 const DISPLAY_AUTH_ERROR = 'DISPLAY-AUTH-ERROR'
-const RESET_ERROR = 'RESET-ERROR'
+const DISPLAY_REG_ERROR = 'DISPLAY-REG-ERROR'
+const RESET_AUTH_ERROR = 'RESET-AUTH-ERROR'
+const RESET_REG_ERROR = 'RESET-REG-ERROR'
 const SET_INITIALIZED = 'SET-INITIALIZED'
 
 export const setUserData = (id, login, email, isAuth) => ({ type: SET_USER_DATA, data: { id, login, email }, isAuth});
 export const displayAuthError = (error_msg) => ({ type: DISPLAY_AUTH_ERROR, error_msg });
-export const resetError = () => ({ type: RESET_ERROR });
+export const displayRegisterError = (error_msg) => ({ type: DISPLAY_REG_ERROR, error_msg });
+export const resetRegError = () => ({ type: RESET_REG_ERROR });
+export const resetAuthError = () => ({ type: RESET_AUTH_ERROR });
 export const toggleRegFormInProcess = (inProcess) => ({ type: TOGGLE_REG_PROCESS, inProcess});
 export const toggleLogFormInProcess = (inProcess) => ({ type: TOGGLE_LOG_PROCESS, inProcess});
 export const toggleSignOutInProcess = (inProcess) => ({ type: TOGGLE_SIGNOUT_PROCESS, inProcess });
@@ -23,6 +27,7 @@ let initialState = {
     login: null,
     email: null,
     isAuth: false,
+    regError: false,
     authError: false,
     initialized: false,
     regFormInProcess: false,
@@ -51,7 +56,7 @@ export const userRegister = (data) => (dispatch) => {
             return <Redirect to={'/login'}/>
         }
         if(response.status === 400) {
-            alert(response.data.message)
+            dispatch(displayRegisterError(response.data.message))
         }
         dispatch(toggleRegFormInProcess(false))
     })
@@ -129,10 +134,23 @@ const authReducer = (state = initialState, action) => {
                 logFormInProcess: false
             }
         }
-        case RESET_ERROR: {
+        case DISPLAY_REG_ERROR: {
+            return {
+                ...state,
+                regError: action.error_msg,
+                regFormInProcess: false
+            }
+        }
+        case RESET_AUTH_ERROR: {
             return {
                 ...state,
                 authError: false
+            }
+        }
+        case RESET_REG_ERROR: {
+            return {
+                ...state,
+                regError: false
             }
         }
         default: return state;
