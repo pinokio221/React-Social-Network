@@ -31,7 +31,7 @@ let initialState = {
 
 export const getProfileFriends = (userId) => {
     return (dispatch) => {
-        friendshipAPI.getProfileFriends(userId).then(data => {
+        friendshipAPI.getProfileFriends(userId, 1).then(data => {
             dispatch(setProfileFriendsAction(data.data.items, data.data.totalFriends))
         })
     }

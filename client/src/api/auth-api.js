@@ -16,6 +16,15 @@ export const authAPI = {
             return error.response
         })
     },
+    getQRCode() {
+        let requestURL = `http://localhost:9000/api/user/qrcode`
+        return instance.get(requestURL,{ withCredentials: true })
+        .then(response => {
+            return response;
+        }).catch((error) => {
+            return error.response
+        })
+    },
     userRegister(data) {
         let requestURL = `http://localhost:9000/api/user/register`
         return instance.post(requestURL, {

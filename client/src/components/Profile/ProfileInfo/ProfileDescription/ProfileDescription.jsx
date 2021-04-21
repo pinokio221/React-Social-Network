@@ -57,7 +57,7 @@ const ProfileDescription = (props) => {
                                     <span><b>User Information</b></span>
                                     <hr className="my-1"/>
                                     <div>
-                                        <span>City: {props.userInfo.city}</span><br/>
+                                        <span>From: {props.userInfo.country}, {props.userInfo.city}</span><br/>
                                         <span>Age: {props.userInfo.age}</span><br/>
                                     </div>
                                 </div>

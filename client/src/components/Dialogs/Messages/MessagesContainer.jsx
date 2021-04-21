@@ -9,6 +9,15 @@ import io from 'socket.io-client';
 
 
 class MessagesContainer extends React.Component {
+    state = {
+        chatMessage: "",
+        emojiPicker: false,
+        displayDownButton: false,
+        pagination: 1,
+        hasMore: true,
+        scrollPosition: 0,
+        receiveId: this.props.match.params.receiveId
+    }
     handleSearchChange = (e) => {
         this.setState({
             chatMessage: e.target.value

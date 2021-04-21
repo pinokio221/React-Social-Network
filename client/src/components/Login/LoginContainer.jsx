@@ -10,7 +10,7 @@ class LoginContainer extends React.Component {
         this.props.userLogin(data)
     }
     resetAuthError = () => {
-        this.props.resetError();
+        this.props.resetAuthError();
     }
     render(){
         return (

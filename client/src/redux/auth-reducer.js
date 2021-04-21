@@ -11,6 +11,8 @@ const DISPLAY_REG_ERROR = 'DISPLAY-REG-ERROR'
 const RESET_AUTH_ERROR = 'RESET-AUTH-ERROR'
 const RESET_REG_ERROR = 'RESET-REG-ERROR'
 const SET_INITIALIZED = 'SET-INITIALIZED'
+const SET_QR_CODE = 'SET-QR-CODE';
+const SET_REG_STAGE = 'SET-REG-STAGE'
 
 export const setUserData = (id, login, email, isAuth) => ({ type: SET_USER_DATA, data: { id, login, email }, isAuth});
 export const displayAuthError = (error_msg) => ({ type: DISPLAY_AUTH_ERROR, error_msg });
@@ -21,6 +23,8 @@ export const toggleRegFormInProcess = (inProcess) => ({ type: TOGGLE_REG_PROCESS
 export const toggleLogFormInProcess = (inProcess) => ({ type: TOGGLE_LOG_PROCESS, inProcess});
 export const toggleSignOutInProcess = (inProcess) => ({ type: TOGGLE_SIGNOUT_PROCESS, inProcess });
 export const setInitializedAction = () => ({ type: SET_INITIALIZED });
+export const setUserQRCodeAction = (qrcode) => ({ type: SET_QR_CODE, qrcode });
+export const setRegisterStageAction = (stage) => ({ type: SET_REG_STAGE, stage });
 
 let initialState = {
     id: null,
@@ -30,13 +34,15 @@ let initialState = {
     regError: false,
     authError: false,
     initialized: false,
+    registerStage: 1,
     regFormInProcess: false,
     logFormInProcess: false,
-    signOutInProcess: false
+    signOutInProcess: false,
+    qrCode: null,
 }
 
 export const authMe = () => (dispatch) => {
-    return authAPI.authMe().then(response => {
+    return authAPI.authMe().then(response =>{
         if(response.status === 200) {
             let {id, login, email} = response.data.user;
             dispatch(setUserData(id, login, email, true))
@@ -49,11 +55,30 @@ export const authMe = () => (dispatch) => {
     })
 }
 
+export const getUserQRCode = () => async (dispatch) => {
+    return await authAPI.getQRCode().then(response =>{
+        if(response.status === 200) {
+            dispatch(setUserQRCodeAction(response.data.QRCode))
+        }
+        if(response.status === 401) {
+            return false;
+        }
+    })
+}
+
+export const enableTwoFactorAuthStage = () => (dispatch) => {
+    let qrCodePromise = dispatch(getUserQRCode());
+    Promise.all([qrCodePromise]).then(() => {
+            dispatch(setRegisterStageAction(2));
+        })
+    
+}
+
 export const userRegister = (data) => (dispatch) => {
     dispatch(toggleRegFormInProcess(true));
     authAPI.userRegister(data).then(response => {
         if(response.status === 201) {
-            return <Redirect to={'/login'}/>
+            dispatch(enableTwoFactorAuthStage())
         }
         if(response.status === 400) {
             dispatch(displayRegisterError(response.data.message))
@@ -125,6 +150,18 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 signOutInProcess: action.inProcess
+            }
+        }
+        case SET_REG_STAGE: {
+            return {
+                ...state,
+                registerStage: 2
+            }
+        }
+        case SET_QR_CODE: {
+            return {
+                ...state,
+                qrCode: action.qrcode
             }
         }
         case DISPLAY_AUTH_ERROR: {
