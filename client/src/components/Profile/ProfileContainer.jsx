@@ -10,7 +10,6 @@ import { withAuthRedirect } from '../../hoc/AuthRedirect';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 
-
 class ProfileContainer extends React.Component {
     componentDidMount() {
         let userId = this.props.match.params.userId;
@@ -37,7 +36,6 @@ class ProfileContainer extends React.Component {
                         {...this.props} 
                         friendshipStatus={this.props.userInfo.friendshipStatus} 
                         sendInvitation={this.sendInvitation}/>}
-
         </div>
         );
     }

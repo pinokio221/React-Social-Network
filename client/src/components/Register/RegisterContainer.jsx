@@ -2,13 +2,12 @@ import React from 'react';
 import Register from "./Register"
 import { userRegister, resetRegError } from '../../redux/auth-reducer'
 import connect from "react-redux/lib/connect/connect";
-import Cookies from 'js-cookie';
+import { compose } from 'redux';
+import withRouter from "react-router-dom/withRouter"
+import { Redirect } from 'react-router-dom'
+
 
 class RegisterContainer extends React.Component{
-    componentDidMount(){
-        let testcook = Cookies.get('auth_id')
-        console.log(testcook);
-    }
     userRegister = (data) => {
         this.props.userRegister(data);
     }
@@ -16,6 +15,9 @@ class RegisterContainer extends React.Component{
         this.props.resetRegError();
     }
     render() {
+        if(this.props.isAuth === true) {
+            return <Redirect to={'/profile'}/>
+        }
         return (
             <Register 
                 {...this.props} 
@@ -26,16 +28,18 @@ class RegisterContainer extends React.Component{
         );
     }
 }
-
 let mapStateToProps = (state) => {
     return {
         isAuth: state.auth.isAuth,
+        qrCode: state.auth.qrCode,
+        authStage: state.auth.authStage,
         regError: state.auth.regError,
         regFormInProcess: state.auth.regFormInProcess,
-        registerStage: state.auth.registerStage,
-        qrCode: state.auth.qrCode
     }
 }
 
 
-export default connect(mapStateToProps, { userRegister, resetRegError })(RegisterContainer)
+export default compose(
+    connect(mapStateToProps, { userRegister, resetRegError }),
+    withRouter
+)(RegisterContainer)

@@ -2,8 +2,7 @@ import React from 'react';
 import Login from "./Login"
 import { userLogin, resetAuthError } from "../../redux/auth-reducer"
 import connect from "react-redux/lib/connect/connect";
-import { compose } from 'redux';
-import { withAuthRedirect } from '../../hoc/AuthRedirect';
+
 
 class LoginContainer extends React.Component {
     userLogin = (data) => {
@@ -15,7 +14,7 @@ class LoginContainer extends React.Component {
     render(){
         return (
             <Login 
-                {...this.props} 
+                {...this.props}
                 resetAuthError={this.resetAuthError} 
                 logFormInProcess={this.props.logFormInProcess} 
                 isAuth={this.props.isAuth} 
@@ -26,9 +25,11 @@ class LoginContainer extends React.Component {
 
 let mapStateToProps = (state) => {
     return {
+        authStage: state.auth.authStage,
         isAuth: state.auth.isAuth,
         authError: state.auth.authError,
-        logFormInProcess: state.auth.logFormInProcess
+        logFormInProcess: state.auth.logFormInProcess,
+        qrCode: state.auth.qrCode
     }
 }
 

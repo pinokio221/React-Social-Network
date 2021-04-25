@@ -6,7 +6,7 @@ class TwoFactorAuth extends React.Component {
 
     }
     render() {
-        return <div><img src={this.props.qrCode}/></div>
+        return <div><span>qq</span></div>
     }
 }
 

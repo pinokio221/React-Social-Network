@@ -3,7 +3,8 @@ exports.up = function(knex) {
     .createTable('settings', (table) => {
         table.increments();
         table.integer('userId').notNullable();
-        table.boolean('2fa').notNullable().default(true);
+        table.boolean('tfa_verified').notNullable().default(false);
+        table.boolean('tfa').notNullable().default(true);
         table.timestamps(true, true);
     })
 };

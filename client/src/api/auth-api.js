@@ -16,8 +16,8 @@ export const authAPI = {
             return error.response
         })
     },
-    getQRCode() {
-        let requestURL = `http://localhost:9000/api/user/qrcode`
+    getQRCode(authId) {
+        let requestURL = `http://localhost:9000/api/user/qrcode?authId=${authId}`
         return instance.get(requestURL,{ withCredentials: true })
         .then(response => {
             return response;
@@ -61,5 +61,16 @@ export const authAPI = {
         }).catch((error) => {
             return error.response
         })
-    }
+    },
+    twoFactorVerify(authId, authCode) {
+        let requestURL = `http://localhost:9000/api/user/verify`
+        return instance.put(requestURL,{
+            authId,
+            authCode
+        },{ withCredentials: true }).then(response => {
+            return response;
+        }).catch((error) => {
+            return error.response
+        })
+    },
 }

@@ -18,7 +18,7 @@ import moment from 'moment'
 import { Fade } from "react-awesome-reveal";
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
-import TwoFactorAuth from '../TwoFactorAuth/TwoFactorAuth'
+import TwoFactorVerify from '../TwoFactorAuth/TwoFactorVerify'
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -196,12 +196,12 @@ class Register extends React.Component {
                     </Alert>
             </Snackbar> : null }
             {
-              this.props.registerStage === 1 ? 
+              this.props.authStage === 3 ? 
+                <TwoFactorVerify store={this.props.store} qrCode={this.props.qrCode} /> : 
                 <div><ReduxRegisterForm 
                         onSubmit={this.signUp} 
-                        regFormInProcess={this.props.regFormInProcess}/></div> : null ||
-              this.props.registerStage === 2 ? 
-                <TwoFactorAuth qrCode={this.props.qrCode} /> : null
+                        regFormInProcess={this.props.regFormInProcess}/></div>
+
             }
       </div>
     );

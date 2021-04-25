@@ -1,5 +1,4 @@
 import axios from 'axios'
-import io from 'socket.io-client';
 import rateLimit from 'axios-rate-limit';
 
 
