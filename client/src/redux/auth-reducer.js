@@ -76,14 +76,35 @@ export const twoFactorAuthSetStage = (stage, authId) => (dispatch) => {
 }
 
 export const verifyTwoFactorAuth = (authId, authCode) => (dispatch) => {
+    dispatch(toggleLogFormInProcess(true));
     authAPI.twoFactorVerify(authId, authCode).then(response => {
         if(response.status === 200) {
             setTimeout(function() {
                 dispatch(authMe())
+                dispatch(toggleLogFormInProcess(false));
                 }, 3000)
-        } else {
-            return false;
         }
+        if(response.status === 404 || response.status === 400) {
+            dispatch(displayAuthError(response.data.message))
+        }
+    })
+}
+
+export const validateTwoFactorAuth = (authId, authCode) => (dispatch) => {
+    dispatch(toggleLogFormInProcess(true));
+    authAPI.twoFactorValidate(authId, authCode).then(response => {
+        if(response.status === 200) {
+            setTimeout(function() {
+                dispatch(authMe())
+            }, 3000)
+        }
+        if(response.status === 404 || response.status === 400) {
+            dispatch(displayAuthError(response.data.message))
+        }
+        else {
+            return false
+        }
+        dispatch(toggleLogFormInProcess(false));
     })
 }
 
@@ -103,21 +124,23 @@ export const userLogin = (data) => (dispatch) => {
     dispatch(toggleLogFormInProcess(true));
     authAPI.userLogin(data).then(async (response) => {
         if(response.status === 200) {
-            if(!response.data.verified) {
+            if(response.data.verified == false) {
                 let twoFactorAuthStagePromise = await dispatch(twoFactorAuthSetStage(3, response.data.authId))
                 let qrCodePromise = await dispatch(getUserQRCode(response.data.authId))
                 Promise.all([qrCodePromise,twoFactorAuthStagePromise])
             }
-            if(!response.data.twoFactorAuthSetting) {
+            if(response.data.twoFactorAuthSetting == false) {
                 dispatch(authMe())
             } else {
                 dispatch(twoFactorAuthSetStage(2, response.data.authId))
             }
         }
-        if(response.status === 401){
+        if(response.status === 404 || response.status === 400 || response.status === 401 || response.status === 500){
             dispatch(displayAuthError(response.data.message))
         }
+        dispatch(toggleLogFormInProcess(false));
     })
+    
 }
 
 export const userLogout = () => (dispatch) => {

@@ -12,7 +12,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { required } from '../../validators/validator'
 import { LoginInputFormControl } from '../FormControls/FormControls'
 import TwoFactorVerify from '../TwoFactorAuth/TwoFactorVerify'
-import TwoFactorAuth from '../TwoFactorAuth/TwoFactorAuth';
+import TwoFactorValidation from '../TwoFactorAuth/TwoFactorValidation';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -86,7 +86,7 @@ const Login = (props) => {
               <div><LoginReduxForm onSubmit={onSubmit} logFormInProcess={props.logFormInProcess}/></div>
                : null ||
               props.authStage === 2 ? 
-                <TwoFactorAuth /> : null ||
+                <TwoFactorValidation store={props.store}/> : null ||
               props.authStage === 3 ? 
                 <TwoFactorVerify store={props.store} qrCode={props.qrCode}/> : null
             }

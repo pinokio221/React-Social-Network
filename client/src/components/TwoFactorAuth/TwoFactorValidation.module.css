@@ -39,9 +39,15 @@ ul {
     margin: 0px auto;
 }
 
-.form_row > img {
-    align-self: center;
-    width: 200px;
+.tfa_image {
+    display:block;
+    margin: 0px auto;
+    width: 400px;
+}
+
+.submitBtn {
+    display: block;
+    margin: 0px auto;
 }
 
 .form_row > input {
@@ -50,20 +56,6 @@ ul {
     width: 50%;
 }
 
-.phone_icon {
-    color: rgba(23, 119, 184, 0.7);
-    float: left;
-}
-
-.submitBtn {
-    display: block;
-    margin: 0px auto;
-}
-
-.content {
-    text-indent: 1.5em;
-    margin-top: 6%;
-}
 .login_progress {
     display: block;
     margin: 0px auto;

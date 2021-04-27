@@ -73,4 +73,15 @@ export const authAPI = {
             return error.response
         })
     },
+    twoFactorValidate(authId, authCode) {
+        let requestURL = `http://localhost:9000/api/user/validate`
+        return instance.post(requestURL,{
+            authId,
+            authCode
+        }).then(response => {
+            return response
+        }).catch((error) => {
+            return error.response
+        })
+    }
 }

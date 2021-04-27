@@ -81,7 +81,7 @@ const signUp = (req, res) => {
         }
         })
 }
-    
+
 const signIn = (req, res) => {
     const { error } = loginValidation(req.body);
     if(error) { return res.status(401).json({
@@ -89,7 +89,6 @@ const signIn = (req, res) => {
     }) }
 
     let isAuth = req.cookies.jwt;
-
     if(!isAuth) {
         User.query().select('id', 'login', 'password', 'email')
         .where('login', req.body.login)

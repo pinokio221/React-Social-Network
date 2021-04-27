@@ -55,6 +55,7 @@ const twoFactorVerify = (req, res) => {
         }
     } else {
         res.status(404).json({
+            message: "Wrong authentication code. Access denied",
             verified: false
         })
     }
@@ -66,14 +67,37 @@ const twoFactorValidation = (req, res) => {
         const path = `/user/${authId}`
         const user = json_db.getData(path);
         const { base32:secret } = user.secret
-        const tokenValidates = speakeasy.totp.verify({ secret, encoding: 'base32', authCode })
-
-        if(tokenValidates) {
-            res.status(200).json({
-                validated: true
+        const tokenValidates = speakeasy.totp.verify({ secret, encoding: 'base32', token: authCode })
+        console.log(tokenValidates)
+        if(!secret) {
+            return res.status(400).json({
+                message: "Your account is not verified"
             })
+        }
+        if(tokenValidates) {
+            try {
+                User.query().select('id', 'email', 'login').where('auth_id', authId).first()
+                .then(function(response) {
+                    if(response) {
+                        let token = createToken(response.id, response.email, response.login);
+                        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+                        res.status(200).json({
+                            validated: true,
+                            message: "You are succesfully logged in!",
+                            token: token,
+                        })
+                    } else {
+                        res.status(404).json({
+                            message: "User not found"
+                        })
+                    }
+                })
+            } catch(error) {
+                console.log(error)
+            }
         } else {
-            res.status(400).json({
+            res.status(404).json({
+                message: "Wrong authentication code. Access denied",
                 validated: false
             })
         }
@@ -82,7 +106,7 @@ const twoFactorValidation = (req, res) => {
     }
 }
 
-const twoFactorAuthSetting = async (req, res,userId) => {
+const twoFactorAuthSetting = async (req, res, userId) => {
     const twoFactorAuth = await Setting.query().select('tfa', 'tfa_verified').where('userId', userId).first()
     if(twoFactorAuth) {
         return {
