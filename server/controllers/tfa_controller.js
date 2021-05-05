@@ -27,6 +27,7 @@ const twoFactorVerify = (req, res) => {
     
     const path = `/user/${authId}`
     const user = json_db.getData(path);
+    console.log(user)
     const { base32:secret } = user.temp_secret
     
     const verified = speakeasy.totp.verify({ secret, encoding: 'base32', token: authCode })
@@ -68,7 +69,6 @@ const twoFactorValidation = (req, res) => {
         const user = json_db.getData(path);
         const { base32:secret } = user.secret
         const tokenValidates = speakeasy.totp.verify({ secret, encoding: 'base32', token: authCode })
-        console.log(tokenValidates)
         if(!secret) {
             return res.status(400).json({
                 message: "Your account is not verified"
@@ -106,22 +106,25 @@ const twoFactorValidation = (req, res) => {
     }
 }
 
-const twoFactorAuthSetting = async (req, res, userId) => {
-    const twoFactorAuth = await Setting.query().select('tfa', 'tfa_verified').where('userId', userId).first()
-    if(twoFactorAuth) {
-        return {
-            twoFactorAuthStatus: twoFactorAuth.tfa,
-            verified: twoFactorAuth.tfa_verified
+const twoFactorAuthSettings = (req, res, userId) => {
+    return Setting.query().select('tfa', 'tfa_verified').where('userId', userId).first().then((response) => {
+        if(response) {
+            return {
+                twoFactorAuthStatus: response.tfa,
+                verified: response.tfa_verified
+            }
+        } else {
+            return false;
         }
-    }
-    return false
+    })
 }
+
 const getAuthUserData = (auth_id) => {
     const path = `/user/${auth_id}`
     return json_db.getData(path);
 }
 
-const getQRCode = async (req, res, next) => {
+const getQRCode = (req, res, next) => {
     try {
         if(req.query.authId) {
             const authUserData = getAuthUserData(req.query.authId);
@@ -155,5 +158,5 @@ module.exports = {
     getQRCode: getQRCode,
     twoFactorValidation: twoFactorValidation,
     twoFactorVerify: twoFactorVerify,
-    twoFactorAuthSetting: twoFactorAuthSetting
+    twoFactorAuthSettings: twoFactorAuthSettings
 }

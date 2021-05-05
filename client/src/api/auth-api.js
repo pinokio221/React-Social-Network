@@ -1,15 +1,14 @@
 import axios from 'axios'
 import rateLimit from 'axios-rate-limit';
 
-const instance = rateLimit(axios.create({
+const instance = axios.create({
     baseURL: 'http://localhost:9000/api/',
     withCredentials: true
-}), { maxRequests: 2, perMilliseconds: 1000, maxRPS: 2 })
+})
 
 export const authAPI = {
     authMe() {
-        let requestURL = `http://localhost:9000/api/user/me`
-        return instance.get(requestURL,{ withCredentials: true })
+        return instance.get(`user/me`)
         .then(response => {
             return response;
         }).catch((error) => {
@@ -17,8 +16,7 @@ export const authAPI = {
         })
     },
     getQRCode(authId) {
-        let requestURL = `http://localhost:9000/api/user/qrcode?authId=${authId}`
-        return instance.get(requestURL,{ withCredentials: true })
+        return instance.get(`user/qrcode?authId=${authId}`)
         .then(response => {
             return response;
         }).catch((error) => {
@@ -26,8 +24,7 @@ export const authAPI = {
         })
     },
     userRegister(data) {
-        let requestURL = `http://localhost:9000/api/user/register`
-        return instance.post(requestURL, {
+        return instance.post(`user/register`, {
             firstname: data.firstname,
             lastname: data.lastname,
             fullname: data.fullname,
@@ -44,38 +41,34 @@ export const authAPI = {
         })
     },
     userLogin(data) {
-        let requestURL = `http://localhost:9000/api/user/login`
-        return instance.post(requestURL,{
+        return instance.post(`user/login`,{
             login: data.login,
             password: data.password
-        },{ withCredentials: true }).then(response => {
+        }).then(response => {
             return response;
         }).catch((error) => {
             return error.response
         })
     },
     userLogout() {
-        let requestURL = `http://localhost:9000/api/user/logout`
-        return instance.get(requestURL, { withCredentials: true }).then(response => {
+        return instance.get(`user/logout`).then(response => {
             return response;
         }).catch((error) => {
             return error.response
         })
     },
     twoFactorVerify(authId, authCode) {
-        let requestURL = `http://localhost:9000/api/user/verify`
-        return instance.put(requestURL,{
+        return instance.put(`user/verify`,{
             authId,
             authCode
-        },{ withCredentials: true }).then(response => {
+        }).then(response => {
             return response;
         }).catch((error) => {
             return error.response
         })
     },
     twoFactorValidate(authId, authCode) {
-        let requestURL = `http://localhost:9000/api/user/validate`
-        return instance.post(requestURL,{
+        return instance.post(`user/validate`,{
             authId,
             authCode
         }).then(response => {

@@ -36,50 +36,52 @@ const signUp = (req, res) => {
     User.query().select('id', 'password', 'email', 'login')
     .where('email', req.body.email)
     .orWhere('login', req.body.login)
-    .first().then(async function(result){
+    .first().then(function(result){
         if(result){
             return res.status(400).json({
                 message: "User with same email or login already exists"
             })
-        }
-        const { firstname, lastname, fullname, login, email, gender, birthday, age, password } = req.body;
-        //HASH THE PASSWORD 
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt)
-        try {
-            const path = `/user/${id}`;
-            const temp_secret = speakeasy.generateSecret();
-            
-            User.query().insert({
-                first_name: firstname,
-                last_name: lastname,
-                fullname: fullname,
-                login: login,
-                email: email,
-                gender: gender,
-                birthday: birthday,
-                age: age,
-                password: hashedPassword,
-                auth_id: id
-            })
-            .then(async function(result){
-                Setting.query().insert({
-                    userId: result.id,
-                    tfa: false,
-                    tfa_verified: false
-                }).then(() => {
-                    db.push(path, { id, temp_secret });
-                    res.status(201).json ({
-                        message: "You are succesfully registered",
+        } else {
+            const { firstname, lastname, fullname, login, email, gender, birthday, age, password } = req.body;
+            //HASH THE PASSWORD 
+            bcrypt.genSalt(10, function(err, salt) {
+                bcrypt.hash(password, salt, function(err, hash) {
+                    User.query().insert({
+                        first_name: firstname,
+                        last_name: lastname,
+                        fullname: fullname,
+                        login: login,
+                        email: email,
+                        gender: gender,
+                        birthday: birthday,
+                        age: age,
+                        password: hash,
+                        auth_id: id
+                    })
+                    .then(function(result){
+                        if(result) {
+                            Setting.query().insert({
+                                userId: result.id,
+                                tfa: false,
+                                tfa_verified: false
+                            }).then(() => {
+                                const path = `/user/${id}`;
+                                const temp_secret = speakeasy.generateSecret();
+                                db.push(path, { id, temp_secret });
+                                res.status(201).json ({
+                                    message: "You are succesfully registered",
+                                })
+                            })
+                        }
+                        
                     })
                 })
+                
             })
             
-        } catch(err) {
-            console.log(error)
-            res.status(400).send(err)
+                    
         }
-        })
+    })
 }
 
 const signIn = (req, res) => {
@@ -87,61 +89,62 @@ const signIn = (req, res) => {
     if(error) { return res.status(401).json({
         "message": error.details[0].message
     }) }
-
     let isAuth = req.cookies.jwt;
     if(!isAuth) {
         User.query().select('id', 'login', 'password', 'email')
         .where('login', req.body.login)
         .orWhere('email', req.body.login)
-        .first().then(async function(user){
+        .first().then((user) => {
             if(!user) {
                 res.status(401).json({
                     message: "Wrong login or password. Please try again",
                 })
             }
             else {
-                bcrypt.compare(req.body.password, user.password, async function(err, result){
-                    if(result){
-                        let tfaSetting = await tfaController.twoFactorAuthSetting(req, res, user.id);
-                        const authId = await User.query().select('auth_id').where('id', user.id).first();
-                        if(!tfaSetting.verified) {
-                            return res.status(200).json({
-                                verified: tfaSetting.verified,
-                                twoFactorAuthSetting: tfaSetting.twoFactorAuthStatus,
-                                authId: authId.auth_id,
-                                message: "Your account not verified",
-                            })
+                const comparePassword = bcrypt.compareSync(req.body.password, user.password);
+                if(comparePassword) {
+                    User.query().select('auth_id').where('id', user.id).first().then(async function(response) {
+                        if(response) {
+                            const tfaSettings = await tfaController.twoFactorAuthSettings(req, res, user.id);
+                            if(tfaSettings.verified == true && tfaSettings.twoFactorAuthStatus == false) {
+                                let token = createToken(user.id, user.email, user.login);
+                                res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+                                return res.status(200).json({
+                                    verified: tfaSettings.verified,
+                                    twoFactorAuthSetting: tfaSettings.twoFactorAuthStatus,
+                                    authId: response.auth_id,
+                                    message: "You are succesfully logged in!",
+                                    token: token,
+                                })
+                            }
+                            if(tfaSettings.verified == false) {
+                                return res.status(200).json({
+                                    verified: tfaSettings.verified,
+                                    twoFactorAuthSetting: tfaSettings.twoFactorAuthStatus,
+                                    authId: response.auth_id,
+                                    message: "Your account not verified",
+                                })
+                            }
+                            if(tfaSettings.twoFactorAuthStatus == true) {
+                                return res.status(200).json({
+                                    verified: tfaSettings.verified,
+                                    twoFactorAuthSetting: tfaSettings.twoFactorAuthStatus,
+                                    authId: response.auth_id,
+                                    message: "Please enter the auth code from app",
+                                })
+                                
+                            }
                         }
-                        if(tfaSetting.twoFactorAuthStatus) {
-                            res.status(200).json({
-                                verified: tfaSetting.verified,
-                                twoFactorAuthSetting: tfaSetting.twoFactorAuthStatus,
-                                authId: authId.auth_id,
-                                message: "Please enter the auth code from app",
-                            })
-                            
-                        } else {
-                            let token = createToken(user.id, user.email, user.login);
-                            res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-                            res.status(200).json({
-                                verified: tfaSetting.verified,
-                                twoFactorAuthSetting: tfaSetting.twoFactorAuthStatus,
-                                authId: authId.auth_id,
-                                message: "You are succesfully logged in!",
-                                token: token,
-                            })
-                        }
-                        
-                    }
-                    else {  
-                        res.status(401).json({
-                            message: "Wrong login or password. Please try again",
-                        })
-                    }
-                })
+                    })
+                } else {  
+                    return res.status(401).json({
+                        message: "Wrong login or password. Please try again",
+                    })
+                }
+                
             }
         }).catch(error => {
-            res.status(500).json({
+            return res.status(500).json({
                 message: "Something went wrong. Please try again.",
             })
         })

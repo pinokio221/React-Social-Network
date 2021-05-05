@@ -42,19 +42,21 @@ let initialState = {
     qrCode: null,
 }
 
-export const authMe = () => async (dispatch) => {
-    const response = await authAPI.authMe()
-    if(response) {
-        if(response.status === 200) {
-            dispatch(setAuthStageAction(1))
-            let {id, login, email} = response.data.user;
-            dispatch(setUserData(id, login, email, true))
-            dispatch(toggleLogFormInProcess(false));
+export const authMe = () => (dispatch) => {
+    return authAPI.authMe().then((response) => {
+        if(response) {
+            if(response.status === 200) {
+                dispatch(setAuthStageAction(1))
+                let {id, login, email} = response.data.user;
+                dispatch(setUserData(id, login, email, true))
+                dispatch(toggleLogFormInProcess(false));
+            }
+            if(response.status === 401) {
+                return false;
+            }
         }
-        if(response.status === 401) {
-            return false;
-        }
-    }
+    })
+
 }
 
 export const getUserQRCode = (authId) => (dispatch) => {
@@ -77,12 +79,10 @@ export const twoFactorAuthSetStage = (stage, authId) => (dispatch) => {
 
 export const verifyTwoFactorAuth = (authId, authCode) => (dispatch) => {
     dispatch(toggleLogFormInProcess(true));
-    authAPI.twoFactorVerify(authId, authCode).then(response => {
+    return authAPI.twoFactorVerify(authId, authCode).then(response => {
         if(response.status === 200) {
-            setTimeout(function() {
-                dispatch(authMe())
-                dispatch(toggleLogFormInProcess(false));
-                }, 3000)
+            dispatch(authMe())
+            dispatch(toggleLogFormInProcess(false));    
         }
         if(response.status === 404 || response.status === 400) {
             dispatch(displayAuthError(response.data.message))
@@ -92,11 +92,9 @@ export const verifyTwoFactorAuth = (authId, authCode) => (dispatch) => {
 
 export const validateTwoFactorAuth = (authId, authCode) => (dispatch) => {
     dispatch(toggleLogFormInProcess(true));
-    authAPI.twoFactorValidate(authId, authCode).then(response => {
+    return authAPI.twoFactorValidate(authId, authCode).then(response => {
         if(response.status === 200) {
-            setTimeout(function() {
-                dispatch(authMe())
-            }, 3000)
+            dispatch(authMe())
         }
         if(response.status === 404 || response.status === 400) {
             dispatch(displayAuthError(response.data.message))
@@ -108,11 +106,12 @@ export const validateTwoFactorAuth = (authId, authCode) => (dispatch) => {
     })
 }
 
-export const userRegister = (data) => async (dispatch) => {
+export const userRegister = (data) => (dispatch) => {
     dispatch(toggleRegFormInProcess(true));
-    authAPI.userRegister(data).then((response) => {
+    return authAPI.userRegister(data).then((response) => {
         if(response.status === 201) {
-            setTimeout(function() { dispatch(userLogin(data)) }, 10000)
+            console.log(response)
+            dispatch(userLogin(data));
         }
         if(response.status === 400) {
             dispatch(displayRegisterError(response.data.message))
@@ -122,12 +121,12 @@ export const userRegister = (data) => async (dispatch) => {
 
 export const userLogin = (data) => (dispatch) => {
     dispatch(toggleLogFormInProcess(true));
-    authAPI.userLogin(data).then(async (response) => {
+    return authAPI.userLogin(data).then(response => {
+        console.log(response)
         if(response.status === 200) {
             if(response.data.verified == false) {
-                let twoFactorAuthStagePromise = await dispatch(twoFactorAuthSetStage(3, response.data.authId))
-                let qrCodePromise = await dispatch(getUserQRCode(response.data.authId))
-                Promise.all([qrCodePromise,twoFactorAuthStagePromise])
+                dispatch(twoFactorAuthSetStage(3, response.data.authId))
+                dispatch(getUserQRCode(response.data.authId))
             }
             if(response.data.twoFactorAuthSetting == false) {
                 dispatch(authMe())
@@ -145,7 +144,7 @@ export const userLogin = (data) => (dispatch) => {
 
 export const userLogout = () => (dispatch) => {
     dispatch(toggleSignOutInProcess(true))
-    authAPI.userLogout().then(response =>{
+    return authAPI.userLogout().then(response =>{
         if(response.status === 200) {
             dispatch(setUserData(null, null, null, false))
             dispatch(toggleSignOutInProcess(false))

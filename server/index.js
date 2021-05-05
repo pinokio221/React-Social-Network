@@ -10,30 +10,26 @@ const rateLimit = require('express-rate-limit');
 require('dotenv').config()
 
 let cors = require("cors");
-var corsOptions = {
-    origin: 'http://localhost:3000',
-    optionsSuccessStatus: 200, 
-    credentials: true };
 
-app.use(rateLimit({
+
+/*app.use(rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
   max: 500,
   message: ({
     code: 429,
     message: "Too many requests from this IP adress"
   })
-}));
+}));*/
 
-app.use(cors(corsOptions));
+app.use(cors({ origin: '*' , credentials: true}));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(function(req, res, next) {
     res.header('Content-Type', 'application/json;charset=UTF-8')
     res.header('Access-Control-Allow-Credentials', true)
-    res.header(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept'
-    )
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
     next()
   })
 
