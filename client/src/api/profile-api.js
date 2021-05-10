@@ -16,7 +16,9 @@ export const profileAPI = {
     },
     updateProfilePicture(img){
         let requestURL = `http://localhost:9000/api/profile/profile_picture`
-        return instance.put(requestURL, img,
+        return instance.put(requestURL, img, { headers: {
+            'content-type': 'multipart/form-data'
+        } },
             { withCredentials: true }).then(response => {
                 return response;
             })

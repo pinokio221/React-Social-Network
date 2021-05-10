@@ -163,7 +163,7 @@ const profileReducer = (state = initialState, action) => {
             returnedInfo.profile_image = action.img;
             return {
                 ...state,
-                status: action.returnedInfo
+                userInfo: returnedInfo
             }
 
         }

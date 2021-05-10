@@ -25,7 +25,7 @@ const ProfileDescription = (props) => {
                     <Container>
                         <Row>
                             <Col xs={6} md={4} className={styles.user_image_block}>
-                                <Image className={styles.user_image} src={props.userInfo.profile_image} roundedCircle/>
+                                <Image className={styles.user_image} src={props.userInfo.profile_image + '?' + new Date()} roundedCircle/>
                                 { props.isAuthUserPage ? 
                                     <ProfilePhotoModal updateProfilePicture={props.updateProfilePicture}/>
                                 :

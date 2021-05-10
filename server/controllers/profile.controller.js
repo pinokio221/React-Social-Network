@@ -9,22 +9,24 @@ const updateProfilePicture = (req, res, next) => {
         if(req.method == "PUT"){
             let user = verifyUser.getCurrentUser(req, res, next);
             if(user) {
-                if (!req.files)
+                if(!req.files)
                         return res.status(400).send('No files were uploaded.');
-                let file = req.files.uploaded_profile_picture;
+                var file = req.files.uploaded_pic
                 let image_name = file.name;
-        
+                let userPicPath = user.userId + '_pic.jpg';
                 if(file.mimetype == "image/jpeg" || file.mimetype == "image/png" || file.mimetype == "image/jpeg") {
-                    file.mv('public/images/profile_pictures' + user.userId + '_pic', function(err) {
+                    file.mv('public/images/profile_pictures/' + userPicPath, function(err) {
                         if(err)
                             return res.status(500).send(err);
                         
+                        let pictureURL = 'http://localhost:9000/images/profile_pictures/' + userPicPath; 
                         User.query().where('id', user.userId)
                         .update({
-                            profile_image: image_name
+                            profile_image: pictureURL
                         }).then(function(result) {
                             res.status(200).json({
                                 message: "Profile picture succesfully updated",
+                                img: pictureURL
                             })
                         })
                     })
@@ -33,30 +35,10 @@ const updateProfilePicture = (req, res, next) => {
 
         }
     } catch(error) {
-        res.status(400).send(err);
+        res.status(400).send(error);
     }
 }
 
-const getProfilePicture = (req, res, next) => {
-    try {
-        User.query().select('id','profile_image').first()
-        .where('id', req.params.userId)
-        .then(function(result) {
-            if(result){
-                res.json({
-                    userId: result.id,
-                    profile_image: result.status
-                })
-            } else {
-                res.status(404).json({
-                    message: "User not found"
-                })
-            }
-        })
-    } catch(err) {
-        res.status(400).send(err);
-    }
-}
 
 const updateProfileStatus = (req, res, next) => {
     const { error } = profile_status_validation(req.body);
@@ -110,7 +92,6 @@ const getProfileStatus = (req, res) => {
 
 module.exports = {
     updateProfilePicture: updateProfilePicture,
-    getProfilePicture: getProfilePicture,
     updateProfileStatus: updateProfileStatus,
     getProfileStatus: getProfileStatus
 }

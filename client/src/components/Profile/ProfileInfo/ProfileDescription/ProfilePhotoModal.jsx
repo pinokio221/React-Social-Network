@@ -10,6 +10,7 @@ import PhotoCamera from '@material-ui/icons/PhotoCamera';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import { FiCrop } from 'react-icons/fi';
+import { faImages } from '@fortawesome/free-solid-svg-icons';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -79,6 +80,7 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 
+
 const ProfilePhotoCropper = (props) => {
     const classes = useStyles();
     const [image, setImage] = React.useState(null);
@@ -109,14 +111,20 @@ const ProfilePhotoCropper = (props) => {
             crop.width,
             crop.height,
         );
-
-        const resultImage = canvas.toDataURL('image/jpeg');
-        setResult(resultImage);
+        return new Promise((resolve, reject) => {
+            canvas.toBlob(blob => {
+              resolve(setResult(blob));
+            }, 'image/jpeg', 1);
+          });
+        
     }
 
     const uploadImage = (e) => {
         e.preventDefault();
-        props.updateProfilePicture(result);
+        const formData = new FormData();
+        formData.append('uploaded_pic', result, 'profilePic');
+        props.updateProfilePicture(formData);
+        handleClose();
     }
 
     return (
@@ -147,7 +155,7 @@ const ProfilePhotoCropper = (props) => {
                                         <div className={classes.cropBlock}>
                                             <label>Your profile picture will look like this:</label><br/>
                                             <div className={classes.presentBlock}>
-                                                <Image className={classes.presentImage} src={result} roundedCircle/>
+                                                <Image className={classes.presentImage} src={URL.createObjectURL(result)} roundedCircle/>
                                             </div>
                                             <div className={styles.cropModalButtons}>
                                                 <MaterialButton onClick={handleClose} variant="contained" size="large">CANCEL</MaterialButton>
@@ -156,7 +164,6 @@ const ProfilePhotoCropper = (props) => {
                                     </div>
                                     }
                             </div>
-                        
                     </div>
                     </div>
                     </form>

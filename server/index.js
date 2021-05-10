@@ -8,6 +8,7 @@ const port = 9000;
 const rateLimit = require('express-rate-limit');
 const fileUpload = require('express-fileupload');
 
+
 require('dotenv').config()
 
 let cors = require("cors");
@@ -16,7 +17,7 @@ var corsOptions = {
     optionsSuccessStatus: 200, 
     credentials: true };
 
-    
+app.use(express.static(__dirname+'/public'));
 app.use(fileUpload());
 app.use(rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
@@ -61,9 +62,10 @@ app.use('/api/friendship', friendshipRoute);
 app.use('/api/chat', chatRoute);
 
 
-app.get('/', (req, res) => {
-    res.send("We are on home");
-});
+app.get('/', function (req, res) {
+  res.sendFile(__dirname + '/index.html');
+})
+
 server.listen(port, () => {
     console.log(`Listening on port ${port}`)
 })
