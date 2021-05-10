@@ -3,7 +3,7 @@ import Profile from "./Profile"
 import styles from './Profile.module.css'
 import connect from "react-redux/lib/connect/connect";
 import withRouter from "react-router-dom/withRouter"
-import { getProfilePage, resetProfilePageAction, updateProfileStatus, sendInvitation } from "../../redux/profile-reducer"
+import { getProfilePage, resetProfilePageAction, updateProfileStatus, updateProfilePicture, sendInvitation } from "../../redux/profile-reducer"
 import { toggleLogFormInProcess } from "../../redux/auth-reducer"
 import { compose } from 'redux';
 import { withAuthRedirect } from '../../hoc/AuthRedirect';
@@ -66,6 +66,7 @@ export default compose(
     connect(mapStateToProps, { 
         mapDispatchToProps, 
         updateProfileStatus,
+        updateProfilePicture,
         sendInvitation,
         getProfilePage, 
         resetProfilePageAction }),

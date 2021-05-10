@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Col, Container, Image, Row} from "react-bootstrap";
+import {Col, Container, Image, Row} from "react-bootstrap";
 import styles from './ProfileDescription.module.css';
 import ProfileStatus from './ProfileStatus/ProfileStatus';
 import MaterialButton from '@material-ui/core/Button'
@@ -8,6 +8,7 @@ import { BiConversation } from 'react-icons/bi'
 import { FiUsers } from 'react-icons/fi'
 import { RiMailSendLine } from 'react-icons/ri'
 import { NavLink } from 'react-router-dom'
+import ProfilePhotoModal from './ProfilePhotoModal'
 
 const ProfileDescription = (props) => {
 
@@ -26,7 +27,7 @@ const ProfileDescription = (props) => {
                             <Col xs={6} md={4} className={styles.user_image_block}>
                                 <Image className={styles.user_image} src={props.userInfo.profile_image} roundedCircle/>
                                 { props.isAuthUserPage ? 
-                                    <Button className={styles.change_photo_btn} variant="light">Change profile photo</Button>
+                                    <ProfilePhotoModal updateProfilePicture={props.updateProfilePicture}/>
                                 :
                                     <div>
                                         <NavLink to={'/dialogs/' + props.userInfo.id}><MaterialButton variant="contained" size="default" ><BiConversation className={styles.userActionsIcon}/>Start dialog with {props.userInfo.first_name}</MaterialButton></NavLink>

@@ -14,6 +14,13 @@ export const profileAPI = {
                 return response;
             })
     },
+    updateProfilePicture(img){
+        let requestURL = `http://localhost:9000/api/profile/profile_picture`
+        return instance.put(requestURL, img,
+            { withCredentials: true }).then(response => {
+                return response;
+            })
+    },
     updateProfileStatus(user_status){
         let requestURL = `http://localhost:9000/api/profile/status`
         return instance.put(requestURL,

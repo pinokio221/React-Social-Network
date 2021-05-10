@@ -61,5 +61,14 @@
 }
 
 
+.imagesBlock {
+    display: inline-block;
+}
+.cropModalButtons {
+    align-content: center;
+    margin-top: 3%;
+}
+
+
 
 

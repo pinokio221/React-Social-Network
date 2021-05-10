@@ -13,7 +13,8 @@ const Profile = (props) => {
         <div>
             <ProfileInfo 
                 isAuthUserPage={isAuthUserPage} 
-                updateProfileStatus={props.updateProfileStatus} 
+                updateProfileStatus={props.updateProfileStatus}
+                updateProfilePicture={props.updateProfilePicture}
                 userFriends={props.userFriends} 
                 userInfo={props.userInfo}
                 sendInvitation={props.sendInvitation}

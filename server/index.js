@@ -6,6 +6,8 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const port = 9000;
 const rateLimit = require('express-rate-limit');
+const fileUpload = require('express-fileupload');
+
 require('dotenv').config()
 
 let cors = require("cors");
@@ -14,6 +16,8 @@ var corsOptions = {
     optionsSuccessStatus: 200, 
     credentials: true };
 
+    
+app.use(fileUpload());
 app.use(rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
   max: 500,

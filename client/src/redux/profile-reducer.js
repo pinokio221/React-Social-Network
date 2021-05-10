@@ -8,6 +8,7 @@ const SET_PROFILE_PAGE = "SET-PROFILE-PAGE"
 const RESET_PROFILE_PAGE = 'RESET-PROFILE-PAGE'
 const SET_PROFILE_POSTS = "SET-PROFILE-POSTS"
 const SET_PROFILE_FRIENDS = "SET-PROFILE-FRIENDS"
+const UPDATE_PROFILE_PICTURE = "UPDATE-PROFILE-PICTURE"
 const UPDATE_PROFILE_STATUS = "UPDATE-PROFILE-STATUS"
 const SEND_INVITATION = 'SEND-INVITATION'
 
@@ -17,6 +18,7 @@ export const setProfilePageAction = (userInfo) => ({ type: SET_PROFILE_PAGE, use
 export const resetProfilePageAction = () => ({ type: RESET_PROFILE_PAGE })
 export const setProfilePostsAction = (posts) => ({ type: SET_PROFILE_POSTS, posts })
 export const setProfileFriendsAction = (friends, totalFriends) => ({ type: SET_PROFILE_FRIENDS, friends, totalFriends })
+export const updateProfilePictureAction = (img) => ({type: UPDATE_PROFILE_PICTURE, img})
 export const updateStatusAction = (status) => ({type: UPDATE_PROFILE_STATUS, status})
 export const sendInvitationAction = (userId, status) => ({ type: SEND_INVITATION, userId, status })
 
@@ -69,6 +71,16 @@ export const deletePost = (post_id, user_id) => (dispatch) => {
             dispatch(getProfilePosts(user_id))
         }
     })
+}
+
+export const updateProfilePicture = (img) => {
+    return(dispatch) => {
+        profileAPI.updateProfilePicture(img).then(response => {
+            if(response.status === 200) {
+                dispatch(updateProfilePictureAction(response.data.img))
+            } 
+        })
+    }
 }
 
 export const updateProfileStatus = (user_status) => {
@@ -143,6 +155,15 @@ const profileReducer = (state = initialState, action) => {
             return {
                 ...state,
                 status: action.status // doesnt work
+            }
+
+        }
+        case UPDATE_PROFILE_PICTURE: {
+            let returnedInfo = {...state.userInfo};
+            returnedInfo.profile_image = action.img;
+            return {
+                ...state,
+                status: action.returnedInfo
             }
 
         }
