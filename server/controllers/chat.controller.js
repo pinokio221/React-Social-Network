@@ -102,11 +102,15 @@ const returnUserDialogById = (req, res, next) => {
 
 const returnUserDialogs = (req, res, next) => {
     try {
+        let user = verifyUser.getCurrentUser(req, res, next);
+        let page = parseInt(req.query.page);
+        let limit = parseInt(req.query.limit);
+        let items = {}
+        if(!req.query.page) { page = 1; }
+        if(!req.query.limit) { limit = 10; }
         if(req.query.id) {
             return returnUserDialogById(req, res, next);
         }
-        let items = {}
-        let user = verifyUser.getCurrentUser(req, res, next);
         if(user){
             Dialog.query().select()
             .where('sendId', user.userId)
@@ -120,11 +124,15 @@ const returnUserDialogs = (req, res, next) => {
                         let dialog = await User.query().select(
                             'id', 'first_name','last_name','fullname','profile_image')
                             .where('id', interlocutorId).first()
-                            dialog.dialogId = value.id
-                            dialogs.push(dialog);
+                        dialog.dialogId = value.id
+                        dialogs.push(dialog);
                     }
-                    items.items = dialogs;
-                    items.totalDialogs = items.items.length;
+                    const startIndex = (page-1) * limit
+                    const endIndex = page * limit;
+                    items.items = dialogs.slice(startIndex, endIndex);
+                    items.page = page;
+                    items.limit = limit;
+                    items.totalDialogs = dialogs.length
                 }
                 res.status(200).json(items)
             })

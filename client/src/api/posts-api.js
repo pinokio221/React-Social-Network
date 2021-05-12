@@ -2,36 +2,38 @@ import axios from 'axios'
 import rateLimit from 'axios-rate-limit';
 
 const instance = rateLimit(axios.create({
-    baseURL: 'http://localhost:9000/api/',
+    baseURL: 'http://localhost:9000/api/posts',
     withCredentials: true
 }), { maxRequests: 2, perMilliseconds: 1000, maxRPS: 2 })
 
 export const postsAPI = {
     getProfilePosts(userId) {
-        let requestURL = `http://localhost:9000/api/posts?userId=${userId}&limit=5`
-        return instance.get(requestURL, { withCredentials: true })
-            .then(response => {
-                return response.data;
-            })
+        return instance.get(`?userId=${userId}&limit=5`)
+        .then(response => {
+            return response.data;
+        }).catch((error) => {
+            return error.response
+        })
     },
 
     addNewPost(post_content){
-        let requestURL = `http://localhost:9000/api/posts/add`
-        return instance.post(requestURL, 
+        return instance.post(`/add`, 
             {
                content: post_content
-            },
-            { withCredentials: true })
-            .then(response => {
-                return response.data.post;
             })
+        .then(response => {
+            return response.data.post;
+        }).catch((error) => {
+            return error.response
+        })
     },
 
     deletePost(post_id) {
-        let requestURL = `http://localhost:9000/api/posts/delete?id=${post_id}`
-        return instance.delete(requestURL, {withCredentials: true })
-            .then(response => {
-                return response;
-            })
+        return instance.delete(`/delete?id=${post_id}`)
+        .then(response => {
+            return response;
+        }).catch((error) => {
+            return error.response
+        })
     }
 }

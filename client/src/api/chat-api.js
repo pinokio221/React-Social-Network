@@ -4,23 +4,21 @@ import rateLimit from 'axios-rate-limit';
 
 
 const instance = rateLimit(axios.create({
-    baseURL: 'http://localhost:9000/api/',
+    baseURL: 'http://localhost:9000/api/chat',
     withCredentials: true
 }), { maxRequests: 2, perMilliseconds: 1000, maxRPS: 2 })
 
 export const chatAPI = {
-    getProfileDialogs(){
-        let requestURL = "http://localhost:9000/api/chat/dialogs"
-        return instance.get(requestURL,
-        { withCredentials: true })
+    getProfileDialogs(pagination) {
+        return instance.get(`/dialogs?page=${pagination}`)
         .then(response => {
             return response;
+        }).catch((error) => {
+            return error.response
         })
     },
     getDialogMessages(receiveId, pagination) {
-        let requestURL = `http://localhost:9000/api/chat/messages?target=${receiveId}&page=${pagination}`
-        return instance.get(requestURL,
-        { withCredentials: true })
+        return instance.get(`/messages?target=${receiveId}&page=${pagination}`)
         .then(response => {
             return response;
         }).catch((error) => {
@@ -28,20 +26,18 @@ export const chatAPI = {
         })
     },
     sentMessage(receiveId, content) {
-        let requestURL = "http://localhost:9000/api/chat/sent"
-        return instance.post(requestURL, {
+        return instance.post('/sent', {
             receiveId: receiveId,
             content: content
-        },
-        { withCredentials: true })
+        })
         .then(response => {
             return response;
+        }).catch((error) => {
+            return error.response
         })
     },
     getProfileDialogById(dialogid) {
-        let requestURL = `http://localhost:9000/api/chat/dialogs?id=${dialogid}`
-        return instance.get(requestURL,
-        { withCredentials: true })
+        return instance.get(`/dialogs?id=${dialogid}`)
         .then(response => {
             return response;
         }).catch((error) => {

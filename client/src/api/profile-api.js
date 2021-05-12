@@ -2,42 +2,50 @@ import axios from 'axios'
 import rateLimit from 'axios-rate-limit';
 
 const instance = rateLimit(axios.create({
-    baseURL: 'http://localhost:9000/api/',
+    baseURL: 'http://localhost:9000/api/profile',
     withCredentials: true
 }), { maxRequests: 2, perMilliseconds: 1000, maxRPS: 2 })
 
 export const profileAPI = {
     getProfilePage(userId) {
         let requestURL = `http://localhost:9000/api/users?userId=${userId}`
-        return instance.get(requestURL, { withCredentials: true })
-            .then(response => {
-                return response;
-            })
+        return instance.get(requestURL)
+        .then(response => {
+            return response;
+        }).catch((error) => {
+            return error.response
+        })
     },
     updateProfilePicture(img){
-        let requestURL = `http://localhost:9000/api/profile/profile_picture`
-        return instance.put(requestURL, img, { headers: {
-            'content-type': 'multipart/form-data'
-        } },
-            { withCredentials: true }).then(response => {
-                return response;
+        return instance.put('/profile_picture', img, 
+            { 
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
             })
+        .then(response => {
+            return response;
+        }).catch((error) => {
+            return error.response
+        })
     },
     updateProfileStatus(user_status){
-        let requestURL = `http://localhost:9000/api/profile/status`
-        return instance.put(requestURL,
+        return instance.put('/status',
             {
                 status: user_status
-            },
-            { withCredentials: true }).then(response => {
-                return response;
             })
+        .then(response => {
+            return response;
+        }).catch((error) => {
+            return error.response
+        })
     },
     getProfileStatus(userId){
-        let requestURL = `http://localhost:9000/api/profile/status/${userId}`
-        return instance.get(requestURL,
-            { withCredentials: true }).then(response => {
-                return response.data;
-            })
+        return instance.get(`/status/${userId}`)
+        .then(response => {
+            return response.data;
+        }).catch((error) => {
+            return error.response
+        })
     }
 }

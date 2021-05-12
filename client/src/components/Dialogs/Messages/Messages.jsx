@@ -77,7 +77,7 @@ const Messages = (props) => {
                                     inverse={true}
                                     endMessage={
                                         <p style={{ textAlign: 'center' }}>
-                                            { messagesElements.length === 0 ? <b>Nothing here</b>
+                                            { messagesElements.length === 0 ? <label className={styles.msgHistoryText}>Messages history is empty...</label>
                                             :
                                             <b>START MESSAGING</b>
                                             }

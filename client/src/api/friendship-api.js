@@ -2,7 +2,7 @@ import axios from 'axios'
 import rateLimit from 'axios-rate-limit';
 
 const instance = rateLimit(axios.create({
-    baseURL: 'http://localhost:9000/api/',
+    baseURL: 'http://localhost:9000/api/friendship',
     withCredentials: true
 }), { maxRequests: 2, perMilliseconds: 1000, maxRPS: 2 })
 
@@ -10,55 +10,65 @@ instance.getMaxRPS();
 
 export const friendshipAPI = {
     getProfileFriends(userId, pagination) {
-        let requestURL = `http://localhost:9000/api/friendship/friends/${userId}?page=${pagination}`
-        return instance.get(requestURL, { withCredentials: true })
-            .then(response => {
-                return response;
-            })
+        return instance.get(`/friends/${userId}?page=${pagination}`)
+        .then(response => {
+            return response;
+        }).catch((error) => {
+            return error.response
+        })
     },
     getProfileInvitations(pagination) {
-        let requestURL = `http://localhost:9000/api/friendship/invitations/received?page=${pagination}`
-        return instance.get(requestURL, { withCredentials: true })
-            .then(response => {
-                return response;
-            })
+        return instance.get(`/invitations/received?page=${pagination}`)
+        .then(response => {
+            return response;
+        }).catch((error) => {
+            return error.response
+        })
     },
     removeFriend(userId) {
-        let requestURL = `http://localhost:9000/api/friendship/remove/${userId}`
-        return instance.delete(requestURL).then(response => {
+        return instance.delete(`/remove/${userId}`)
+        .then(response => {
             return response;
+        }).catch((error) => {
+            return error.response
         })
     },
     sendInvitation(userId) {
-        let requestURL = `http://localhost:9000/api/friendship/send/${userId}`
-        return instance.post(requestURL,
+        return instance.post(`/send/${userId}`,
             { 
                 headers: {
                     "Content-Type": "application/json",
                 }
             },
             { withCredentials: true })
-            .then(response => {
-                return response.data;
-            })
+        .then(response => {
+            return response.data;
+        }).catch((error) => {
+            return error.response
+        })
     },
     cancelInvitation(userId) {
-        let urlRequest = `http://localhost:9000/api/friendship/cancel/${userId}`
-        return instance.delete(urlRequest,{ withCredentials: true })
-            .then(response => {
-                return response.data;
-            })
+        return instance.delete(`/cancel/${userId}`)
+        .then(response => {
+            return response.data;
+        }).catch((error) => {
+            return error.response
+        })
     },
     acceptInvitation(userId) {
-        let requestURL = `http://localhost:9000/api/friendship/accept/${userId}`
-        return instance.put(requestURL).then((response) => {
+        return instance.put(`/accept/${userId}`)
+        .then((response) => {
             return response;
+        }).catch((error) => {
+            return error.response
         })
     },
     rejectInvitation(userId) {
-        let requestURL = `http://localhost:9000/api/friendship/reject/${userId}`
-        return instance.put(requestURL).then((response) => {
+        return instance.put(`/reject/${userId}`)
+        .then((response) => {
             return response;
+        }).catch((error) => {
+            return error.response
         })
     }
 }

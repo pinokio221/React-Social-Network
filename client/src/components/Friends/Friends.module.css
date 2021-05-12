@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Encode+Sans:wght@300&display=swap');
+
 .contentBlock {
     display: grid;
     grid-template-columns: 1fr 1fr 4fr;
@@ -19,4 +21,20 @@
     display: flex;
     justify-content: center;
     padding-top: 10%;
+}
+
+.emptyListBlock {
+    display: flex;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    font-family: 'Encode Sans', sans-serif;    
+    justify-content: center;
+    font-size: 25px;
+    color:rgb(128, 144, 237);
+    padding: 100px;
+}
+.emptyListBlock > label > a {
+    font-family: 'Encode Sans', sans-serif;    
+}
+.emptyListBlock > label > a:hover {
+    text-decoration: underline;
 }

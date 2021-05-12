@@ -7,25 +7,30 @@ const verifyUser = require('../verifyUser');
 const updateProfilePicture = (req, res, next) => {
     try {
         if(req.method == "PUT"){
+            
             let user = verifyUser.getCurrentUser(req, res, next);
             if(user) {
                 if(!req.files)
-                        return res.status(400).send('No files were uploaded.');
+                        return res.status(400).json({
+                            message: 'No files were uploaded'
+                        })
                 var file = req.files.uploaded_pic
-                let image_name = file.name;
                 let userPicPath = user.userId + '_pic.jpg';
+                
                 if(file.mimetype == "image/jpeg" || file.mimetype == "image/png" || file.mimetype == "image/jpeg") {
                     file.mv('public/images/profile_pictures/' + userPicPath, function(err) {
                         if(err)
-                            return res.status(500).send(err);
-                        
+                        return res.status(500).json({
+                            message: err
+                        })
+
                         let pictureURL = 'http://localhost:9000/images/profile_pictures/' + userPicPath; 
                         User.query().where('id', user.userId)
                         .update({
                             profile_image: pictureURL
                         }).then(function(result) {
                             res.status(200).json({
-                                message: "Profile picture succesfully updated",
+                                message: "Profile picture succesfully updated!",
                                 img: pictureURL
                             })
                         })
@@ -35,7 +40,9 @@ const updateProfilePicture = (req, res, next) => {
 
         }
     } catch(error) {
-        res.status(400).send(error);
+        res.status(400).json({
+            message: error
+        })
     }
 }
 

@@ -11,7 +11,7 @@ import { BiMessageSquareAdd } from 'react-icons/bi'
 import { FaUserFriends } from 'react-icons/fa'
 import InfiniteScroll from "react-infinite-scroll-component";
 import CircularProgress from '@material-ui/core/CircularProgress';
-
+import { NavLink } from 'react-router-dom';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -80,24 +80,40 @@ const Friends = (props) => {
                     </div>
                     <div>
                       <TabPanel value={value} index={0}>
-                        <InfiniteScroll
-                            dataLength={props.friends.length}
-                            next={props.fetchMoreFriends}
-                            style={{ overflow:'auto' }}
-                            hasMore={ props.friends.length > 0 ? props.hasMoreFriends : false }
-                            loader={<div className={styles.fetchMoreProgress}><CircularProgress/></div>}>
-                          <div className={styles.contentBlock}>{props.friends}</div>      
-                        </InfiniteScroll>
+                        {
+                          props.friends.length != 0 ?
+                            <InfiniteScroll
+                              dataLength={props.friends.length}
+                              next={props.fetchMoreFriends}
+                              style={{ overflow:'auto' }}
+                              hasMore={ props.friends.length > 0 ? props.hasMoreFriends : false }
+                              loader={<div className={styles.fetchMoreProgress}><CircularProgress/></div>}>
+                            <div className={styles.contentBlock}>{props.friends}</div>      
+                            </InfiniteScroll>
+                          :
+                          <div className={styles.emptyListBlock}>
+                            <label>The friends list is empty. You can find friends <NavLink to='/users'>here</NavLink></label>
+                          </div>
+
+                        }
                       </TabPanel>
                       <TabPanel value={value} index={1}>
-                        <InfiniteScroll
+                        {
+                          props.invitations.length != 0 ?
+                            <InfiniteScroll
                             dataLength={props.invitations.length}
                             next={props.fetchMoreInvitations}
                             style={{ overflow:'hidden' }}
                             hasMore={ props.invitations.length > 0 ? props.hasMoreInvitations : false }
                             loader={<div className={styles.fetchMoreProgress}><CircularProgress/></div>}>
-                          <div className={styles.contentBlock}>{props.invitations}</div>      
-                        </InfiniteScroll>
+                            <div className={styles.contentBlock}>{props.invitations}</div>      
+                          </InfiniteScroll>
+                          :
+                          <div className={styles.emptyListBlock}>
+                            <label>The invitation list is empty</label>
+                          </div>
+                        }
+                        
                       </TabPanel>
                     </div>
                 </div>
@@ -112,9 +128,17 @@ const Friends = (props) => {
                   </div>
                   <div>
                     <TabPanel value={value} index={0}>
-                    <div className={styles.contentBlock}>
-                      {props.friends}
-                    </div>
+                      {
+                        props.friends.length != 0 ?
+                        <div className={styles.contentBlock}>
+                          {props.friends}
+                        </div>
+                      :
+                        <div className={styles.emptyListBlock}>
+                          <label>{props.userInfo.first_name}'s friends list is empty</label>
+                        </div>
+                      }
+                   
                     </TabPanel>
                   </div>
                 </div>

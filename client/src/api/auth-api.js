@@ -1,15 +1,14 @@
 import axios from 'axios'
 import rateLimit from 'axios-rate-limit';
 
-const instance = rateLimit(axios.create({
-    baseURL: 'http://localhost:9000/api/',
+const instance = axios.create({
+    baseURL: 'http://localhost:9000/api/user',
     withCredentials: true
-}), { maxRequests: 2, perMilliseconds: 1000, maxRPS: 2 })
+})
 
 export const authAPI = {
     authMe() {
-        let requestURL = `http://localhost:9000/api/user/me`
-        return instance.get(requestURL,{ withCredentials: true })
+        return instance.get('/me')
         .then(response => {
             return response;
         }).catch((error) => {
@@ -17,8 +16,7 @@ export const authAPI = {
         })
     },
     userRegister(data) {
-        let requestURL = `http://localhost:9000/api/user/register`
-        return instance.post(requestURL, {
+        return instance.post('/register', {
             firstname: data.firstname,
             lastname: data.lastname,
             fullname: data.fullname,
@@ -35,19 +33,17 @@ export const authAPI = {
         })
     },
     userLogin(data) {
-        let requestURL = `http://localhost:9000/api/user/login`
-        return instance.post(requestURL,{
+        return instance.post('/login',{
             login: data.login,
             password: data.password
-        },{ withCredentials: true }).then(response => {
+        }).then(response => {
             return response;
         }).catch((error) => {
             return error.response
         })
     },
     userLogout() {
-        let requestURL = `http://localhost:9000/api/user/logout`
-        return instance.get(requestURL, { withCredentials: true }).then(response => {
+        return instance.get('/logout').then(response => {
             return response;
         }).catch((error) => {
             return error.response

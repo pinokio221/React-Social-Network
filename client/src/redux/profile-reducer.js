@@ -11,6 +11,10 @@ const SET_PROFILE_FRIENDS = "SET-PROFILE-FRIENDS"
 const UPDATE_PROFILE_PICTURE = "UPDATE-PROFILE-PICTURE"
 const UPDATE_PROFILE_STATUS = "UPDATE-PROFILE-STATUS"
 const SEND_INVITATION = 'SEND-INVITATION'
+const PICTURE_UPLOAD_PROGRESS = 'PICTURE-UPLOAD-PROGRESS'
+const DISPLAY_SUC_MESSAGE = 'DISPLAY-SUC-MESSAGE'
+const DISPLAY_ERROR_MESSAGE = 'DISPLAY-ERROR-MESSAGE'
+const RESET_MODAL_MESSAGE = 'RESET-MODAL-MESSAGE'
 
 export const addPostAction = (post) => ({ type: ADD_POST, post })
 export const deletePostAction = (post_id) => ({ type: DELETE_POST, post_id })
@@ -21,6 +25,11 @@ export const setProfileFriendsAction = (friends, totalFriends) => ({ type: SET_P
 export const updateProfilePictureAction = (img) => ({type: UPDATE_PROFILE_PICTURE, img})
 export const updateStatusAction = (status) => ({type: UPDATE_PROFILE_STATUS, status})
 export const sendInvitationAction = (userId, status) => ({ type: SEND_INVITATION, userId, status })
+export const togglePicUploadProgress = (inProcess) => ({ type: PICTURE_UPLOAD_PROGRESS, inProcess })
+export const displaySuccessfullMessage = (msg) => ({ type: DISPLAY_SUC_MESSAGE, msg })
+export const displayErrorMessage = (msg) => ({ type: DISPLAY_ERROR_MESSAGE, msg })
+export const resetModalMessage = () => ({ type: RESET_MODAL_MESSAGE })
+
 
 let initialState = {
     userInfo: {},
@@ -29,12 +38,16 @@ let initialState = {
     postsData: [],
     pageFetching: true,
     friendsFetching: true,
+    pictureUploading: false,
+    successfullMessage: null,
+    errorMessage: null,
 }
 
-export const getProfileFriends = (userId) => {
+export const getProfileFriends = (userId, pagination) => {
     return (dispatch) => {
-        friendshipAPI.getProfileFriends(userId).then(data => {
-            dispatch(setProfileFriendsAction(data.data.items, data.data.totalFriends))
+        friendshipAPI.getProfileFriends(userId, pagination).then(response => {
+            console.log(response)
+            dispatch(setProfileFriendsAction(response.data.items, response.data.totalFriends))
         })
     }
 }
@@ -45,7 +58,7 @@ export const getProfilePage = (userId) => (dispatch) => {
             dispatch(setProfilePageAction(response.data));
         }
     })
-    dispatch(getProfileFriends(userId));
+    dispatch(getProfileFriends(userId, 1));
     
 }
 
@@ -73,14 +86,19 @@ export const deletePost = (post_id, user_id) => (dispatch) => {
     })
 }
 
-export const updateProfilePicture = (img) => {
-    return(dispatch) => {
-        profileAPI.updateProfilePicture(img).then(response => {
-            if(response.status === 200) {
-                dispatch(updateProfilePictureAction(response.data.img))
-            } 
-        })
-    }
+export const updateProfilePicture = (img) => (dispatch) => {
+    dispatch(togglePicUploadProgress(true));
+    profileAPI.updateProfilePicture(img).then(response => {
+        if(response.status === 200) {
+            dispatch(updateProfilePictureAction(response.data.img));
+            dispatch(displaySuccessfullMessage(response.data.message));
+        }
+        else {
+            dispatch(displayErrorMessage(response.data.message))
+        }
+        dispatch(togglePicUploadProgress(false));
+    })
+    
 }
 
 export const updateProfileStatus = (user_status) => {
@@ -167,12 +185,37 @@ const profileReducer = (state = initialState, action) => {
             }
 
         }
+        case PICTURE_UPLOAD_PROGRESS: {
+            return {
+                ...state,
+                pictureUploading: action.inProcess
+            }
+        }
         case SEND_INVITATION: {
             let returnedInfo = {...state.userInfo};
             returnedInfo.friendshipStatus = action.status;
             return {
                 ...state,
                 userInfo: returnedInfo
+            }
+        }
+        case DISPLAY_SUC_MESSAGE: {
+            return {
+                ...state,
+                successfullMessage: action.msg
+            }
+        }
+        case DISPLAY_ERROR_MESSAGE: {
+            return {
+                ...state,
+                errorMessage: action.msg
+            }
+        }
+        case RESET_MODAL_MESSAGE: {
+            return {
+                ...state,
+                successfullMessage: null,
+                errorMessage: null
             }
         }
 

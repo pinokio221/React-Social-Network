@@ -16,6 +16,8 @@ import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import { Redirect } from 'react-router-dom'
 import { NavLink } from 'react-router-dom'
+import InfiniteScroll from "react-infinite-scroll-component";
+
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -69,7 +71,7 @@ const Dialogs = (props) => {
         setValue(index);
     };
 
-    let dialogsElements = props.dialogsData.map(d => <Dialog key = {d.id} receiveId = {d.id} name={d.first_name} profile_image={d.profile_image}/>).reverse() // temporary
+    let dialogsElements = props.dialogsData.map(d => <Dialog key = {d.id} receiveId = {d.id} name={d.first_name} profile_image={d.profile_image}/>) // temporary
     let contactsElements = props.contactsData.map(f => <Contact key = {f.id} receiveId = {f.id} name={f.first_name} fullname={f.fullname} profile_image={f.profile_image}/>)
     return (
         <div>
@@ -92,18 +94,55 @@ const Dialogs = (props) => {
                     onChangeIndex={handleChangeIndex}>
                     <TabPanel value={value} index={0} dir={theme.direction}>
                         <div className={styles.tabContentWrap}>
-                            <div><DialogsSearchField/></div>
-                            <hr/>
-                            <div className={styles.dialogsItems}>
-                                {props.dialogsIsFetching ? <div className={styles.progress}><CircularProgress /></div> : dialogsElements}
-                            </div>
+                        { dialogsElements.length != 0 ?
+                              <div>
+                                <div><DialogsSearchField/></div>
+                                <hr/>
+                                <div className={styles.dialogsItems}>
+                                    {props.dialogsIsFetching ? 
+                                      <div className={styles.progress}><CircularProgress /></div> 
+                                      : 
+                                      <InfiniteScroll
+                                          dataLength={dialogsElements.length}
+                                          next={props.fetchMoreDialogs}
+                                          style={{ overflow:'auto' }}
+                                          hasMore={ dialogsElements.length == props.dialogsCount ? false : props.hasMoreDialogs }
+                                          loader={<div className={styles.fetchMoreProgress}><CircularProgress/></div>}>
+                                        <div>{dialogsElements}</div>      
+                                      </InfiniteScroll>
+                                      }
+                                </div>
+                              </div>
+                              :
+                              <div className={styles.emptyListBlock}>
+                                <label>No dialogs here</label>
+                              </div>
+                          }
                         </div>
                     </TabPanel>
                     <TabPanel value={value} index={1} dir={theme.direction}>
                         <div className={styles.tabContentWrap}>
-                            <div className={styles.contactsItems}>
-                                {props.dialogsIsFetching ? <div className={styles.progress}><CircularProgress /></div> : contactsElements}
-                            </div>
+                            { contactsElements.length != 0 ?
+                              <div className={styles.contactsItems}>
+                                {props.dialogsIsFetching ? 
+                                <div className={styles.progress}><CircularProgress /></div> 
+                                :
+                                <InfiniteScroll
+                                    dataLength={contactsElements.length}
+                                    next={props.fetchMoreContacts}
+                                    style={{ overflow:'auto' }}
+                                    hasMore={ contactsElements.length == props.contactsCount ? false : props.hasMoreContacts }
+                                    loader={<div className={styles.fetchMoreProgress}><CircularProgress/></div>}>
+                                  <div>{contactsElements}</div>      
+                                  </InfiniteScroll>
+                                }
+                              </div>
+                              :
+                              <div className={styles.emptyListBlock}>
+                                <label>Your contacts list is empty</label>
+                              </div>
+                            }
+                            
                         </div>
                     </TabPanel>
                 </SwipeableViews>

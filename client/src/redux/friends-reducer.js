@@ -137,6 +137,7 @@ export const fetchMoreInvitations = (pagination) => {
 }
 
 
+
 const friendsReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_PROFILE_INFO: {

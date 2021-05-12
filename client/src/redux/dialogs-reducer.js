@@ -11,6 +11,8 @@ const RESET_DIALOG = "RESET-DIALOG"
 const SET_CURRENT_DIALOG = "SET-CURRENT-DIALOG"
 const SET_PROFILE_CONTACTS = "SET-PROFILE-CONTACTS"
 const FETCH_MORE_MESSAGES = "FETCH-MORE-MESSAGES"
+const FETCH_MORE_DIALOGS = "FETCH-MORE-DIALOGS"
+const FETCH_MORE_CONTACTS = "FETCH-MORE-CONTACTS"
 
 export const sendMessageActionCreator = (message) => ({ type: SEND_MESSAGE, message })
 export const updateMessageBodyActionCreator = (body) => ({ type: UPDATE_MESSAGE_BODY, body: body })
@@ -22,6 +24,8 @@ export const resetDialogMessages = () => ({ type: RESET_DIALOG });
 export const setCurrentDialogAction = (dialog_data) => ({ type: SET_CURRENT_DIALOG, dialog_data});
 export const setProfileContactsAction = (contacts, totalContacts) => ({ type: SET_PROFILE_CONTACTS, contacts, totalContacts })
 export const fetchMoreMessagesAction = (messages, pagination) => ({ type: FETCH_MORE_MESSAGES, messages, pagination})
+export const fetchMoreDialogsAction = (dialogs, pagination) => ({ type: FETCH_MORE_DIALOGS, dialogs, pagination})
+export const fetchMoreContactsAction = (contacts, pagination) => ({ type: FETCH_MORE_CONTACTS, contacts, pagination})
 
 let initialState = {
     dialogsData: [],
@@ -31,15 +35,17 @@ let initialState = {
     messagesData: [],
     messagesCount: null,
     messagesPagination: 1,
+    dialogsPagination: 1,
+    contactsPagination: 1,
     currentDialogData: null,
     newMessageBody: "",
     dialogsIsFetching: true,
     messagesIsFetching: true
 }
 
-export const getProfileDialogs = () => {
+export const getProfileDialogs = (pagination) => {
     return (dispatch) => {
-        chatAPI.getProfileDialogs().then(response => {
+        chatAPI.getProfileDialogs(pagination).then(response => {
             dispatch(setProfileDialogsAction(response.data.items, response.data.totalDialogs));
             dispatch(toggleDialogsFetchingAction(false));
         })
@@ -47,9 +53,9 @@ export const getProfileDialogs = () => {
     
 }
 
-export const getProfileContacts = (userId) => {
+export const getProfileContacts = (userId, pagination) => {
     return (dispatch) => {
-        friendshipAPI.getProfileFriends(userId).then(data => {
+        friendshipAPI.getProfileFriends(userId, pagination).then(data => {
             dispatch(setProfileContactsAction(data.data.items, data.data.totalFriends))
         })
     }
@@ -89,6 +95,28 @@ export const fetchMoreMessages = (receiveId, pagination) => {
         chatAPI.getDialogMessages(receiveId, pagination).then(response => {
             if(response.status === 200) {
                 dispatch(fetchMoreMessagesAction(response.data.items, response.data.page))
+                
+            }
+        })
+    }
+}
+
+export const fetchMoreDialogs = (pagination) => {
+    return(dispatch) => {
+        chatAPI.getProfileDialogs(pagination).then(response => {
+            if(response.status === 200) {
+                dispatch(fetchMoreDialogsAction(response.data.items, response.data.page))
+                
+            }
+        })
+    }
+}
+
+export const fetchMoreContacts = (pagination) => {
+    return(dispatch) => {
+        chatAPI.getProfileContacts(pagination).then(response => {
+            if(response.status === 200) {
+                dispatch(fetchMoreContactsAction(response.data.items, response.data.page))
                 
             }
         })
@@ -140,6 +168,18 @@ const dialogsReducer = (state = initialState, action) => {
                 ...state,
                 messagesData: [...state.messagesData, ...action.messages],
                 messagesPagination: action.pagination
+            }
+        case FETCH_MORE_DIALOGS:
+            return {
+                ...state,
+                dialogsData: [...state.dialogsData, ...action.dialogs],
+                dialogsPagination: action.pagination
+            }
+        case FETCH_MORE_CONTACTS:
+            return {
+                ...state,
+                contactsData: [...state.contactsData, ...action.contacts],
+                contactsPagination: action.pagination
             }
         case RESET_DIALOG:
             return {

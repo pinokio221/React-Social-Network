@@ -9,6 +9,8 @@ import { FiUsers } from 'react-icons/fi'
 import { RiMailSendLine } from 'react-icons/ri'
 import { NavLink } from 'react-router-dom'
 import ProfilePhotoModal from './ProfilePhotoModal'
+import CircularProgress from '@material-ui/core/CircularProgress';
+import PicLoader from '../../../../assets/images/loader2.gif'
 
 const ProfileDescription = (props) => {
 
@@ -25,7 +27,7 @@ const ProfileDescription = (props) => {
                     <Container>
                         <Row>
                             <Col xs={6} md={4} className={styles.user_image_block}>
-                                <Image className={styles.user_image} src={props.userInfo.profile_image + '?' + new Date()} roundedCircle/>
+                                { props.pictureUploadProcess ? <img className={styles.pictureLoader} src={PicLoader}/>: <Image className={styles.user_image} src={props.userInfo.profile_image + '?' + new Date()} roundedCircle/> }
                                 { props.isAuthUserPage ? 
                                     <ProfilePhotoModal updateProfilePicture={props.updateProfilePicture}/>
                                 :

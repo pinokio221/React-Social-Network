@@ -2,21 +2,25 @@ import axios from 'axios'
 import rateLimit from 'axios-rate-limit';
 
 const instance = rateLimit(axios.create({
-    baseURL: 'http://localhost:9000/api/',
+    baseURL: 'http://localhost:9000/api/users',
     withCredentials: true
 }), { maxRequests: 2, perMilliseconds: 1000, maxRPS: 2 })
 
 export const usersAPI = {
     getUsers(currentPage, pageSize) {
-        let requestURL = `http://localhost:9000/api/users?page=${currentPage}&limit=${pageSize}`;
-        return instance.get(requestURL).then(response => {
+        return instance.get(`?page=${currentPage}&limit=${pageSize}`)
+        .then(response => {
             return response.data;
+        }).catch((error) => {
+            return error.response
         })
     },
     getUserByNamePartial(text) {
-        let requestURL = `http://localhost:9000/api/users?fullname=${text}`;
-        return instance.get(requestURL).then(response => {
+        return instance.get(`?fullname=${text}`)
+        .then(response => {
             return response.data;
+        }).catch((error) => {
+            return error.response
         })
     }
 }

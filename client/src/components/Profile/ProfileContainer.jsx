@@ -3,12 +3,18 @@ import Profile from "./Profile"
 import styles from './Profile.module.css'
 import connect from "react-redux/lib/connect/connect";
 import withRouter from "react-router-dom/withRouter"
-import { getProfilePage, resetProfilePageAction, updateProfileStatus, updateProfilePicture, sendInvitation } from "../../redux/profile-reducer"
+import { 
+    getProfilePage, 
+    resetProfilePageAction, 
+    updateProfileStatus, 
+    updateProfilePicture, 
+    sendInvitation,
+    resetModalMessage
+ } from "../../redux/profile-reducer"
 import { toggleLogFormInProcess } from "../../redux/auth-reducer"
 import { compose } from 'redux';
 import { withAuthRedirect } from '../../hoc/AuthRedirect';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
 
 
 class ProfileContainer extends React.Component {
@@ -51,7 +57,10 @@ let mapStateToProps = (state) => {
         userFriends: state.profilePage.userFriends,
         postsData: state.profilePage.postsData,
         newPostText: state.profilePage.newPostText,
-        logFormInProcess: state.auth.logFormInProcess
+        logFormInProcess: state.auth.logFormInProcess,
+        pictureUploadProcess: state.profilePage.pictureUploading,
+        successfullMessage: state.profilePage.successfullMessage,
+        errorMessage: state.profilePage.errorMessage
     }
 }
 
@@ -69,7 +78,9 @@ export default compose(
         updateProfilePicture,
         sendInvitation,
         getProfilePage, 
-        resetProfilePageAction }),
+        resetProfilePageAction,
+        resetModalMessage
+     }),
     withRouter,
     withAuthRedirect
 )(ProfileContainer)

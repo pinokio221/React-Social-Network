@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Public+Sans&display=swap');
-
 .friend_user_image {
     width: 60px;
     border-radius: 50%;
@@ -22,6 +20,16 @@ a{
     text-align: center;
 }
 
+.comingBlock, .emptyBlock {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color:rgba(128, 144, 237, 0.5);
+    font-size: 20px;    
+}
+
+
 .showAll{
     font-size: 12px;
     color:rgb(0, 108, 129);
@@ -39,7 +47,11 @@ a{
 }
 
 .cardElement {
-    height: 85%;
+    height: 18rem;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.settingIcon, .sadIcon {
+    font-size: 90px;
 }
 
