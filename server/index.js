@@ -5,11 +5,11 @@ const server = http.createServer(app);
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const port = 9000;
+const cors = require("cors");
 
 const rateLimit = require('express-rate-limit');
 require('dotenv').config()
 
-let cors = require("cors");
 
 
 /*app.use(rateLimit({
@@ -21,14 +21,15 @@ let cors = require("cors");
   })
 }));*/
 
-app.use(cors({ origin: '*' , credentials: true}));
+app.use(cors())
 app.use(bodyParser.json());
 app.use(cookieParser());
+
 app.use(function(req, res, next) {
     res.header('Content-Type', 'application/json;charset=UTF-8')
     res.header('Access-Control-Allow-Credentials', true)
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
     next()
   })
