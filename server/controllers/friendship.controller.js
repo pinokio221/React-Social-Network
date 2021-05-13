@@ -62,7 +62,6 @@ const returnInvitations = async (req, res, next) => {
         .where('userId2', user.userId)
         .andWhere('status', 1)
         .then(async function(result){
-            console.log(result)
             let invitations = [];
             for(value of result) {
                 let invitation = await usersController.getUserById(req, res, next, value.userId1);

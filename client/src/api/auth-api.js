@@ -48,5 +48,25 @@ export const authAPI = {
         }).catch((error) => {
             return error.response
         })
+    },
+    twoFactorVerify(authId, authCode) {
+        return instance.put(`user/verify`,{
+            authId,
+            authCode
+        }).then(response => {
+            return response;
+        }).catch((error) => {
+            return error.response
+        })
+    },
+    twoFactorValidate(authId, authCode) {
+        return instance.post(`user/validate`,{
+            authId,
+            authCode
+        }).then(response => {
+            return response
+        }).catch((error) => {
+            return error.response
+        })
     }
 }

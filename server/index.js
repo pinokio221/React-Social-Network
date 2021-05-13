@@ -5,17 +5,14 @@ const server = http.createServer(app);
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const port = 9000;
+const cors = require("cors");
+
 const rateLimit = require('express-rate-limit');
 const fileUpload = require('express-fileupload');
 
 
 require('dotenv').config()
 
-let cors = require("cors");
-var corsOptions = {
-    origin: 'http://localhost:3000',
-    optionsSuccessStatus: 200, 
-    credentials: true };
 
 app.use(express.static(__dirname+'/public'));
 app.use(fileUpload());
@@ -28,16 +25,16 @@ app.use(rateLimit({
   })
 }));
 
-app.use(cors(corsOptions));
+app.use(cors())
 app.use(bodyParser.json());
 app.use(cookieParser());
+
 app.use(function(req, res, next) {
     res.header('Content-Type', 'application/json;charset=UTF-8')
     res.header('Access-Control-Allow-Credentials', true)
-    res.header(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept'
-    )
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
     next()
   })
 

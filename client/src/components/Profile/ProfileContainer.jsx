@@ -43,7 +43,6 @@ class ProfileContainer extends React.Component {
                         {...this.props} 
                         friendshipStatus={this.props.userInfo.friendshipStatus} 
                         sendInvitation={this.sendInvitation}/>}
-
         </div>
         );
     }

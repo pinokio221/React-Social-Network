@@ -11,6 +11,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { required } from '../../validators/validator'
 import { LoginInputFormControl } from '../FormControls/FormControls'
+import TwoFactorVerify from '../TwoFactorAuth/TwoFactorVerify'
+import TwoFactorValidation from '../TwoFactorAuth/TwoFactorValidation';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -55,16 +57,13 @@ const Login = (props) => {
 
     let state = {
         visible: true,
-        vertical: 'top',
-        horizontal: 'center'
     }
 
-    const { vertical, horizontal} = state;
     const onSubmit = (formData) => {
         props.userLogin(formData);
     }
     const autoClose = () => {
-        props.resetError()
+        props.resetAuthError()
     }
     if(props.isAuth){
         return <Redirect to={"/profile"}/>
@@ -77,13 +76,20 @@ const Login = (props) => {
                 open={state.visible}
                 onClose={autoClose}
                 autoHideDuration={6000}
-                anchorOrigin={{ vertical, horizontal }}
-                key={vertical + horizontal}>
+                anchorOrigin={{ horizontal: 'top', vertical: 'center' }}>
                     <Alert severity="error">
                         {props.authError}
                     </Alert>
             </Snackbar> : null }
-            <div><LoginReduxForm onSubmit={onSubmit} logFormInProcess={props.logFormInProcess}/></div>
+            {
+              props.authStage === 1 ? 
+              <div><LoginReduxForm onSubmit={onSubmit} logFormInProcess={props.logFormInProcess}/></div>
+               : null ||
+              props.authStage === 2 ? 
+                <TwoFactorValidation store={props.store}/> : null ||
+              props.authStage === 3 ? 
+                <TwoFactorVerify store={props.store} qrCode={props.qrCode}/> : null
+            }
         </div>
     );
 }

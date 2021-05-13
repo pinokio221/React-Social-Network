@@ -72,7 +72,7 @@ const getUsersByNamePartial = (req, res, next, query) => {
 const getUserById = (req, res, next, query) => {
     return User.query().select(
         'id', 'login', 'first_name', 'last_name', 'fullname', 'gender',
-        'status', 'age', 'city', 'profile_image', 'header_image')
+        'status', 'age', 'city', 'country', 'profile_image', 'header_image')
     .where('id', query)
     .first()
     .then(async function(result) {

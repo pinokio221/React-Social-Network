@@ -17,7 +17,6 @@ import HeaderContainer from './components/Header/HeaderContainer';
 import LoginContainer from './components/Login/LoginContainer';
 import RegisterContainer from './components/Register/RegisterContainer';
 import MessagesContainer from './components/Dialogs/Messages/MessagesContainer';
-import SuccessRegistrationAlert from "../src/components/Alerts/SuccessRegistrationAlert"
 import { CircularProgress } from '@material-ui/core';
 
 class App extends React.Component {

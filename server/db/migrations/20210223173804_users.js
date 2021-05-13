@@ -3,6 +3,7 @@ exports.up = function(knex) {
     return knex.schema
     .createTable('users', (table) => {
         table.increments()
+        table.string('auth_id').defaultTo(null);
         table.string('login').notNullable();
         table.string('email').notNullable().unique();
         table.string('password', 500).notNullable();
