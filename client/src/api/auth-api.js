@@ -15,6 +15,14 @@ export const authAPI = {
             return error.response
         })
     },
+    getQRCode(authId) {
+        return instance.get(`/qrcode?authId=${authId}`)
+        .then(response => {
+            return response;
+        }).catch((error) => {
+            return error.response
+        })
+    },
     userRegister(data) {
         return instance.post('/register', {
             firstname: data.firstname,
@@ -50,7 +58,7 @@ export const authAPI = {
         })
     },
     twoFactorVerify(authId, authCode) {
-        return instance.put(`user/verify`,{
+        return instance.put(`/verify`,{
             authId,
             authCode
         }).then(response => {
@@ -60,7 +68,7 @@ export const authAPI = {
         })
     },
     twoFactorValidate(authId, authCode) {
-        return instance.post(`user/validate`,{
+        return instance.post(`/validate`,{
             authId,
             authCode
         }).then(response => {

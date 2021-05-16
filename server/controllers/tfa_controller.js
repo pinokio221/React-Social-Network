@@ -24,10 +24,8 @@ const createToken = (id, email, login) => {
 
 const twoFactorVerify = (req, res) => {
     const {authId, authCode} = req.body;
-    
     const path = `/user/${authId}`
     const user = json_db.getData(path);
-    console.log(user)
     const { base32:secret } = user.temp_secret
     
     const verified = speakeasy.totp.verify({ secret, encoding: 'base32', token: authCode })

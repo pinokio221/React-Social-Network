@@ -15,7 +15,7 @@ require('dotenv').config()
 
 
 app.use(express.static(__dirname+'/public'));
-app.use(fileUpload());
+app.use(fileUpload({useTempFiles: true}))
 app.use(rateLimit({
   windowMs: 5 * 60 * 1000, // 5 minutes
   max: 500,

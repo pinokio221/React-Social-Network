@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { profile_status_validation } = require('../validations/profile_status_validation');
 const verifyUser = require('../verifyUser');
+//const { cloudinary } = require('../utils/cloudinary');
 
-
-const updateProfilePicture = (req, res, next) => {
+const updateProfilePicture = async (req, res, next) => {
     try {
         if(req.method == "PUT"){
             
@@ -16,7 +16,31 @@ const updateProfilePicture = (req, res, next) => {
                         })
                 var file = req.files.uploaded_pic
                 let userPicPath = user.userId + '_pic.jpg';
+                // CLOUDINARY
+                /*try {
+                    const uploadProcess = await cloudinary.uploader.upload(file.tempFilePath, {
+                        upload_preset: 'profile_pictures',
+                        public_id: userPicPath,
+                    })
+                    if(uploadProcess) {
+                        let pictureURL = uploadProcess.url;
+                        User.query().where('id', user.userId)
+                        .update({
+                            profile_image: pictureURL
+                        }).then(function(result) {
+                            res.status(200).json({
+                                message: "Profile picture succesfully updated!",
+                                img: pictureURL
+                            })
+                        })
+                    }
+                    
+                }catch(err){
+                    console.log("Error", err)
+                  return res.status(400).json({error: err})
+                  }*/
                 
+                // LOCAL
                 if(file.mimetype == "image/jpeg" || file.mimetype == "image/png" || file.mimetype == "image/jpeg") {
                     file.mv('public/images/profile_pictures/' + userPicPath, function(err) {
                         if(err)
@@ -40,6 +64,7 @@ const updateProfilePicture = (req, res, next) => {
 
         }
     } catch(error) {
+        console.log(error)
         res.status(400).json({
             message: error
         })

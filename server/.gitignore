@@ -1,5 +1,8 @@
 /node_modules
 public/images/profile_pictures/*
+!public/images/profile_pictures/avatar_default.jpg
+!public/images/cover_pictures/cover_default.jpg
+tmp/*
 .idea/
 .env
 chilltime-db.json

@@ -1,7 +1,11 @@
 DB_HOST = [type host here. Default: 127.0.0.1]
-
 DB_USER = [type username here. Default: root]
-
 DB_PASSWORD = [type password here]
+DB_PORT = 5432
+DATABASE_URL = [type database url here in ""]]
 
-DB_NAME = [type database name here]
+TWO_FACTOR_AUTHENTICATION_APP_NAME = Chilltime
+
+CLOUDINARY_NAME = [type name here in ""]
+CLOUDINARY_API_KEY = [type api key here in ""]
+CLOUDINARY_API_SECRET = [type api secret here in ""]

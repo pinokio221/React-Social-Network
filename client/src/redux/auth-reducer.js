@@ -125,6 +125,7 @@ export const userLogin = (data) => (dispatch) => {
         console.log(response)
         if(response.status === 200) {
             if(response.data.verified == false) {
+                console.log(response.data)
                 dispatch(twoFactorAuthSetStage(3, response.data.authId))
                 dispatch(getUserQRCode(response.data.authId))
             }
