@@ -85,19 +85,24 @@ class FriendsContainer extends React.Component {
     }
     render() {
         let friends = this.props.friendsPage.friends
-            .map(f => <Friend 
-                fullname={f.fullname}
-                key = {f.id}
-                id = {f.id}
-                age={f.age} city={f.city}
-                image={f.profile_image}
-                friendshipStatus = {f.friendshipStatus}
-                sendInvitation={this.sendInvitation}
-                cancelInvitation={this.cancelInvitation}
-                removeFriend={this.removeFriend}
-                profilePageId={this.props.match.params.userId}
-                authData={this.props.authData}
-                />)
+            .map(f => {
+                if(f.id == this.props.authData.id) { return false } //change
+                return (
+                    <Friend 
+                        fullname={f.fullname}
+                        key = {f.id}
+                        id = {f.id}
+                        age={f.age} city={f.city}
+                        image={f.profile_image}
+                        friendshipStatus = {f.friendshipStatus}
+                        sendInvitation={this.sendInvitation}
+                        cancelInvitation={this.cancelInvitation}
+                        removeFriend={this.removeFriend}
+                        profilePageId={this.props.match.params.userId}
+                        authData={this.props.authData}
+                    />
+                )
+            })
 
         let invitations = this.props.friendsPage.invitations
             .map(i => <Invitation

@@ -11,6 +11,7 @@ router.post('/validate', twoFactorAuthController.twoFactorValidation);
 router.get('/logout', authController.signOut);
 router.get('/me', authController.checkCurrentUser);
 router.get('/qrcode', twoFactorAuthController.getQRCode);
+router.put('/settings', authController.updateSettings);
 
 
 module.exports = router;

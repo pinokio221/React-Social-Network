@@ -4,11 +4,14 @@ import connect from "react-redux/lib/connect/connect";
 import { compose } from 'redux';
 import { withAuthRedirect } from '../../hoc/AuthRedirect'
 import withRouter from "react-router-dom/withRouter"
-import { userLogout } from '../../redux/auth-reducer'
+import { userLogout, updateSettings } from '../../redux/auth-reducer'
 
 class SettingsContainer extends React.Component {
     signOut = () => {
         this.props.userLogout()
+    }
+    updateSettings = (settings) => {
+        this.props.updateSettings(settings);
     }
     render() {
         return(
@@ -19,12 +22,13 @@ class SettingsContainer extends React.Component {
 
 let mapStateToProps = (state) => {
     return {
-        authData: state.auth
+        authData: state.auth,
+        settings: state.auth.settings
     }
 }
 
 export default compose(
-    connect(mapStateToProps,{ userLogout }),
+    connect(mapStateToProps,{ userLogout, updateSettings }),
     withAuthRedirect,
     withRouter
 )(SettingsContainer)

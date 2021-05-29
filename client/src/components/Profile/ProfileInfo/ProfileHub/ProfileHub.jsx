@@ -20,7 +20,7 @@ const ProfileHub = (props) => {
             <Container>
                 <hr className="my-4"/>
                 <Row>
-                <Col xs={6} md={4}>
+                {/* <Col xs={6} md={4}>
                         <Card className={styles.cardElement} border="light" style={{width: '20rem'}}>
                             <Card.Header>
                             <div className={styles.hubTitle}><span className={styles.hubIcon}><PermMediaIcon style={{fontSize: '30px'}}/></span>
@@ -33,7 +33,7 @@ const ProfileHub = (props) => {
                                 <label>Social media coming soon</label>
                             </Card.Body>
                         </Card>
-                    </Col>
+                    </Col>*/}
                     <Col xs={6} md={4}>
                         <Card className={styles.cardElement} border="light" style={{width: '20rem'}}>
                         <Card.Header>
@@ -60,6 +60,7 @@ const ProfileHub = (props) => {
                             }
                         </Card>
                     </Col>
+                    {/*
                     <Col xs={6} md={4}>
                         <Card className={styles.cardElement} border="light" style={{width: '20rem'}}>
                         <Card.Header>
@@ -74,6 +75,7 @@ const ProfileHub = (props) => {
                             </Card.Body>
                         </Card>
                     </Col>
+                    */}
                 </Row>
             </Container>
             <br/>

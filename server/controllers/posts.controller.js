@@ -33,6 +33,26 @@ const addNewPost = (req, res, next) => {
     }
 }
 
+const updatePost = (req, res, next) => {
+    let user = verifyUser.getCurrentUser(req, res, next);
+    if(user) {
+        Post.query().update({
+            content: req.body.content
+        }).where('id', req.body.id).returning('id', 'content').first()
+        .then(function(result) {
+            if(result) {
+                return res.status(200).json({
+                    message: "Post succesfully updated",
+                    post: result
+                })
+            }
+            return res.status(400).json({
+                message: "Something went wrong"
+            })
+        })
+    }
+}
+
 const deletePost = (req, res, next) => {
     try {
         let user = verifyUser.getCurrentUser(req, res, next);
@@ -44,7 +64,7 @@ const deletePost = (req, res, next) => {
             .then(function(result){
                 if(result){
                     res.status(201).json({
-                        message: "You succesfully removed your post.",
+                        message: "You successfully removed your post.",
                     })
                 }
                 else{
@@ -90,4 +110,8 @@ function returnPosts(req, res){
     }
 }
 
-module.exports = { returnPosts, addNewPost, deletePost };
+module.exports = { 
+    returnPosts, 
+    addNewPost, 
+    updatePost,
+    deletePost };

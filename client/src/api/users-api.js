@@ -7,8 +7,8 @@ const instance = rateLimit(axios.create({
 }), { maxRequests: 2, perMilliseconds: 1000, maxRPS: 2 })
 
 export const usersAPI = {
-    getUsers(currentPage, pageSize) {
-        return instance.get(`?page=${currentPage}&limit=${pageSize}`)
+    getUsers(currentPage) {
+        return instance.get(`?page=${currentPage}`)
         .then(response => {
             return response.data;
         }).catch((error) => {
@@ -18,6 +18,7 @@ export const usersAPI = {
     getUserByNamePartial(text) {
         return instance.get(`?fullname=${text}`)
         .then(response => {
+            console.log(response)
             return response.data;
         }).catch((error) => {
             return error.response

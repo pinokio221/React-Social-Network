@@ -10,6 +10,7 @@ const { JsonDB } = require('node-json-db');
 const { Config } = require('node-json-db/dist/lib/JsonDBConfig');
 const speakeasy = require('speakeasy');
 const tfaController = require('./tfa_controller'); 
+const verifyUser = require('../verifyUser');
 
 const db = new JsonDB(new Config('./db/chilltime-db', true, false, '/'));
 
@@ -171,6 +172,31 @@ const signOut = (req, res) => {
     
 }
 
+const getUserSettings = (userId) => {
+    return Setting.query().select('tfa', 'tfa_verified').where('userId', userId).first()
+    .then((result) => {
+        return result
+    })       
+}
+
+const updateSettings = (req, res, next) => {
+    try {
+        let user = verifyUser.getCurrentUser(req, res, next);
+        if(user){
+            let settings = req.body.settings;
+            Setting.query().returning('*').first().where('userId', '=', user.userId)
+            .update(settings).then(function(result) {
+                res.status(200).json({
+                    message: "Profile settings updated!",
+                    settings: result
+                })
+            })  
+        }
+    } catch(err) {
+        res.status(400).send(err);
+    }
+}
+
 const checkCurrentUser = (req, res, next) => {
     let token = req.cookies.jwt;
     if(token){
@@ -185,15 +211,21 @@ const checkCurrentUser = (req, res, next) => {
                 User.query().select('id', 'login', 'email')
                 .where('id', decoded.userId)
                 .first().then(function(user){
-                    res.status(200).json({
-                        message: "You are authorized user",
-                        user: {
-                            id: user.id,
-                            email: user.email,
-                            login: user.login,
-                        }
-                    })
-                    res.locals.user = user;
+                    if(user) {
+                        getUserSettings(decoded.userId).then(function(result) {
+                            res.status(200).json({
+                                message: "You are authorized user",
+                                user: {
+                                    id: user.id,
+                                    email: user.email,
+                                    login: user.login,
+                                },
+                                settings: result
+                            })
+                            res.locals.user = user;
+                        })
+                    }
+                    
                 })
             }
         })
@@ -208,11 +240,16 @@ const checkCurrentUser = (req, res, next) => {
 }
 
 
+
+
+
+
 module.exports = {
     signUp: signUp,
     signIn: signIn,
     signOut: signOut,
     checkCurrentUser: checkCurrentUser,
+    updateSettings: updateSettings,
 }
 
 
