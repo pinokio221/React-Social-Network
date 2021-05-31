@@ -1,12 +1,12 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 const http = require('http');
 const server = http.createServer(app);
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const port = 9000;
+const port = process.env.PORT || 9000;
 const cors = require("cors");
-
 const rateLimit = require('express-rate-limit');
 const fileUpload = require('express-fileupload');
 
@@ -33,7 +33,7 @@ app.use(function(req, res, next) {
   res.header('Content-Type', 'application/json;charset=UTF-8')
   res.header('Access-Control-Allow-Credentials', true)
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Origin", "https://chilltime-site.herokuapp.com");
+  res.header("Access-Control-Allow-Origin", "https://chilltime-app.herokuapp.com");
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
   next()
 })

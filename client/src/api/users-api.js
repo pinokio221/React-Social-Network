@@ -2,7 +2,7 @@ import axios from 'axios'
 import rateLimit from 'axios-rate-limit';
 
 const instance = rateLimit(axios.create({
-    baseURL: 'https://chilltime-site.herokuapp.com/api/users',
+    baseURL: 'https://chilltime-app.herokuapp.com/api/users',
     withCredentials: true
 }), { maxRequests: 2, perMilliseconds: 1000, maxRPS: 2 })
 

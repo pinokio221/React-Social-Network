@@ -3,7 +3,7 @@ import rateLimit from 'axios-rate-limit';
 
 
 const instance = rateLimit(axios.create({
-    baseURL: 'https://chilltime-site.herokuapp.com/api/chat',
+    baseURL: 'https://chilltime-app.herokuapp.com/api/chat',
     withCredentials: true
 }), { maxRequests: 2, perMilliseconds: 1000, maxRPS: 2 })
 

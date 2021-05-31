@@ -1,18 +1,16 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User')
 const Setting = require('../models/Setting');
+const Tfa = require('../models/Tfa');
 const bcrypt = require('bcryptjs')
 const { registerValidation } = require('../validations/register_validation')
 const { loginValidation } = require('../validations/login_validation')
 const { verify } = require('jsonwebtoken');
 const uuid = require('uuid');
-const { JsonDB } = require('node-json-db');
-const { Config } = require('node-json-db/dist/lib/JsonDBConfig');
 const speakeasy = require('speakeasy');
 const tfaController = require('./tfa_controller'); 
 const verifyUser = require('../verifyUser');
 
-const db = new JsonDB(new Config('./db/chilltime-db', true, false, '/'));
 
 const maxAge = 3 * 24 * 60 * 60;
  
@@ -67,11 +65,18 @@ const signUp = (req, res) => {
                                 tfa_verified: false
                             }).then(() => {
                                 const path = `/user/${id}`;
-                                const temp_secret = speakeasy.generateSecret();
-                                db.push(path, { id, temp_secret });
-                                res.status(201).json ({
-                                    message: "You are succesfully registered",
-                                })
+                                const genSecret = speakeasy.generateSecret();
+                                Tfa.query().insert({
+                                    userId: result.id,
+                                    secret_id: id,
+                                    temp_secret: genSecret.base32,
+                                    otpauth_url: genSecret.otpauth_url
+                                }).then((function(result) {
+                                    res.status(201).json ({
+                                        message: "You are succesfully registered",
+                                    })
+                                }))
+                                
                             })
                         }
                         

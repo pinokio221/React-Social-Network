@@ -11,7 +11,7 @@ module.exports  = {
             database : process.env.DB_NAME,
             port: process.env.DB_PORT,
             charset : 'utf8mb4',
-            //ssl: { rejectUnauthorized: false }
+            ssl: { rejectUnauthorized: false }
     },
         migrations: {
             tableName: 'knex_migrations'

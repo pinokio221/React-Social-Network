@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { profile_status_validation } = require('../validations/profile_status_validation');
 const verifyUser = require('../verifyUser');
-//const { cloudinary } = require('../utils/cloudinary');
+const { cloudinary } = require('../utils/cloudinary');
 
 const updateProfilePicture = async (req, res, next) => {
     try {
@@ -17,7 +17,7 @@ const updateProfilePicture = async (req, res, next) => {
                 var file = req.files.uploaded_pic
                 let userPicPath = user.userId + '_pic.jpg';
                 // CLOUDINARY
-                /*try {
+                try {
                     const uploadProcess = await cloudinary.uploader.upload(file.tempFilePath, {
                         upload_preset: 'profile_pictures',
                         public_id: userPicPath,
@@ -38,10 +38,10 @@ const updateProfilePicture = async (req, res, next) => {
                 }catch(err){
                     console.log("Error", err)
                   return res.status(400).json({error: err})
-                  }*/
+                  }
                 
                 // LOCAL
-                if(file.mimetype == "image/jpeg" || file.mimetype == "image/png" || file.mimetype == "image/jpeg") {
+                /*if(file.mimetype == "image/jpeg" || file.mimetype == "image/png" || file.mimetype == "image/jpeg") {
                     file.mv('public/images/profile_pictures/' + userPicPath, function(err) {
                         if(err)
                         return res.status(500).json({
@@ -59,7 +59,7 @@ const updateProfilePicture = async (req, res, next) => {
                             })
                         })
                     })
-                }
+                }*/
             }
 
         }

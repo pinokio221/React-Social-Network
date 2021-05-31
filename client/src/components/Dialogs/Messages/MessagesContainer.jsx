@@ -77,7 +77,7 @@ class MessagesContainer extends React.Component {
     }
     componentDidMount() {
         
-        let server = 'https://chilltime-site.herokuapp.com';
+        let server = 'https://chilltime-app.herokuapp.com';
         
         this.socket = io(server);
 
