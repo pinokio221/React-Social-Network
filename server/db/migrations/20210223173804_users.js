@@ -17,8 +17,8 @@ exports.up = function(knex) {
         table.integer('age').notNullable().defaultTo(23);
         table.string('country').notNullable().default('Ukraine');
         table.string('city').notNullable().default('Kyiv');
-        table.string('profile_image').default('http://localhost:9000/images/profile_pictures/avatar_default.jpg');
-        table.string('header_image').default('http://localhost:9000/images/cover_pictures/cover_default.jpg');
+        table.string('profile_image').default('https://res.cloudinary.com/chilltime/image/upload/v1622479718/profile_pictures/avatar_default.jpg');
+        table.string('header_image').default('https://res.cloudinary.com/chilltime/image/upload/v1622479866/profile_covers/cover_default.jpg');
         table.timestamps(true, true);
     })
 };
