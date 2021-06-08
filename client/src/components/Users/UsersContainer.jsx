@@ -3,7 +3,6 @@ import { //Action Creators
     getUsers,
     getUsersBySearchQuery,
     getMoreUsers,
-    resetPage,
     sendInvitation,
     cancelInvitation
 } from "../../redux/users-reducer";
@@ -16,24 +15,23 @@ import { compose } from 'redux';
 
 class UsersContainer extends React.Component {
     
-
     componentDidMount() {
-        this.props.getUsers(this.props.showMorePagination); 
+        this.props.getUsers(1,6); // redux-thunk, tmp
     }
     componentWillUnmount() {
-        this.props.resetPage(); // reflesh
+        this.props.getMoreUsers(1, 6); // reflesh
     }
 
     onSearchClick = (query) => {
-        this.props.getUsersBySearchQuery(query, this.props.currentPage);
+        this.props.getUsersBySearchQuery(query, this.props.currentPage, this.props.pageSize);
     }
     onPageChanged = (p) => {
         this.props.setCurrentPage(p);
-        this.props.getUsers(p); // redux-thunk
+        this.props.getUsers(p, this.props.pageSize); // redux-thunk
     }
     onShowMore = (pagination) => {
         pagination+=1;
-        this.props.getMoreUsers(pagination)
+        this.props.getMoreUsers(pagination, this.props.pageSize)
     }
     sendInvitation = (userId) => {
         this.props.sendInvitation(userId);
@@ -44,40 +42,27 @@ class UsersContainer extends React.Component {
 
     render() {
     let usersElements = this.props.users
-        .map(u => 
-            {
-                if(u.id == this.props.authId) return false
-                return(
-                    <User
-                        sendInvitation={this.sendInvitation}
-                        cancelInvitation={this.cancelInvitation}
-                        key = {u.id}
-                        id = {u.id}
-                        username = {u.fullname}
-                        age={u.age} city={u.city}
-                        image={u.profile_image}
-                        friendshipStatus ={u.friendshipStatus}
-                    />
-                )
-            }
-            )
+        .map(u => <User
+            sendInvitation={this.sendInvitation}
+            cancelInvitation={this.cancelInvitation}
+            key = {u.id}
+            id = {u.id}
+            username = {u.fullname}
+            age={u.age} city={u.city}
+            image={u.profile_image}
+            friendshipStatus ={u.friendshipStatus}/>)
 
     let filteredElements = this.props.filteredUsers
-        .map(u => {
-            if(u.id == this.props.authId) return false
-            return (
-                <User
-                sendInvitation={this.sendInvitation}
-                cancelInvitation={this.cancelInvitation}
-                key = {u.id}
-                id = {u.id}
-                username = {u.fullname}
-                age={u.age} city={u.city}
-                image={u.profile_image}
-                friendshipStatus ={u.friendshipStatus}/>
-                    )
-                }
-            )
+        .map(u => <User
+            sendInvitation={this.sendInvitation}
+            cancelInvitation={this.cancelInvitation}
+            key = {u.id}
+            id = {u.id}
+            username = {u.fullname}
+            age={u.age} city={u.city}
+            image={u.profile_image}
+            friendshipStatus ={u.friendshipStatus}/>)
+    
         return <>
         <Users 
             onShowMore={this.onShowMore}
@@ -103,7 +88,6 @@ class UsersContainer extends React.Component {
 
 let mapStateToProps = (state) => {
     return {
-        authId: state.auth.id,
         profileInfo: state.auth,
         users: state.usersPage.users,
         filteredUsers: state.usersPage.filteredUsers,
@@ -121,7 +105,7 @@ let mapStateToProps = (state) => {
 export default compose(
     connect(mapStateToProps, {
         getUsers, getUsersBySearchQuery, getMoreUsers,
-        sendInvitation, cancelInvitation, resetPage
+        sendInvitation, cancelInvitation
     }),
     withAuthRedirect
 

@@ -2,7 +2,7 @@ import React from 'react';
 import Posts from "./Posts";
 import connect from "react-redux/lib/connect/connect";
 import withRouter from "react-router-dom/withRouter"
-import { getProfilePosts, addPost, updatePost, deletePost, setEditedPostAction } from "../../../redux/profile-reducer"
+import { getProfilePosts, addPost, deletePost } from "../../../redux/profile-reducer"
 
 
 class PostsContainer extends React.Component {
@@ -17,10 +17,6 @@ class PostsContainer extends React.Component {
 
     addPost = (post_content) => {
         this.props.addPost(post_content);
-    }
-
-    updatePost = (post_content) => {
-        this.props.updatePost(post_content);
     }
 
     deletePost = (post_id, user_id) => {
@@ -41,7 +37,7 @@ let mapStateToProps = (state) => {
     return {
         userInfo: state.profilePage.userInfo,
         postsData: state.profilePage.postsData,
-        authData: state.auth,
+        authData: state.auth
     }
 }
 
@@ -49,4 +45,4 @@ let urlDataComponent = withRouter(PostsContainer);
 
 
 export default connect(mapStateToProps, 
-    {   getProfilePosts, addPost, updatePost, deletePost, setEditedPostAction})(urlDataComponent)
+    {   getProfilePosts, addPost, deletePost})(urlDataComponent)

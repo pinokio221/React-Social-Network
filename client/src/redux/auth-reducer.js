@@ -12,9 +12,8 @@ const SET_INITIALIZED = 'SET-INITIALIZED'
 const SET_QR_CODE = 'SET-QR-CODE';
 const SET_AUTH_STAGE = 'SET-AUTH-STAGE'
 const SET_AUTH_ID = 'SET-AUTH-ID'
-const UPDATE_SETTINGS = 'UPDATE-SETTINGS'
 
-export const setUserData = (id, login, email, settings, isAuth) => ({ type: SET_USER_DATA, data: { id, login, email, settings }, isAuth});
+export const setUserData = (id, login, email, isAuth) => ({ type: SET_USER_DATA, data: { id, login, email }, isAuth});
 export const displayAuthError = (error_msg) => ({ type: DISPLAY_AUTH_ERROR, error_msg });
 export const displayRegisterError = (error_msg) => ({ type: DISPLAY_REG_ERROR, error_msg });
 export const resetRegError = () => ({ type: RESET_REG_ERROR });
@@ -26,12 +25,10 @@ export const setInitializedAction = () => ({ type: SET_INITIALIZED });
 export const setUserQRCodeAction = (qrcode) => ({ type: SET_QR_CODE, qrcode });
 export const setAuthStageAction = (stage) => ({ type: SET_AUTH_STAGE, stage });
 export const setUserAuthIdAction = (authId) => ({ type: SET_AUTH_ID, authId });
-export const updateSettingsAction = (settings) => ({ type: UPDATE_SETTINGS, settings });
 
 let initialState = {
     id: null,
     auth_id: null,
-    settings: null,
     login: null,
     email: null,
     isAuth: false,
@@ -51,8 +48,7 @@ export const authMe = () => (dispatch) => {
             if(response.status === 200) {
                 dispatch(setAuthStageAction(1))
                 let {id, login, email} = response.data.user;
-                let settings = response.data.settings;
-                dispatch(setUserData(id, login, email, settings, true))
+                dispatch(setUserData(id, login, email, true))
                 dispatch(toggleLogFormInProcess(false));
             }
             if(response.status === 401) {
@@ -60,15 +56,7 @@ export const authMe = () => (dispatch) => {
             }
         }
     })
-}
 
-export const updateSettings = (settings) => (dispatch) => {
-    return authAPI.updateSettings(settings).then((response) => {
-        if(response.status === 200) {
-            console.log(response)
-            dispatch(updateSettingsAction(response.data.settings));
-        }
-    })
 }
 
 export const getUserQRCode = (authId) => (dispatch) => {
@@ -159,7 +147,7 @@ export const userLogout = () => (dispatch) => {
     dispatch(toggleSignOutInProcess(true))
     return authAPI.userLogout().then(response =>{
         if(response.status === 200) {
-            dispatch(setUserData(null, null, null, null, false))
+            dispatch(setUserData(null, null, null, false))
             dispatch(toggleSignOutInProcess(false))
         }
     })
@@ -250,12 +238,6 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 regError: false
-            }
-        }
-        case UPDATE_SETTINGS: {
-            return {
-                ...state,
-                settings: action.settings
             }
         }
         default: return state;

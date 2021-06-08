@@ -34,13 +34,10 @@ const Posts = (props) => {
             content ={p.content} 
             likesCount = {p.likes} 
             commentsCount = {p.comments} 
-            repostsCount={p.reposts}
-            publishDate={p.created_at}
+            repostsCount={p.reposts} 
             userInfo={props.userInfo}
             authId={props.authData.id}
             deletePost={props.deletePost}
-            updatePost={props.updatePost}
-            setEditedPostAction={props.setEditedPostAction}
             isAuthUserPage={props.isAuthUserPage}/>)
     
     let addPost = (values) => {
@@ -50,6 +47,7 @@ const Posts = (props) => {
         <div className={styles.postsBlock}>
             { props.isAuthUserPage ? 
                 <div>
+                    <div className={styles.postsTitle}><h3>My Posts</h3></div>
                     <PostReduxForm onSubmit={addPost}/>
                     <div className={styles.posts}>
                         {postsElements}
@@ -57,6 +55,7 @@ const Posts = (props) => {
                 </div>
                 :
                 <div>
+                    <div className={styles.postsTitle}><h3>{props.userInfo.first_name}'s Posts</h3></div>
                     <div className={styles.posts}>
                         {postsElements}
                     </div>

@@ -22,23 +22,12 @@ export const postsAPI = {
                content: post_content
             })
         .then(response => {
-            return response;
+            return response.data.post;
         }).catch((error) => {
             return error.response
         })
     },
-    updatePost(id, post_content) {
-        return instance.put('/update',
-            {
-                id,
-                content: post_content
-            })
-        .then(response => {
-            return response;
-        }).catch((error) => {
-            return error.response
-        })
-    },
+
     deletePost(post_id) {
         return instance.delete(`/delete?id=${post_id}`)
         .then(response => {

@@ -57,7 +57,7 @@ const getUsersByNamePartial = (req, res, next, query) => {
   return User.query().select(
     'id', 'login', 'first_name', 'last_name', 'fullname', 'gender',
         'status', 'age', 'city', 'profile_image', 'header_image')
-    .where('fullname', 'ilike', '%' + query + '%')
+    .where('fullname', 'like', '%'+query+'%')
     .then(async function(result) {
         for(let user of result){
             let status = await returnFriendshipStatus(req, res, next, user.id);
@@ -105,9 +105,15 @@ function returnUsers(req, res, next) {
     let page = parseInt(req.query.page);
     let limit = parseInt(req.query.limit);
     const items = {}
-    if (!limit) {
-        limit = 10;
+  
+    if (req.query.limit > 100) {
+        res.send("The number of users cannot exceed 100.")
     }
+
+    if (!req.query.limit) {
+        limit = 12;
+    }
+
     if(!req.query.page) {
         page = 1;
     }

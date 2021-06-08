@@ -6,7 +6,6 @@ const CANCEL_INVITATION = "CANCEL-INVENTATION"
 const SEARCH_CLICK = "SEARCH-CLICK"
 const SET_USERS = "SET-USERS"
 const SET_PAGE = "SET-PAGE"
-const RESET_PAGE = "RESET-PAGE"
 const SHOW_MORE = "SHOW-MORE"
 const TOGGLE_IS_FETCHING = "TOGGLE-IS-FETCHING"
 
@@ -17,12 +16,11 @@ export const setUsersAction = (users) => ({ type: SET_USERS, users })
 export const showMoreAction = (users, pagination) => ({ type: SHOW_MORE, users, pagination })
 export const setCurrentPageAction = (page) => ({type: SET_PAGE, page})
 export const toggleIsFetchingAction = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFetching})
-export const resetPage = () => ({ type: RESET_PAGE });
 
-export const getUsers = (currentPage) => {
+export const getUsers = (currentPage, pageSize) => {
     return (dispatch) => {
         dispatch(toggleIsFetchingAction(true));
-        usersAPI.getUsers(currentPage).then(data => {
+        usersAPI.getUsers(currentPage, pageSize).then(data => {
             dispatch(toggleIsFetchingAction(false));
             dispatch(setUsersAction(data.items));
         })
@@ -40,7 +38,7 @@ export const getUsersBySearchQuery= (query, currentPage, pageSize) => {
         } else {
             dispatch(toggleIsFetchingAction(true));
             dispatch(onSearchClickAction(query, [], 0));
-            usersAPI.getUsers(currentPage).then(data => {
+            usersAPI.getUsers(currentPage, pageSize).then(data => {
                         dispatch(toggleIsFetchingAction(false));
                         dispatch(setUsersAction(data.items));
                     })
@@ -48,10 +46,10 @@ export const getUsersBySearchQuery= (query, currentPage, pageSize) => {
     }
 }
 
-export const getMoreUsers = (pagination) => {
+export const getMoreUsers = (pagination, pageSize) => {
     return (dispatch) => {
         dispatch(toggleIsFetchingAction(true));
-        usersAPI.getUsers(pagination).then(data => {
+        usersAPI.getUsers(pagination, pageSize).then(data => {
             dispatch(toggleIsFetchingAction(false));
             dispatch(showMoreAction(data.items, pagination));
         })
@@ -80,7 +78,7 @@ let initialState = {
     filter: false,
     searchInput: "",
     pageSize: 6,
-    totalUsersCount: null,
+    totalUsersCount: 13,
     filteredUsersCount: 0,
     currentPage: 1,
     showMorePagination: 1,
@@ -147,19 +145,6 @@ const usersReducer = (state = initialState, action) => {
                 ...state,
                 currentPage: action.page,
 
-            }
-        case RESET_PAGE:
-            return {
-                ...state,
-                users: [],
-                filteredUsers: [],
-                filter: false,
-                searchInput: "",
-                totalUsersCount: null,
-                filteredUsersCount: 0,
-                currentPage: 1,
-                showMorePagination: 1,
-                isFetching: true
             }
         case SHOW_MORE:
             return {

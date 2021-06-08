@@ -5,7 +5,6 @@ const postsController = require('../controllers/posts.controller');
 
 router.get('/', tokenValidation, postsController.returnPosts);
 router.post('/add', tokenValidation, postsController.addNewPost);
-router.put('/update', tokenValidation, postsController.updatePost);
 router.delete('/delete', tokenValidation, postsController.deletePost);
 
 

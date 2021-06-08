@@ -122,12 +122,10 @@ const getProfileStatus = (req, res) => {
     }
 }
 
-
-
 module.exports = {
     updateProfilePicture: updateProfilePicture,
     updateProfileStatus: updateProfileStatus,
-    getProfileStatus: getProfileStatus,
+    getProfileStatus: getProfileStatus
 }
 
 

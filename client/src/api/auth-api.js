@@ -15,14 +15,6 @@ export const authAPI = {
             return error.response
         })
     },
-    updateSettings(settings) {
-        return instance.put('/settings', { settings })
-        .then(response => {
-            return response;
-        }).catch((error) => {
-            return error.response
-        })
-    },
     getQRCode(authId) {
         return instance.get(`/qrcode?authId=${authId}`)
         .then(response => {
