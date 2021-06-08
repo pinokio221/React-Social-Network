@@ -101,3 +101,5 @@ export default compose(
   connect(mapStateToProps, { initialize }),
   withRouter
 )(App)
+
+// simple comment
